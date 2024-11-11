@@ -8,7 +8,9 @@ public class User {
     protected String designation;
     protected String idNumber;
     protected boolean isVerified;
+    protected List<String> bookingPresets;
     protected List<String> reservations;
+
 
     public void setUsername(String username) {
         this.username = username;

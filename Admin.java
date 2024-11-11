@@ -57,8 +57,4 @@ public class Admin {
         return null; // Simplified return value
     }
 
-    public void doSomething(){
-        System.out.println("Git Success");
-    }
-
 }
