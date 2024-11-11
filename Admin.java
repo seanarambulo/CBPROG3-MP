@@ -26,19 +26,19 @@ public class Admin {
     }
     
     // Shuttle and Schedule Management
-    public void addShuttleRoute(String routeName, String schedule, String driver) {
+    public void addShuttleRoute(String ArrowsExpressLine, int lineNum) {
         // Implementation to add a shuttle route
     }
 
-    public void editShuttleRoute(int routeId, String newRouteName, String newSchedule, String newDriver) {
+    public void editShuttleRoute(String ArrowExpressLine, int lineNum) {
         // Implementation to edit a shuttle route
     }
 
-    public void deleteShuttleRoute(int routeId) {
+    public void deleteShuttleRoute(int lineNum) {
         // Implementation to delete a shuttle route
     }
 
-    public void modifyUserBooking(int bookingId, String newDetails) {
+    public void modifyUserBooking(int userShuttleBookingID, String ArrowsExpressLine, int lineNum, String date, String time) {
         // Implementation to modify a user booking
     }
 
@@ -55,10 +55,6 @@ public class Admin {
     public List<String> viewPassengerReservationData() {
         // Implementation to access and manage passenger reservation information
         return null; // Simplified return value
-    }
-
-    public void doSomething(){
-        System.out.println("Git Success");
     }
 
 }
