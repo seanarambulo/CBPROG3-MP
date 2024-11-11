@@ -1,23 +1,31 @@
 import java.util.List;
 
-public class AdminDashboard {
+public class Admin {
 
     protected String adminID;
     protected String password;
 
-    public AdminDashboard(String adminID, String password) {
+    // set adminID
+    public void setAdminID(String adminID) {
         this.adminID = adminID;
-        this.password = password;
     }
 
+    // set setPassword
     public void setPassword(String password) {
         this.password = password;
     }
 
+    // get password
+    public String getPassword() {
+        return password;
+    }
+
+    // get adminID
     public String getAdminID() {
         return adminID;
     }
-   // Shuttle and Schedule Management
+    
+    // Shuttle and Schedule Management
     public void addShuttleRoute(String routeName, String schedule, String driver) {
         // Implementation to add a shuttle route
     }
@@ -28,11 +36,6 @@ public class AdminDashboard {
 
     public void deleteShuttleRoute(int routeId) {
         // Implementation to delete a shuttle route
-    }
-
-    // Booking Management
-    public void viewUserBookings(String username) {
-        // Implementation to view user bookings
     }
 
     public void modifyUserBooking(int bookingId, String newDetails) {
