@@ -1,23 +1,33 @@
 public class ShuttleBooking {
-    protected int presetID;
+    
+    private int shuttleBookingID;
     protected String ArrowsExpressLine;
     protected int lineNum;
     protected String date;
     protected String time;
 
-    public void setReservation(String ArrowsExpressLine, int lineNum, String date, String time) {
+    public void setShuttleBookingID(int shuttleBookingID){
+        this.shuttleBookingID = shuttleBookingID;
+    }
+
+    public void setReservation(String ArrowsExpressLine){
         this.ArrowsExpressLine = ArrowsExpressLine;
+    }
+
+    public void setLineNum(int lineNum){
         this.lineNum = lineNum;
+    }
+
+    public void setDate(String date){
         this.date = date;
+    }
+
+    public void setTime(String time){
         this.time = time;
     }
 
-    public void setReservationPreset(String ArrowsExpressLine, int lineNum, String date, String time, int presetID) {
-        this.presetID = presetID;
-        this.ArrowsExpressLine = ArrowsExpressLine;
-        this.lineNum = lineNum;
-        this.date = date;
-        this.time = time;
+    public int getShuttleBookingID() {
+        return shuttleBookingID;
     }
 
     public String getArrowsExpressLine() {
