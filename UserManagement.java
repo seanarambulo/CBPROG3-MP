@@ -6,7 +6,6 @@ public class UserManagement {
     protected String email;
     protected String name;
     protected String designation;
-    protected String EAF;
     protected String idNumber;
     protected boolean isVerified;
     protected List<String> reservations;
@@ -29,10 +28,6 @@ public class UserManagement {
 
     public void setDesignation(String designation) {
         this.designation = designation;
-    }
-
-    public void setEAF(String EAF) {
-        this.EAF = EAF;
     }
 
     public void setIdNumber(String idNumber) {
@@ -61,10 +56,6 @@ public class UserManagement {
 
     public String getDesignation() {
         return designation;
-    }
-
-    public String getEAF() {
-        return EAF;
     }
 
     public String getIdNumber() {
