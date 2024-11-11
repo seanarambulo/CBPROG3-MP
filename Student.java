@@ -1,4 +1,4 @@
-public class Student {
+public class Student extends User {
     protected String EAF;
 
     public void setEAF(String EAF) {
