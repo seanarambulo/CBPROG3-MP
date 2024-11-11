@@ -34,7 +34,7 @@ public class Admin {
         // Implementation to edit a shuttle route
     }
 
-    public void deleteShuttleRoute(int lineNum) {
+    public void deleteShuttleRoute(String ArrowExpressLine, int lineNum) {
         // Implementation to delete a shuttle route
     }
 
@@ -42,7 +42,7 @@ public class Admin {
         // Implementation to modify a user booking
     }
 
-    public void cancelUserBooking(int bookingId) {
+    public void cancelUserBooking(int userShuttleBookingID) {
         // Implementation to cancel a user booking
     }
 
