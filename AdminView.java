@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class AdminView {
+public class AdminView { // something
 
     private DLSU_SRSAdmin_controller controller;
     private Scanner scanner;
