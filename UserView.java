@@ -1,58 +1,71 @@
-import java.util.*;
+import java.awt.*;
+import javax.swing.*;
 
 public class UserView {
-    private DLSU_SRSUser_controller controller;
-    private Scanner scanner;
+    
+    public static void main(String[] args) {
+        // Create the frame
+        JFrame frame = new JFrame("DLSU Shuttle Reservation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(null);
+        frame.getContentPane().setBackground(new Color(108, 194, 168)); // Background color
+        
+        // Panel for the main content
+        JPanel panel = new JPanel();
+        panel.setBounds(40, 30, 300, 200);
+        panel.setBackground(new Color(31, 95, 79)); // Dark green background
+        panel.setLayout(null);
 
-    public UserView(DLSU_SRSUser_controller controller) {
-        this.controller = controller;
-        this.scanner = new Scanner(System.in);
-    }
+        // Title Label
+        JLabel titleLabel = new JLabel("DLSU Shuttle Reservation");
+        titleLabel.setBounds(50, 10, 200, 20);
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        panel.add(titleLabel);
 
-    public void displayMenu() {
-        boolean running = true;
-        while (running) {
-            System.out.println("1. Register User");
-            System.out.println("2. Manage Profile");
-            System.out.println("3. View Reservation");
-            System.out.println("4. Edit Reservation");
-            System.out.println("5. Exit");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+        // Username Label and Field
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setBounds(30, 50, 80, 20);
+        usernameLabel.setForeground(Color.WHITE);
+        panel.add(usernameLabel);
 
-            switch (choice) {
-                case 1:
-                    registerUser();
-                    break;
-                case 2:
-                    manageProfile();
-                    break;
-                case 3:
-                    viewReservation();
-                    break;
-                case 4:
-                    editReservation();
-                    break;
-                case 5:
-                    System.out.println("Exiting...");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-            }
-        }
-    }
+        JTextField usernameField = new JTextField();
+        usernameField.setBounds(110, 50, 150, 25);
+        panel.add(usernameField);
 
-    private void registerUser() {
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        System.out.print("Enter email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter name: ");
-        String name = scanner.nextLine();
-        System.out.print("Enter designation: ");
+        // Password Label and Field
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setBounds(30, 90, 80, 20);
+        passwordLabel.setForeground(Color.WHITE);
+        panel.add(passwordLabel);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(110, 90, 150, 25);
+        panel.add(passwordField);
+
+        // Login Button
+        JButton loginButton = new JButton("Log In");
+        loginButton.setBounds(110, 130, 80, 30);
+        loginButton.setBackground(new Color(220, 248, 232)); // Light green
+        panel.add(loginButton);
+
+        // Register Link
+        JLabel registerLabel = new JLabel("Not yet verified?");
+        registerLabel.setBounds(40, 170, 100, 20);
+        registerLabel.setForeground(Color.WHITE);
+        panel.add(registerLabel);
+
+        JButton registerButton = new JButton("Register");
+        registerButton.setBounds(150, 165, 100, 30);
+        registerButton.setBackground(Color.BLACK);
+        registerButton.setForeground(new Color(220, 248, 232)); // Light green text
+        panel.add(registerButton);
+
+        // Add panel to frame
+        frame.add(panel);
+        frame.setVisible(true);
+
+        //Add View
     }
 }
