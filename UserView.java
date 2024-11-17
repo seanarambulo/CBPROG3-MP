@@ -65,7 +65,6 @@ public class UserView {
         // Add panel to frame
         frame.add(panel);
         frame.setVisible(true);
-
     }
 
     public void SRSFRAME2_REGISTRATION(){
