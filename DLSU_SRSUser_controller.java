@@ -61,7 +61,7 @@ public class DLSU_SRSUser_controller {
     }
 
     public void viewLogIn(){
-        VIEW.SRSFRAME1();
+        VIEW.SRSFRAME1_LOGIN();
     }
 
     /*public void register() {
