@@ -7,4 +7,11 @@ public class Student extends User {
         this.studentDataID = studentDataID;
     }
 
+    public void setStudentDataID(int studentDataID) {
+        this.studentDataID = studentDataID;
+    }
+
+    public int getStudentDataID() {
+        return studentDataID;
+    }
 }

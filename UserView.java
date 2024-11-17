@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class UserView {
     
-    public static void main(String[] args) {
+    public void SRSFRAME1(){
         // Create the frame
         JFrame frame = new JFrame("DLSU Shuttle Reservation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
