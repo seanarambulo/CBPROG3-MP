@@ -1,10 +1,11 @@
 public class Student extends User {
+    protected String EAF;
 
-    protected int studentDataID;
-
-    public Student(String username, String password, String email, String name, String designation, String idNumber, int studentDataID) {
-        super(username, password, email, name, designation, idNumber);
-        this.studentDataID = studentDataID;
+    public void setEAF(String EAF) {
+        this.EAF = EAF;
     }
 
+    public String getEAF() {
+        return EAF;
+    }
 }

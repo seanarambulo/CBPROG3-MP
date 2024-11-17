@@ -1,10 +1,11 @@
 public class DLSU_SRSUser_controller {
 
-    protected User user;
+    protected User Model;
+    protected UserView VIEW;
     protected ShuttleBooking shuttleBooking;
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(User Model) {
+        this.Model = Model;
     }
 
     public void setShuttleBooking(ShuttleBooking shuttleBooking) {
@@ -12,35 +13,35 @@ public class DLSU_SRSUser_controller {
     }
 
     public void setUsername(String username) {
-        user.setUsername(username);
+        Model.setUsername(username);
     }
 
     public void setPassword(String password) {
-        user.setPassword(password);
+        Model.setPassword(password);
     }
 
     public void setEmail(String email) {
-        user.setEmail(email);
+        Model.setEmail(email);
     }
 
     public void setName(String name) {
-        user.setName(name);
+        Model.setName(name);
     }
 
     public void setDesignation(String designation) {
-        user.setDesignation(designation);
+        Model.setDesignation(designation);
     }
 
     public void setIdNumber(String idNumber) {
-        user.setIdNumber(idNumber);
+        Model.setIdNumber(idNumber);
     }
 
     public void setVerified(boolean verified) {
-        user.setVerified(verified);
+        Model.setVerified(verified);
     }
 
-    public void setEAF(String EAF) {
-        ((Student)user).setEAF(EAF);
+    public void setStudentDataID(int studentDataID) {
+        ((Student)Model).setStudentDataID(studentDataID);
     }
 
     public void setReservation(int shuttleBookingID, String ArrowsExpressLine, int lineNum, String date, String time) {
@@ -57,6 +58,10 @@ public class DLSU_SRSUser_controller {
         shuttleBooking.setLineNum(lineNum);
         shuttleBooking.setDate(date);
         shuttleBooking.setTime(time);
+    }
+
+    public void viewLogIn(){
+        VIEW.SRSFRAME1();
     }
 
     /*public void register() {
