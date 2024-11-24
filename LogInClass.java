@@ -4,6 +4,8 @@ import javax.swing.*;
 
 public class LogInClass implements ActionListener {
 
+    // Username Label and Field
+
     private JLabel usernameLabel;
     private JTextField usernameField;
 
