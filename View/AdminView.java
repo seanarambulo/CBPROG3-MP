@@ -1,3 +1,5 @@
+package View;
+
 import java.util.*;
 
 public class AdminView { // something
