@@ -3,6 +3,8 @@ import java.util.List;
 public class DLSU_SRSAdmin_controller {
 
     private Admin admin;
+    protected AdminView VIEW;
+    protected Admin Model;
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
