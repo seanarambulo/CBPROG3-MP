@@ -3,7 +3,6 @@ package src.Model;
 public class ShuttleSchedule {
 
     protected int shuttleScheduleID;
-    protected int shuttleID;
     protected int timeID;
 
     public void setShuttleScheduleID(int shuttleScheduleID) {

@@ -1,6 +1,7 @@
 package src.Model;
 
 public class Designation {
+    
     private int designationID;
     private String designation;
     

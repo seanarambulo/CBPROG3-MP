@@ -12,6 +12,7 @@ public class DLSU_SRSUser_controller {
     protected User userModel;
     protected DatabaseManager dbm;
     protected UserView userView = new UserView();
+    protected ShuttleBookingView selectedReservation = new ShuttleBookingView();
 
     public DLSU_SRSUser_controller() {
         
@@ -21,6 +22,9 @@ public class DLSU_SRSUser_controller {
         try {
             dbm = new DatabaseManager();
             userModel = dbm.getUserByID(userID, password);
+            if (userModel == null) {
+                throw new RuntimeException("User not found with the given credentials");
+            }
         } catch (SQLException e) {
             Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
             throw new RuntimeException("Failed to initialize DatabaseManager", e);
@@ -204,9 +208,9 @@ public class DLSU_SRSUser_controller {
         }
     }
     
-    public void ReservationsList(ArrayList<ShuttleBooking> bookingList, ArrayList<ShuttleSchedule> shuttleScheduleList, ArrayList<TimeClass> timeList) throws SQLException {
+    public ArrayList<ShuttleBookingView> ReservationsList() throws SQLException {
         try {
-            dbm.ReservationsList(bookingList, shuttleScheduleList, timeList);
+            return dbm.ReservationsList();
         } catch (SQLException e) {
             Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
             throw e; // Rethrow the exception after logging it
@@ -297,5 +301,13 @@ public class DLSU_SRSUser_controller {
     
     public void SRSFRAME10_EDITUSERDATA_userController() {
         userView.UserSRSFRAME10_EDITUSERDATA(this);
+    }
+
+    public void setShuttleBookingView(ShuttleBookingView selectedReservation) {
+        this.selectedReservation = selectedReservation;
+    }
+
+    public ShuttleBookingView getShuttleBookingView() {
+        return selectedReservation;
     }
 }

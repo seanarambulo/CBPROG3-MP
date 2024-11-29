@@ -220,48 +220,36 @@ public class DatabaseManager {
         }
 
         return user;
-    }
-
-    public void ReservationsList(ArrayList<ShuttleBooking> bookingList, ArrayList<ShuttleSchedule> shuttleScheduleList, ArrayList<TimeClass> timeList) throws SQLException {
-        // The adjusted SQL query to join booking, shuttleschedule, and time
-        String sql = "SELECT booking.ShuttleBookingID, booking.Attendance, booking.Origin, booking.Destination, booking.Date, booking.ShuttleScheduleID, booking.LineID, time.TimeID, time.Time, shuttleschedule.ShuttleScheduleID, shuttleschedule.TimeID, booking.UserID "
-            + "FROM booking "
-            + "INNER JOIN shuttleschedule ON booking.ShuttleScheduleID = shuttleschedule.ShuttleScheduleID "
-            + "INNER JOIN time ON shuttleschedule.TimeID = time.TimeID "
-            + "ORDER BY booking.Date, time.Time";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                // Populate Booking object
-                ShuttleBooking booking = new ShuttleBooking();
-                TimeClass time = new TimeClass();
-                ShuttleSchedule shuttleSchedule = new ShuttleSchedule();
-
-                // Set Booking fields
-                booking.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
-                booking.setAttendance(rs.getBoolean("Attendance"));
-                booking.setOrigin(rs.getString("Origin"));
-                booking.setDestination(rs.getString("Destination"));
-                booking.setDate(rs.getString("Date"));
-                booking.setShuttleScheduleID(rs.getInt("ShuttleScheduleID"));
-                shuttleSchedule.setShuttleScheduleID(rs.getInt("LineID"));
-                booking.setUserID(rs.getInt("UserID")); // Set UserID in Booking
-                bookingList.add(booking);
-
-                // Set ShuttleSchedule fields
-                shuttleSchedule.setShuttleScheduleID(rs.getInt("ShuttleScheduleID"));
-                shuttleSchedule.setTimeID(rs.getInt("TimeID"));
-                shuttleScheduleList.add(shuttleSchedule);
-
-                // Set Time fields
-                time.setTimeID(rs.getInt("TimeID"));
-                time.setTime(rs.getString("Time")); // Time should be a string now
-                timeList.add(time);
-            }
         }
-    }
+
+        public ArrayList<ShuttleBookingView> ReservationsList() throws SQLException {
+            ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+
+            String sql = "SELECT booking.ShuttleBookingID, booking.Origin, booking.Destination, booking.Date, time.Time, arrowsexpressline.LineName "
+                + "FROM booking "
+                + "INNER JOIN user ON user.UserID = booking.UserID "
+                + "INNER JOIN student ON student.StudentID = user.UserID "
+                + "INNER JOIN shuttleschedule ON booking.ShuttleScheduleID = shuttleschedule.ShuttleScheduleID "
+                + "INNER JOIN time ON shuttleschedule.TimeID = time.TimeID "
+                + "INNER JOIN arrowsexpressline on arrowsexpressline.LineID = booking.LineID "
+                + "ORDER BY booking.Date, time.Time";
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    reservations.add(new ShuttleBookingView(
+                        rs.getInt("ShuttleBookingID"), 
+                        rs.getString("Origin"), 
+                        rs.getString("Destination"), 
+                        rs.getString("Date"), 
+                        rs.getString("Time"), 
+                        rs.getString("LineName")));
+                    }
+            }
+
+            return reservations;
+        }
 
     // Method to close the connection
     public void close() throws SQLException {
