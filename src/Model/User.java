@@ -1,6 +1,7 @@
 package src.Model;
 
 public class User {
+    
     protected int userID;
     protected String password;
     protected String email;

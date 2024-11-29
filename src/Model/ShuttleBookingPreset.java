@@ -1,6 +1,6 @@
 package src.Model;
 
-public class ShuttleBookingPreset extends ShuttleBooking {
+public class ShuttleBookingPreset extends ShuttleBookingView {
     
     private int presetID;
 

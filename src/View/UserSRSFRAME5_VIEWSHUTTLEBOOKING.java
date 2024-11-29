@@ -1,18 +1,21 @@
 package src.View;
 
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.table.*;
 import src.Controller.DLSU_SRSUser_controller;
-import src.Model.ShuttleBooking;
+import src.Model.*;
 
 public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
     
     private final DLSU_SRSUser_controller controller;
     private JTable reservationTable;
     private DefaultTableModel tableModel;
-    private ShuttleBooking[] reservations;
+    private ArrayList<ShuttleBookingView> reservations;
 
     public UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller) {
         super();
@@ -20,14 +23,18 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
+    @Override
     public void initComponets(){
 
         setDesignationTitle("View Shuttle Booking");
-        // Create table model and set column names
-        tableModel = new DefaultTableModel(new Object[]{"Reservation ID", "Shuttle Line", "Date", "Time", "Origin", "Destination"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"Reservation ID", "Shuttle Name", "Date", "Time", "Origin", "Destination"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         reservationTable = new JTable(tableModel);
 
-        // Customize table colors
         reservationTable.setBackground(new Color(255, 255, 255)); // White background
         reservationTable.setForeground(new Color(0, 0, 0)); // Black text
         reservationTable.setSelectionBackground(new Color(108, 194, 168)); // Light green selection background
@@ -39,11 +46,18 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
         tableHeader.setForeground(new Color(255, 255, 255)); // White header text
 
         JScrollPane scrollPane = new JScrollPane(reservationTable);
-    
-        for (Reservation reservation : reservations) {
-            tableModel.addRow(new Object[]{reservation.getShuttleReservationID(),reservation.getShuttleLine(), reservation.getDate(), reservation.getTime(), reservation.getOrigin(), reservation.getDestination()});
+        try {
+            reservations = controller.ReservationsList();
+        } catch (SQLException e) {
+            // Log the exception
+            Logger.getLogger(UserSRSFRAME5_VIEWSHUTTLEBOOKING.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(this, "An error occurred while retrieving reservations.", "Error", JOptionPane.ERROR_MESSAGE);
+            reservations = new ArrayList<>(); // Initialize with an empty list in case of error
         }
-
+        for (ShuttleBookingView reservation : reservations) {
+            tableModel.addRow(new Object[]{reservation.getShuttleBookingID(),reservation.getArrowsExpressLine(), reservation.getDate(), reservation.getTime(), reservation.getOrigin(), reservation.getDestination()});
+        }
+    
         // Populate table with reservations
         // Add panel to the frame
         // Populate table with reservations
@@ -61,48 +75,30 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
             if (!event.getValueIsAdjusting()) {
                 int selectedRow = reservationTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    // Retrieve selected row data
-                    int reservationID = (int) tableModel.getValueAt(selectedRow, 0);
-                    String shuttleLine = (String) tableModel.getValueAt(selectedRow, 1);
-                    String date = (String) tableModel.getValueAt(selectedRow, 2);
-                    String time = (String) tableModel.getValueAt(selectedRow, 3);
-                    String origin = (String) tableModel.getValueAt(selectedRow, 4);
-                    String destination = (String) tableModel.getValueAt(selectedRow, 5);
-
-                    // Display selected data (for example, in a dialog)
-                    // Ask the user if they want to edit the information
-                    /*
-                    int response = JOptionPane.showConfirmDialog(SRSFRAME5_VIEWSHUTTLEBOOKING.this,
-                            "Reservation ID: " + reservationID + "\n" +
-                            "Shuttle Line: " + shuttleLine + "\n" +
-                            "Date: " + date + "\n" +
-                            "Time: " + time + "\n" +
-                            "Origin: " + origin + "\n" +
-                            "Destination: " + destination + "\n\n" +
+                    ShuttleBookingView selectedReservation = reservations.get(selectedRow);
+                    int response = JOptionPane.showConfirmDialog(UserSRSFRAME5_VIEWSHUTTLEBOOKING.this,
+                            "Reservation ID: " + selectedReservation.getShuttleBookingID() + "\n" +
+                            "Shuttle Line: " + selectedReservation.getArrowsExpressLine() + "\n" +
+                            "Date: " + selectedReservation.getDate() + "\n" +
+                            "Time: " + selectedReservation.getTime() + "\n" +
+                            "Origin: " + selectedReservation.getDestination() + "\n" +
+                            "Destination: " + selectedReservation.getDestination() + "\n\n" +
                             "Do you want to edit this information?",
                             "Selected Reservation",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
 
                     if (response == JOptionPane.YES_OPTION) {
-                        // Code to edit the information
-                        // For example, you can open a new dialog to edit the information
-                        // or enable editing directly in the table
+                        this.dispose();
+                        controller.setShuttleBookingView(selectedReservation);
                         controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController();
-                    }*/
+                    }
                 }
             }
         });
 
         innerPanel.revalidate();
         innerPanel.repaint();
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            DLSU_SRSUser_controller controller = new DLSU_SRSUser_controller();
-            UserSRSFRAME5_VIEWSHUTTLEBOOKING frame = new UserSRSFRAME5_VIEWSHUTTLEBOOKING(controller);
-        });
     }
 }
 

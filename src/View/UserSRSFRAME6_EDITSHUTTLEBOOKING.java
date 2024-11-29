@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import src.Controller.DLSU_SRSUser_controller;
+import src.Model.ShuttleBookingView;
 
 public class UserSRSFRAME6_EDITSHUTTLEBOOKING extends FrameBackground {
     
@@ -20,21 +21,16 @@ public class UserSRSFRAME6_EDITSHUTTLEBOOKING extends FrameBackground {
     private JComboBox<String> destinationBox;
     private DLSU_SRSUser_controller controller;
 
-
     private int selectedRow;
-    private int reservationID; 
-    private String shuttleLine; 
-    private String date; 
-    private String time; 
-    private String origin; 
-    private String destination;
+    private ShuttleBookingView selectedReservation;
 
     public UserSRSFRAME6_EDITSHUTTLEBOOKING(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
+        this.selectedReservation = controller.getShuttleBookingView();
         SwingUtilities.invokeLater(() -> initComponets());
     }
-
+    
     @Override
     public void initComponets(){
         String[] shuttleLines = {"MNL<->LAG"};
@@ -108,7 +104,7 @@ public class UserSRSFRAME6_EDITSHUTTLEBOOKING extends FrameBackground {
         gbc.anchor = GridBagConstraints.EAST;
         innerPanel.add(originLabel, gbc);
 
-        originValueLabel = new JLabel(origin);
+        originValueLabel = new JLabel(selectedReservation.getOrigin());
         originValueLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         originValueLabel.setForeground(Color.WHITE);
         gbc.gridx = 1;
@@ -129,12 +125,12 @@ public class UserSRSFRAME6_EDITSHUTTLEBOOKING extends FrameBackground {
         gbc.anchor = GridBagConstraints.WEST;
         innerPanel.add(destinationBox, gbc);
 
-        // Update destination box based on the selected origin
-        lineComboBox.setSelectedItem(shuttleLine);
-        dateComboBox.setSelectedItem(date);
-        destinationBox.setSelectedItem(destination);
+        // Set initial values from selectedReservation
+        lineComboBox.setSelectedItem(selectedReservation.getArrowsExpressLine());
+        dateComboBox.setSelectedItem(selectedReservation.getDate());
+        destinationBox.setSelectedItem(selectedReservation.getDestination());
         updateTimeComboBox(timeComboBox, LagunaDepartureTimes, ManilaDepartureTimes);
-        timeComboBox.setSelectedItem(time);
+        timeComboBox.setSelectedItem(selectedReservation.getTime());
 
         // Add ActionListener to destinationBox to update the origin label
         destinationBox.addActionListener(e -> {
@@ -165,61 +161,4 @@ public class UserSRSFRAME6_EDITSHUTTLEBOOKING extends FrameBackground {
             default -> timeComboBox.setModel(new DefaultComboBoxModel<>(new String[]{}));
         }
     }
-
-    public void setSelectedRow(int selectedRow){
-        this.selectedRow = selectedRow;
-    }
-
-    public void setReservationID(int reservationID){
-        this.reservationID = reservationID;
-    }
-
-    public void setShuttleLine(String shuttleLine){
-        this.shuttleLine = shuttleLine;
-    }
-
-    public void setDate(String date){
-        this.date = date;
-    }
-
-    public void setTime(String time){
-        this.time = time;
-    }
-
-    public void setOrigin(String origin){
-        this.origin = origin;
-    }
-
-    public void setDestination(String destination){
-        this.destination = destination;
-    }
-
-    public int getSelectedRow(){
-        return selectedRow;
-    }
-
-    public int getReservationID(){
-        return reservationID;
-    }
-
-    public String getShuttleLine(){
-        return shuttleLine;
-    }
-
-    public String getDate(){
-        return date;
-    }
-
-    public String getTime(){
-        return time;
-    }
-
-    public String getOrigin(){
-        return origin;
-    }
-
-    public String getDestination(){
-        return destination;
-    }
-
 }

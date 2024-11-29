@@ -4,29 +4,30 @@ public class ShuttleBooking {
 
     private int userID;
     private int shuttleBookingID;
-    protected int arrowsExpressLinelineNum;
-    protected int shuttleScheduleID;
     protected boolean attendance;
     protected String Origin;
     protected String Destination;
     protected String date;
     
+    public ShuttleBooking(){
+        
+    }
+
+    public ShuttleBooking(int shuttleBookingID, String Origin, String Destination, String date){
+        this.shuttleBookingID = shuttleBookingID;
+        this.Origin = Origin;
+        this.Destination = Destination;
+        this.date = date;
+    }
+
     public void setUserID(int userID){
         this.userID = userID;
     }
-
+    
     public void setShuttleBookingID(int shuttleBookingID){
         this.shuttleBookingID = shuttleBookingID;
     }
 
-    public void setArrowsExpressLineNum(int arrowsExpressLineNum){
-        this.arrowsExpressLinelineNum = arrowsExpressLineNum;
-    }
-
-    public void setShuttleScheduleID(int shuttleScheduleID){
-        this.shuttleScheduleID = shuttleScheduleID;
-    }
-    
     public void setAttendance(boolean attendance){
         this.attendance = attendance;
     }
@@ -47,16 +48,8 @@ public class ShuttleBooking {
         return userID;
     }
 
-    public int getShuttleBookingID() {
+    public int getShuttleBookingID(){
         return shuttleBookingID;
-    }
-
-    public int getArrowsExpressLineNum() {
-        return arrowsExpressLinelineNum;
-    }
-
-    public int getShuttleScheduleID() {
-        return shuttleScheduleID;
     }
 
     public boolean getAttendance(){

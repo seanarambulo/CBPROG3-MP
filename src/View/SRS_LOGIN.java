@@ -23,6 +23,7 @@ public class SRS_LOGIN extends FrameBackground {
 
     @Override
     public void initComponets() {
+        
         setDesignationTitle("DLSU Shuttle Reservation");
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -93,16 +94,12 @@ public class SRS_LOGIN extends FrameBackground {
                                 // Add logic for case 2 if needed
                             }
                             case 3 -> {
-                                Ucontroller = new DLSU_SRSUser_controller(username, password);
-                                
+                                Ucontroller = new DLSU_SRSUser_controller(username, password);  
                                 this.dispose();
                                 Ucontroller.SRSFRAME3_USERINTERFACE_userController(); 
                             }
                             case 4 -> {
-                                Ucontroller = new DLSU_SRSUser_controller(username, password);
-                                Ucontroller.setUserModel(new User());
-                                Ucontroller.setUserView(new UserView());
-                                
+                                Ucontroller = new DLSU_SRSUser_controller(username, password);        
                                 this.dispose();
                                 Ucontroller.SRSFRAME3_USERINTERFACE_userController();
                             }
