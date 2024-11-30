@@ -62,25 +62,13 @@ public class UserSRSFRAME10_VIEWSHUTTLEROUTES extends FrameBackground {
         setVisible(true);
 
         backButton.addActionListener(e -> { // back button pressed
-            String FullName = FullNameTF.getText();
-            String Email = EmailTF.getText();
-            String StringUserID = UserIDTF.getText();
-            String Password = PasswordTF.getPassword();
-            String Designation = (String) DesignationComboBox.getSelectedItem();
-
             this.dispose();
             // call admin menu frame
         });
 
         editButton.addActionListener(e -> { // back button pressed
-            String FullName = FullNameTF.getText();
-            String Email = EmailTF.getText();
-            String StringUserID = UserIDTF.getText();
-            String Password = PasswordTF.getPassword();
-            String Designation = (String) DesignationComboBox.getSelectedItem();
-
             this.dispose();
-            // call admin menu frame
+            controller.SRSFRAME11_EDITSHUTTLEROUTES();
         });
     }
 
