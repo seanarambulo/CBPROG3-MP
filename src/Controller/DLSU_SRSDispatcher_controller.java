@@ -15,25 +15,26 @@ public class DLSU_SRSDispatcher_controller {
             this.dbManager = new DatabaseManager();
             this.Model = dbManager.getUserByID(userID, password);
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         
     }
-
-    public int getUserID() {
-       return Model.getUserID();
-    }
-
-
-
 
     public void DispatcherMenu1Frame(){
         view.DispatcherMenu1Frame(this);
     }
 
-    
 
-    public void DispatcherCheckReservation(){
-        view.DispatcherCheckReservation(this);
+    public void DispatcherCheckReservation(String LineName, String date, String time){
+        try {
+            view.DispatcherCheckReservation(this,dbManager.getReservations( LineName, date, time));
+        } catch (SQLException e) {
+           
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAttendance(int shuttleBookingID) throws SQLException {
+        dbManager.updateAttendance(shuttleBookingID);
     }
 }

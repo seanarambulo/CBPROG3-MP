@@ -68,4 +68,14 @@ public class ShuttleBooking {
         return date;
     }
 
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "attendance=" + attendance +
+                ", userID=" + userID +
+                ", destination='" + Destination + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
+
 }
