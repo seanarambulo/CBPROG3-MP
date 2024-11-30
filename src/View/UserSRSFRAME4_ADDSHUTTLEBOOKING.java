@@ -26,16 +26,21 @@ public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
         innerPanel.setLayout(null);
         int panelWidth = innerPanel.getWidth();
         int xPosition = (panelWidth - buttonSize.width) / 2;
+        int yPosition = 100; // Starting y position
+        int yOffset = 100; // Vertical space between buttons
+    
 
-        configureButton("Regular Reservation", buttonFont, buttonColor, xPosition, 100, buttonSize, e -> {
+        configureButton("Regular Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             this.dispose();
             controller.SRSFRAME7_REGULAR_userController();
         });
-        configureButton("Preset Reservation", buttonFont, buttonColor, xPosition, 200, buttonSize, e -> {
+        yPosition+=yOffset;
+        configureButton("Preset Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             this.dispose();
             controller.SRSFRAME8_PRESET_userController();
         });
-        configureButton("Irregular Reservation", buttonFont, buttonColor, xPosition, 300, buttonSize, e -> {
+        yPosition+=yOffset;
+        configureButton("Irregular Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             this.dispose();
             controller.SRSFRAME9_IRREGULAR_userController();
         });

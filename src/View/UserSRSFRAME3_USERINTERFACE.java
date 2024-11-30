@@ -30,8 +30,10 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
         innerPanel.setLayout(null);
         int panelWidth = innerPanel.getWidth();
         int xPosition = (panelWidth - buttonSize.width) / 2;
-
-        configureButton("Add Reservation", buttonFont, buttonColor, xPosition, 100, buttonSize, e -> {
+        int yPosition = 100; // Starting y position
+        int yOffset = 60; // Vertical space between buttons
+    
+        configureButton("Add Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             try {
                 this.dispose();
                 controller.SRSFRAME4_ADDSHUTTLEBOOKING_userController();
@@ -39,8 +41,9 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 e1.printStackTrace();
             }
         });
-
-        configureButton("View Reservation", buttonFont, buttonColor, xPosition, 100, buttonSize, e -> {
+    
+        yPosition += yOffset;
+        configureButton("View Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             try {
                 this.dispose();
                 controller.SRSFRAME5_VIEWSHUTTLEBOOKING_userController();
@@ -48,8 +51,9 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 e1.printStackTrace();
             }
         });
-
-        configureButton("Edit Reservation", buttonFont, buttonColor, xPosition, 100, buttonSize, e -> {
+    
+        yPosition += yOffset;
+        configureButton("Edit Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             try {
                 this.dispose();
                 controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController();
@@ -57,8 +61,9 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 e1.printStackTrace();
             }
         });
-
-        configureButton("Edit User Data", buttonFont, buttonColor, xPosition, 100, buttonSize, e -> {
+    
+        yPosition += yOffset;
+        configureButton("Edit User Data", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             try {
                 this.dispose();
                 controller.SRSFRAME10_EDITUSERDATA_userController();
@@ -66,8 +71,9 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 e1.printStackTrace();
             }
         });
-
-        configureButton("Log Out", buttonFont, buttonColor, xPosition, 100, buttonSize, e -> {
+    
+        yPosition += yOffset;
+        configureButton("Log Out", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             try {
                 this.dispose();
                 controller.SRS_VIEW_userController();
@@ -75,9 +81,8 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 e1.printStackTrace();
             }
         });
-
+    
         getContentPane().add(outerPanel, BorderLayout.CENTER);
         setVisible(true);
     }
-
 }
