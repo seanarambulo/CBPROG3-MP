@@ -1,81 +1,109 @@
 package src.View;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import src.Controller.DLSU_SRSUser_controller;
 
-public class UserSRSFRAME7_REGULAR extends JFrame {
-    
+public class UserSRSFRAME7_REGULAR extends FrameBackground {
     // UI components
-    private JButton submitButton;
-    private JButton backButton;
     private JComboBox<String> lineComboBox;
     private JComboBox<String> dateComboBox;
     private JComboBox<String> timeComboBox;
     private JLabel lineLabel;
     private JLabel dateLabel;
     private JLabel timeLabel;
-    private JLabel titleLabel;
+    private DLSU_SRSUser_controller controller;
 
     public UserSRSFRAME7_REGULAR(DLSU_SRSUser_controller controller) {
-        // Set up the frame
-        setTitle("Add Reservations");
-        setSize(810, 530);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(null);
-        setResizable(false);
-        // Title Label
-        titleLabel = new JLabel("ADD RESERVATIONS");
-        titleLabel.setFont(new Font("Baskerville Old Face", Font.PLAIN, 36));
-        titleLabel.setBounds(240, 70, 370, 40);
-        add(titleLabel);
+        super();
+        this.controller = controller;
+        setDesignationTitle("Add Reservation", 30, 0, 0, 0);
+        SwingUtilities.invokeLater(() -> {
+            initComponets();
+        });
+    }
+
+    @Override
+    public void initComponets() {
+        innerPanel.setLayout(null);
+
+        int panelWidth = innerPanel.getWidth();
 
         // Line Label and ComboBox
         lineLabel = new JLabel("Line:");
         lineLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        lineLabel.setBounds(180, 150, 70, 40);
-        add(lineLabel);
+        lineLabel.setBounds((panelWidth - 80) / 2 - 200, 100, 80, 40); // Adjusted vertically
+        innerPanel.add(lineLabel);
 
         lineComboBox = new JComboBox<>(new String[]{"Line 1", "Line 2", "Line 3"});
         lineComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        lineComboBox.setBounds(260, 150, 380, 50);
-        add(lineComboBox);
+        lineComboBox.setBounds((panelWidth - 400) / 2 + 80, 100, 400, 50); // Wider and centered horizontally
+        lineComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setVerticalAlignment(SwingConstants.CENTER);
+                return label;
+            }
+        });
+        innerPanel.add(lineComboBox);
 
         // Date Label and ComboBox
         dateLabel = new JLabel("Date:");
         dateLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        dateLabel.setBounds(180, 230, 80, 40);
-        add(dateLabel);
+        dateLabel.setBounds((panelWidth - 80) / 2 - 200, 180, 80, 40); // Adjusted vertically
+        innerPanel.add(dateLabel);
 
         dateComboBox = new JComboBox<>(new String[]{"2024-11-16", "2024-11-17", "2024-11-18"});
         dateComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        dateComboBox.setBounds(260, 220, 380, 50);
-        add(dateComboBox);
+        dateComboBox.setBounds((panelWidth - 400) / 2 + 80, 180, 400, 50); // Wider and centered horizontally
+        dateComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setVerticalAlignment(SwingConstants.CENTER);
+                return label;
+            }
+        });
+        innerPanel.add(dateComboBox);
 
         // Time Label and ComboBox
         timeLabel = new JLabel("Time:");
         timeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        timeLabel.setBounds(180, 300, 80, 40);
-        add(timeLabel);
+        timeLabel.setBounds((panelWidth - 80) / 2 - 200, 260, 80, 40); // Adjusted vertically
+        innerPanel.add(timeLabel);
 
         timeComboBox = new JComboBox<>(new String[]{"8:00 AM", "12:00 PM", "6:00 PM"});
         timeComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        timeComboBox.setBounds(260, 290, 380, 50);
-        add(timeComboBox);
+        timeComboBox.setBounds((panelWidth - 400) / 2 + 80, 260, 400, 50); // Wider and centered horizontally
+        timeComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setVerticalAlignment(SwingConstants.CENTER);
+                return label;
+            }
+        });
+        innerPanel.add(timeComboBox);
 
         // Submit Button
-        submitButton = new JButton("SUBMIT");
-        submitButton.setForeground(new Color(108, 194, 162));
-        submitButton.setBounds(260, 390, 110, 40);
-        submitButton.addActionListener(e -> handleSubmitAction());
-        add(submitButton);
+        createButton("SUBMIT", (panelWidth - 150) / 2 - 80, 350, 150, 50, e -> handleSubmitAction()); // Adjusted vertically
 
         // Back Button
-        backButton = new JButton("BACK");
-        backButton.setForeground(new Color(108, 194, 162));
-        backButton.setBounds(460, 390, 110, 40);
-        backButton.addActionListener(e -> handleBackAction());
-        add(backButton);
+        createButton("BACK", (panelWidth - 150) / 2 + 80, 350, 150, 50, e -> handleBackAction()); // Adjusted vertically
+
+        innerPanel.revalidate();
+        innerPanel.repaint();
+    }
+
+    private JButton createButton(String text, int x, int y, int width, int height, ActionListener actionListener) {
+        JButton button = new JButton(text);
+        button.setForeground(new Color(108, 194, 162));
+        button.setBounds(x, y, width, height);
+        button.addActionListener(actionListener);
+        innerPanel.add(button);
+        return button;
     }
 
     private void handleSubmitAction() {
@@ -90,7 +118,7 @@ public class UserSRSFRAME7_REGULAR extends JFrame {
     }
 
     private void handleBackAction() {
-        JOptionPane.showMessageDialog(this, "Going back to the previous screen.", "Back", JOptionPane.INFORMATION_MESSAGE);
+        controller.SRSFRAME4_ADDSHUTTLEBOOKING_userController();
         // You can close this frame or perform other actions here
     }
 }

@@ -26,7 +26,6 @@ public abstract class FrameBackground extends JFrame{
     private void initializePanels() {
         createOuterPanel();
         createInnerPanel();
-
         this.outerPanel.add(this.innerPanel);
         this.add(outerPanel, BorderLayout.CENTER);
     }
@@ -34,25 +33,24 @@ public abstract class FrameBackground extends JFrame{
     private void createOuterPanel() {
         this.outerPanel = new JPanel();
         this.outerPanel.setBackground(new Color(108, 194, 162));
-        this.outerPanel.setLayout(new BorderLayout()); // Use BorderLayout to center innerPanel
+        this.outerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20)); // Use FlowLayout to center innerPanel
         this.outerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
-
+    
     private void createInnerPanel() {
         this.innerPanel = new JPanel();
         this.innerPanel.setBackground(new Color(53, 95, 79));
-        this.innerPanel.setLayout(null); // Use null layout for absolute positioning
+        this.innerPanel.setLayout(new BorderLayout()); // Use BorderLayout to center components
         this.innerPanel.setPreferredSize(new Dimension(710, 430)); // Set preferred size to make the panel larger
     }
-
-    public JLabel setDesignationTitle(String title) {
-        this.DesignationTitle = new JLabel(title);
-        this.DesignationTitle.setFont(new Font("Baskerville", Font.PLAIN, 24));
+    
+    public void setDesignationTitle(String title, int top, int left, int bottom, int right) {
+        this.DesignationTitle = new JLabel(title, SwingConstants.CENTER);
+        this.DesignationTitle.setFont(new Font("Baskerville Old Face", Font.PLAIN, 48)); // Adjusted font size to 24
         this.DesignationTitle.setForeground(Color.WHITE);
         this.DesignationTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        this.DesignationTitle.setBounds(0, 0, 710, 50); // Set bounds for absolute positioning
-        this.innerPanel.add(DesignationTitle);
-        return this.DesignationTitle;
+        this.DesignationTitle.setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right)); // Add vertical gap above the title
+        this.innerPanel.add(DesignationTitle, BorderLayout.NORTH); // Add to the top of the inner panel
     }
 
     public abstract void initComponets();

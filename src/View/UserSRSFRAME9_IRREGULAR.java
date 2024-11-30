@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import src.Controller.DLSU_SRSUser_controller;
 
-public class UserSRSFRAME9_IRREGULAR {
+public class UserSRSFRAME9_IRREGULAR extends FrameBackground {
     private JLabel designationTitle;
     private JLabel lineLabel;
     private JComboBox<String> lineComboBox;
@@ -16,24 +16,17 @@ public class UserSRSFRAME9_IRREGULAR {
     private JTextArea reasonTextArea;
     private JButton submitButton;
     private JButton backButton;
+    private DLSU_SRSUser_controller controller;
 
-    private UserSRSFRAME9_IRREGULAR(DLSU_SRSUser_controller controller) {
-        JFrame frame = new JFrame("Irregular Booking Shuttle");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(810, 530);
-        frame.setResizable(false); // Make the frame non-resizable
-        frame.setLayout(new BorderLayout());
+    public UserSRSFRAME9_IRREGULAR(DLSU_SRSUser_controller controller) {
+        super();
+        this.controller = controller;
+        setDesignationTitle("Irregular Booking Shuttle", 20, 0, 0, 0);
+        SwingUtilities.invokeLater(() -> initComponets());
+    }
 
-        JPanel outerPanel = new JPanel();
-        outerPanel.setBackground(new Color(108, 194, 162));
-        outerPanel.setLayout(null); // Use null layout for absolute positioning
-        outerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        JPanel innerPanel = new JPanel();
-        innerPanel.setBackground(new Color(53, 95, 79));
-        innerPanel.setLayout(null); // Use null layout for absolute positioning
-        innerPanel.setPreferredSize(new Dimension(710, 430)); // Set preferred size to make the panel larger
-
+    @Override
+    public void initComponets() {
         designationTitle = new JLabel("Irregular Booking Shuttle");
         designationTitle.setFont(new Font("Baskerville", Font.PLAIN, 36));
         designationTitle.setForeground(Color.WHITE);
@@ -98,9 +91,7 @@ public class UserSRSFRAME9_IRREGULAR {
         backButton.setBounds(300, 400, 100, 30);
         innerPanel.add(backButton);
 
-        outerPanel.add(innerPanel);
-        frame.getContentPane().add(outerPanel, BorderLayout.CENTER);
-        frame.setVisible(true);
+        innerPanel.revalidate();
+        innerPanel.repaint();
     }
-
 }

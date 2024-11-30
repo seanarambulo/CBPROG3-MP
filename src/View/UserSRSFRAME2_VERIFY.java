@@ -26,7 +26,7 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
     @Override
     public void initComponets() {
         
-        setDesignationTitle("Verify Schedule");
+        setDesignationTitle("Verify Schedule", 0, 0, 0, 0);
 
         FullNameLabel3.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         FullNameLabel3.setForeground(Color.WHITE);

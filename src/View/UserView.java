@@ -4,6 +4,10 @@ import src.Controller.DLSU_SRSUser_controller;
 
 public class UserView {
    
+    public void SRS_LOGIN(){
+        new SRS_LOGIN();
+    }
+
     public void UserSRSFRAME1_REGISTRATION(DLSU_SRSUser_controller controller){
         new UserSRSFRAME1_REGISTRATION(controller);
     }

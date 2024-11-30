@@ -8,7 +8,7 @@ import javax.swing.table.*;
 import src.Controller.DLSU_SRSUser_controller;
 import src.Model.ShuttleBookingPreset;
 
-public class UserSRSFRAME8_PRESET extends JFrame {
+public class UserSRSFRAME8_PRESET extends FrameBackground {
 
     private JTable mnlReservationTable;
     private DefaultTableModel mnlTableModel;
@@ -20,13 +20,17 @@ public class UserSRSFRAME8_PRESET extends JFrame {
     private JPanel mainPanel;
     private CardLayout cardLayout;
     private JComboBox<String> presetDropdown;
+    private DLSU_SRSUser_controller controller;
 
     public UserSRSFRAME8_PRESET(DLSU_SRSUser_controller controller) {
-        // Initialize components and layout
-        setTitle("Preset Booking");
-        setSize(500, 600); // Set the size to 400 x 600 px
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        super();
+        this.controller = controller;
+        setDesignationTitle("Preset Booking", 0, 0, 0, 0);
+        SwingUtilities.invokeLater(() -> initComponets());
+    }
+
+    @Override
+    public void initComponets() {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
@@ -162,9 +166,10 @@ public class UserSRSFRAME8_PRESET extends JFrame {
         mainPanel.add(viewPresetsPanel, "viewPresetsPanel");
 
         // Add the main panel to the frame
-        add(mainPanel, BorderLayout.CENTER);
+        innerPanel.add(mainPanel, BorderLayout.CENTER);
 
-        setVisible(true);
+        innerPanel.revalidate();
+        innerPanel.repaint();
     }
 
     private JPanel createViewPresetsPanel() {

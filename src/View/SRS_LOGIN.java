@@ -18,39 +18,38 @@ public class SRS_LOGIN extends FrameBackground {
 
     public SRS_LOGIN() {
         super();
+        setDesignationTitle("DLSU Shuttle Reservation", 50,0,0,0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
     @Override
     public void initComponets() {
         
-        setDesignationTitle("DLSU Shuttle Reservation");
-
         innerPanel.setLayout(null); // Use absolute positioning
 
         // Username Label and Field
-        usernameLabel.setBounds(50, 50, 100, 30); // x, y, width, height
+        usernameLabel.setBounds(80, 120, 80, 20);
         usernameLabel.setForeground(Color.WHITE);
         innerPanel.add(usernameLabel);
 
-        usernameField.setBounds(160, 50, 200, 30); // x, y, width, height
+        usernameField.setBounds(160, 120, 460, 25);
         innerPanel.add(usernameField);
 
         // Password Label and Field
-        passwordLabel.setBounds(50, 100, 100, 30); // x, y, width, height
+        passwordLabel.setBounds(80, 160, 80, 20);
         passwordLabel.setForeground(Color.WHITE);
         innerPanel.add(passwordLabel);
 
-        passwordField.setBounds(160, 100, 200, 30); // x, y, width, height
+        passwordField.setBounds(160, 160, 460, 25);
         innerPanel.add(passwordField);
 
         // Login Button
-        loginButton.setBounds(160, 150, 100, 30); // x, y, width, height
+        loginButton.setBounds(330, 210, 80, 30);
         loginButton.setBackground(new Color(220, 248, 232)); // Light green
         loginButton.setName("loginButton");
         loginButton.addActionListener(e -> {
-            String usernameText = usernameField.getText(); // Get text from the field
-            String password = new String(passwordField.getPassword());
+            String usernameText = "12300002"; //usernameField.getText(); // Get text from the field
+            String password = "b2b4de62";//new String(passwordField.getPassword());
 
             try {
                 if (usernameText.isEmpty() || password.isEmpty()) {
@@ -107,11 +106,11 @@ public class SRS_LOGIN extends FrameBackground {
         innerPanel.add(loginButton);
 
         // Register Link
-        registerLabel.setBounds(50, 200, 150, 30); // x, y, width, height
+        registerLabel.setBounds(235, 260, 120, 20);
         registerLabel.setForeground(Color.WHITE);
         innerPanel.add(registerLabel);
 
-        registerButton.setBounds(160, 200, 100, 30); // x, y, width, height
+        registerButton.setBounds(365, 256, 100, 30);
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(new Color(220, 248, 232)); // Light green text
         registerButton.setName("registerButton");

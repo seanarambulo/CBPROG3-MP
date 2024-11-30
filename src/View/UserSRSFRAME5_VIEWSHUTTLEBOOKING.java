@@ -20,13 +20,13 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
     public UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
+        setDesignationTitle("View Shuttle Booking", 0, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
     @Override
     public void initComponets(){
 
-        setDesignationTitle("View Shuttle Booking");
         tableModel = new DefaultTableModel(new Object[]{"Reservation ID", "Shuttle Name", "Date", "Time", "Origin", "Destination"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {

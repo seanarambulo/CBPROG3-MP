@@ -264,7 +264,11 @@ public class DLSU_SRSUser_controller {
     public int getClassDayID_userController() {
         return ((Student) userModel).getClassDayID();
     }
-    
+
+    public void SRS_VIEW_userController() {
+        userView.SRS_LOGIN();
+    }
+
     public void SRS1FRAME_REGISTRATION_userController() {
         userView.UserSRSFRAME1_REGISTRATION(this);
     }

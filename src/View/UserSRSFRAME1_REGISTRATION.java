@@ -27,7 +27,7 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
 
     @Override
     public void initComponets() {
-        setDesignationTitle("User Registration");
+        setDesignationTitle("User Registration", 0, 0, 0, 0);
 
         FullNameLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         FullNameLabel.setForeground(Color.WHITE);
