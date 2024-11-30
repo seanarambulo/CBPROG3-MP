@@ -15,7 +15,7 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
     private final JLabel UserIDLabel = new JLabel("ID Number:");
     private final JLabel PasswordLabel = new JLabel("Password:");
     private final JLabel DesignationLabel = new JLabel("Designation:");
-    private final JComboBox<String> DesignationComboBox = new JComboBox<>(new String[]{"Option 1", "Option 2", "Option 3"});
+    private final JComboBox<String> DesignationComboBox = new JComboBox<>(new String[]{"", "Student", "Employee"});
     private final JButton SubmitButton = new JButton("Submit");
     private DLSU_SRSUser_controller controller;
 
