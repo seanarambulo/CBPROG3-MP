@@ -11,7 +11,7 @@ public class DatabaseManager {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/shuttlesystem";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "kyss092722SMDA";
+    private static final String DB_PASSWORD = "12345678";
 
     private Connection connection;
 

@@ -80,33 +80,40 @@ public class SRS_LOGIN extends FrameBackground {
                     // Assuming the method getDesignationID(int, String) exists in DatabaseManager
                     DatabaseManager dbManager = new DatabaseManager();
                     int tempID = dbManager.getDesignationID(username, password);
-
+                    JOptionPane.showMessageDialog(this, "test 4.");
                     // Check if tempID is valid and proceed
                     if (tempID != -1) {
-                        DLSU_SRSUser_controller Ucontroller;
+                        DLSU_SRSUser_controller Ucontroller = null;
+                        JOptionPane.showMessageDialog(this, "test 3.");
                         switch (tempID) {
-                            case 1 -> {
-                                DLSU_SRSDispatcher_controller Dcontroller = new DLSU_SRSDispatcher_controller(username, password);
-                                this.dispose();
-                                Dcontroller.DispatcherMenu1Frame();
-                            }
-                            case 2 -> {
-                                // Add logic for case 2 if needed
-                            }
-                            case 3 -> {
-                                Ucontroller = new DLSU_SRSUser_controller(username, password);  
-                                this.dispose();
-                                Ucontroller.SRSFRAME3_USERINTERFACE_userController(); 
-                            }
-                            case 4 -> {
-                                Ucontroller = new DLSU_SRSUser_controller(username, password);        
+                            case 1:
+                                
+                                break;
+                            case 2:
+                                JOptionPane.showMessageDialog(this, "test 2.");
+                                Ucontroller = new DLSU_SRSUser_controller(username, password);
+                                JOptionPane.showMessageDialog(this, "test run.");
                                 this.dispose();
                                 Ucontroller.SRSFRAME3_USERINTERFACE_userController();
-                            }
-                            default -> JOptionPane.showMessageDialog(outerPanel, "Invalid designation ID.");
+                                break;
+                            case 3:
+                         
+
+                            DLSU_SRSDispatcher_controller Dcontroller = new DLSU_SRSDispatcher_controller(username, password);
+                            this.dispose();
+                            Dcontroller.DispatcherMenu1Frame();
+                                break;
+                            case 4:
+                            Ucontroller = new DLSU_SRSUser_controller(username, password);
+                            this.dispose();
+                            Ucontroller.SRSFRAME3_USERINTERFACE_userController();
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(this, "Invalid designation ID.");
+                                break;
                         }
                     } else {
-                        JOptionPane.showMessageDialog(outerPanel, "Invalid username or password.");
+                        JOptionPane.showMessageDialog(this, "Invalid username or password.");
                     }
                 }
             } catch (NumberFormatException ex) {

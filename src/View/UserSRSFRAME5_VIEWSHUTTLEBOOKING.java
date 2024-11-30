@@ -32,6 +32,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+            
         };
         reservationTable = new JTable(tableModel);
 

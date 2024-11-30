@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
 import src.Model.*;
 import src.View.*;
 
@@ -21,7 +24,9 @@ public class DLSU_SRSUser_controller {
     public DLSU_SRSUser_controller(int userID, String password) throws SQLException {
         try {
             dbm = new DatabaseManager();
+            System.out.println("test 6");
             userModel = dbm.getUserByID(userID, password);
+            System.out.println("test 6");
             if (userModel == null) {
                 throw new RuntimeException("User not found with the given credentials");
             }
