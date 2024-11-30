@@ -225,7 +225,40 @@ public User getUserByID(int userID, String password) throws SQLException {
 }
 
 // Method to fetch pending reservations
-    public ArrayList<Reservation> getPendingReservations( String LineName, String date, String time) throws SQLException {
+    public ArrayList<Reservation> getReservations( String LineName, String date, String time) throws SQLException {
+        String sql = """
+            SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
+            FROM Booking b
+            JOIN ArrowsExpressLine l ON b.LineID = l.LineID
+            JOIN `Time` t ON t.TimeID = l.TimeID
+            WHERE l.LineName = ? AND b.Date = ? AND t.Time = ?
+            """;
+
+        ArrayList<Reservation> reservations = new ArrayList<>();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, LineName);
+            pstmt.setString(2, date);
+            pstmt.setString(3, time);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Reservation reservation = new Reservation();
+                    reservation.setbookingID(rs.getInt("ShuttleBookingID"));
+                    reservation.setAttendance(rs.getBoolean("Attendance"));
+                    reservation.setUserID(rs.getInt("UserID"));
+                    reservation.setDestination(rs.getString("Destination"));
+                    reservation.setDate(rs.getString("Date"));
+                    reservation.setTime(rs.getString("Time"));
+                    reservations.add(reservation);
+                }
+            }
+        }
+
+        return reservations;
+    }
+
+    public ArrayList<Reservation> getReservations( String LineName, String date, String time, int Attandance) throws SQLException {
         String sql = """
             SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b

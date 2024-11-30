@@ -25,7 +25,7 @@ public class DLSU_SRSDispatcher_controller {
 
     public void DispatcherCheckReservation(String LineName, String date, String time){
         try {
-            view.DispatcherCheckReservation(this,dbManager.getPendingReservations( LineName, date, time));
+            view.DispatcherCheckReservation(this,dbManager.getReservations( LineName, date, time, 0));
         } catch (SQLException e) {
            
             e.printStackTrace();
