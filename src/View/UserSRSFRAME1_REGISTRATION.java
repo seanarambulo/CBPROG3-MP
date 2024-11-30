@@ -1,6 +1,8 @@
 package src.View;
 
 import java.awt.*;
+import java.sql.SQLException;
+
 import javax.swing.*;
 import src.Controller.DLSU_SRSUser_controller;
 
@@ -68,6 +70,11 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
                 int UserID = Integer.parseInt(UserIDTF.getText());
                 if (Designation.equals("Student")) {
                     this.dispose();
+                    try {
+                        controller.insertIntoUser(UserID, Designation, Password, Email, 0);
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
                     controller.SRS2FRAME_VERIFY_userController();
                 } else {
                     JOptionPane.showMessageDialog(outerPanel, "Account successfully registered");

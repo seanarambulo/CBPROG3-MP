@@ -39,7 +39,10 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
             innerPanel.add(checkBoxes[i]);
         }
 
-        createButton("Submit", 205, 360, 400, 50, e -> {/* Action listener code */}); // Made wider
+        createButton("Submit", 205, 360, 400, 50, e -> {
+            
+            new SRS_LOGIN();
+        }); // Made wider
 
     }
 

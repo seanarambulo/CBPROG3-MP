@@ -102,14 +102,13 @@ public class DatabaseManager {
     }
 
     // Method to insert into the Student table
-    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified, int classDaysId) throws SQLException {
-        String sql = "INSERT INTO Student (StudentID, Trimester, EAF, isVerified, ClassDaysID) VALUES (?, ?, ?, ?, ?)";
+    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified) throws SQLException {
+        String sql = "INSERT INTO Student (StudentID, Trimester, EAF, isVerified) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.setInt(2, trimester);
             pstmt.setString(3, eaf);
             pstmt.setBoolean(4, isVerified);
-            pstmt.setInt(5, classDaysId);
             pstmt.executeUpdate();
         }
     }
