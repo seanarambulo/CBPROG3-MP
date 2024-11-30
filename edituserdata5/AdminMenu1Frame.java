@@ -117,7 +117,7 @@ public class AdminMenu1Frame {
                     }
                 } catch (NumberFormatException ex) {
                     // Handle invalid integer input
-                    JOptionPane.showMessageDialog(frame, "Invalid User ID. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Invalid User ID. Please enter a valid ID.", "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (SQLException ex) {
                     // Handle database errors
                     JOptionPane.showMessageDialog(frame, "An error occurred while accessing the database.", "Error", JOptionPane.ERROR_MESSAGE);
