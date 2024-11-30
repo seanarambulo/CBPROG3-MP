@@ -7,7 +7,7 @@ import src.Controller.DLSU_SRSUser_controller;
 public class UserSRSFRAME2_VERIFY extends FrameBackground {
 
     private final JLabel FullNameLabel3 = new JLabel("Select EAF File:");
-    private final JButton jButton2 = new JButton("Select a File");
+    private final JTextField fileTextField = new JTextField();
     private final JButton jButton3 = new JButton("Submit");
     private final JCheckBox jCheckBox2 = createCheckbox("Monday");
     private final JCheckBox jCheckBox3 = createCheckbox("Tuesday");
@@ -15,6 +15,7 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
     private final JCheckBox jCheckBox5 = createCheckbox("Thursday");
     private final JCheckBox jCheckBox7 = createCheckbox("Friday");
     private final JCheckBox jCheckBox8 = createCheckbox("Saturday");
+    private final JComboBox<String> DesignationCB; // New ComboBox
     private DLSU_SRSUser_controller controller;
 
     public UserSRSFRAME2_VERIFY(DLSU_SRSUser_controller controller) {
@@ -25,8 +26,8 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
 
     @Override
     public void initComponets() {
-        
         setDesignationTitle("Verify Schedule");
+        
         // Center the FullNameLabel3
         innerGbc.gridx = 0;
         innerGbc.gridy = 1;
@@ -37,17 +38,29 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
         FullNameLabel3.setHorizontalAlignment(SwingConstants.CENTER);
         innerPanel.add(FullNameLabel3, innerGbc);
 
-        // Center the jButton2
+        // Center the fileTextField 
         innerGbc.gridx = 1;
         innerGbc.gridy = 1;
         innerGbc.gridwidth = 1;
         innerGbc.anchor = GridBagConstraints.CENTER;
-        jButton2.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
-        jButton2.setForeground(new Color(102, 102, 102));
-        innerPanel.add(jButton2, innerGbc);
+        fileTextField.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        fileTextField.setForeground(new Color(102, 102, 102));
+        fileTextField.setPreferredSize(new Dimension(200, 30)); // Adjust dimensions to match the button
+        innerPanel.add(fileTextField, innerGbc);
 
-        innerGbc.gridwidth = 1; // Reset gridwidth for checkboxes
-        innerGbc.anchor = GridBagConstraints.CENTER; // Reset anchor for checkboxes
+        // Add DesignationCB
+        DesignationCB = new JComboBox<>(new String[]{"College - Laguna Enrolled without class/es in Manila", "College - Laguna Enrolled with class/es in Manila", "College - Manila Enrolled without class/es in Laguna", "College - Manila Enrolled with class/es in Laguna", "Integrated School - Laguna Enrolled", "Integrated School - Manila Enrolled"});
+        innerGbc.gridx = 1;
+        innerGbc.gridy = 2; // Positioned below fileTextField
+        innerGbc.gridwidth = 1;
+        DesignationCB.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+        DesignationCB.setForeground(new Color(102, 102, 102));
+        DesignationCB.setPreferredSize(new Dimension(200, 30)); // Same dimensions as fileTextField
+        innerPanel.add(DesignationCB, innerGbc);
+
+        // Reset gridwidth and anchor for checkboxes
+        innerGbc.gridwidth = 1;
+        innerGbc.anchor = GridBagConstraints.CENTER;
 
         innerGbc.gridx = 0;
         innerGbc.gridy = 3;
@@ -78,10 +91,34 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
         innerGbc.gridwidth = 2;
         jButton3.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         innerPanel.add(jButton3, innerGbc);
-        
-        // Revalidate and repaint to ensure the layout is updated
-        innerPanel.revalidate();
-        innerPanel.repaint();
+
+        jButton3.addActionListener(e -> {
+            String EAFPath = fileTextField.getText();
+            String Designation = (String) DesignationCB.getSelectedItem();
+            if (EAFPath.isEmpty()){
+                JOptionPane.showMessageDialog(outerPanel, "Please input an EAF path.");
+            } else {
+                if (jCheckBox2.isSelected()){
+                    //monday query
+                } if (jCheckBox3.isSelected()){
+                    //tuesday query
+                } if (jCheckBox4.isSelected()){
+                    //wednesday query
+                } if (jCheckBox5.isSelected()){
+                    //thursday query
+                } if (jCheckBox7.isSelected()){
+                    //friday query
+                } if (jCheckBox8.isSelected()){
+                    //saturday query
+                } if (!jCheckBox2.isSelected() || !jCheckBox3.isSelected() || !jCheckBox4.isSelected() || !jCheckBox5.isSelected() || !jCheckBox7.isSelected() || !jCheckBox8.isSelected()){
+                    //no days selected query
+                }
+                // insert query
+                JOptionPane.showMessageDialog(outerPanel, "Account successfully created");
+                this.dispose();
+                new SRS_LOGIN();
+            }
+        });
     }
 
     private JCheckBox createCheckbox(String text) {
