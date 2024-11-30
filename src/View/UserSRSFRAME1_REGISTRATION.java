@@ -118,7 +118,7 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
                     if (Designation.equals("Student")){ // User is Student
                         // input SQL input query?
                         this.dispose();
-                        controller.SRS2FRAME_VERIFY_userController();
+                        controller.SRSFRAME2_VERIFY();
                     } else { // User is Employee
                         // input SQL input query
                         JOptionPane.showMessageDialog(outerPanel, "Account successfully registered");
