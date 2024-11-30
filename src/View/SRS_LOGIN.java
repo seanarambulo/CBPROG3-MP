@@ -90,9 +90,9 @@ public class SRS_LOGIN extends FrameBackground {
                                 
                                 break;
                             case 2:
-                                JOptionPane.showMessageDialog(this, "test 2.");
+                                
                                 Ucontroller = new DLSU_SRSUser_controller(username, password);
-                                JOptionPane.showMessageDialog(this, "test run.");
+                               
                                 this.dispose();
                                 Ucontroller.SRSFRAME3_USERINTERFACE_userController();
                                 break;
