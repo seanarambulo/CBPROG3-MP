@@ -1,7 +1,6 @@
 package src.View;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 import src.Controller.DLSU_SRSUser_controller;
 
@@ -21,35 +20,28 @@ public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
     public void initComponets() {
 
         Dimension buttonSize = new Dimension(400, 70);
+        Font buttonFont = new Font("Helvetica Neue", Font.BOLD, 18);
+        Color buttonColor = new Color(108, 194, 162);
 
         innerPanel.setLayout(null);
         int panelWidth = innerPanel.getWidth();
         int xPosition = (panelWidth - buttonSize.width) / 2;
 
-        configureButton(jButton1, "Regular Reservation", e -> {
+        configureButton("Regular Reservation", buttonFont, buttonColor, xPosition, 100, buttonSize, e -> {
             this.dispose();
             controller.SRSFRAME7_REGULAR_userController();
-        }, xPosition, 100, buttonSize);
-        configureButton(jButton2, "Preset Reservation", e -> {
+        });
+        configureButton("Preset Reservation", buttonFont, buttonColor, xPosition, 200, buttonSize, e -> {
             this.dispose();
             controller.SRSFRAME8_PRESET_userController();
-        }, xPosition, 200, buttonSize);
-        configureButton(jButton3, "Irregular Reservation", e -> {
+        });
+        configureButton("Irregular Reservation", buttonFont, buttonColor, xPosition, 300, buttonSize, e -> {
             this.dispose();
             controller.SRSFRAME9_IRREGULAR_userController();
-        }, xPosition, 300, buttonSize);
+        });
 
         // Ensure the layout is set properly
         setVisible(true);
     }
 
-    private void configureButton(JButton button, String text, ActionListener action, int x, int y, Dimension size) {
-        button.setText(text);
-        button.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
-        button.setForeground(new Color(108, 194, 162));
-        button.setPreferredSize(size);
-        button.addActionListener(action);
-        button.setBounds(x, y, size.width, size.height);
-        innerPanel.add(button);
-    }
 }

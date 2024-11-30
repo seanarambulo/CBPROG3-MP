@@ -1,6 +1,7 @@
 package src.View;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public abstract class FrameBackground extends JFrame{
@@ -53,6 +54,39 @@ public abstract class FrameBackground extends JFrame{
         this.innerPanel.add(DesignationTitle, BorderLayout.NORTH); // Add to the top of the inner panel
     }
 
+    public void createButton(String text, int x, int y, int width, int height, ActionListener actionListener){
+        JButton button = new JButton(text);
+        button.setBounds(x, y, width, height);
+        button.addActionListener(actionListener);
+        innerPanel.add(button);
+    }
+
+    public void createLabel(String text, int x, int y, Dimension size, String font, int fontStyle, int fontSize, Color color){
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        label.setFont(new Font(font, fontStyle, fontSize));
+        label.setForeground(color);
+        label.setBounds(x, y, size.width, size.height);
+        innerPanel.add(label);
+    }
+
+    public void configureButton(String text, Font font, Color color, int x, int y, Dimension size, ActionListener action) {
+        JButton button = new JButton(text);
+        button.setFont(font);
+        button.setForeground(color);
+        button.setPreferredSize(size);
+        button.addActionListener(action);
+        button.setBounds(x, y, size.width, size.height);
+        innerPanel.add(button);
+    }
+
+    public JTextField createTextField(int x, int y, int width, int height) {
+        JTextField textField = new JTextField();
+        textField.setBounds(x, y, width, height);
+        innerPanel.add(textField);
+        return textField;
+    }
+
     public abstract void initComponets();
+
 
 }

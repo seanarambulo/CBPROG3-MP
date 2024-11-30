@@ -20,7 +20,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
     public UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
-        setDesignationTitle("View Shuttle Booking", 0, 0, 0, 0);
+        setDesignationTitle("View Shuttle Booking", 10, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
 

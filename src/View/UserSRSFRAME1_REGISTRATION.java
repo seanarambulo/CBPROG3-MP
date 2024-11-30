@@ -6,73 +6,76 @@ import src.Controller.DLSU_SRSUser_controller;
 
 public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
 
-    private final JTextField FullNameTF = new JTextField(20);
-    private final JTextField EmailTF = new JTextField(20);
-    private final JTextField UserIDTF = new JTextField(20);
     private final JPasswordField PasswordTF  = new JPasswordField(20);
-    private final JLabel FullNameLabel = new JLabel("Full Name:");
-    private final JLabel EmailLabel = new JLabel("Email:");
-    private final JLabel UserIDLabel = new JLabel("ID Number:");
-    private final JLabel PasswordLabel = new JLabel("Password:");
-    private final JLabel DesignationLabel = new JLabel("Designation:");
-    private final JComboBox<String> DesignationComboBox = new JComboBox<>(new String[]{"Option 1", "Option 2", "Option 3"});
-    private final JButton SubmitButton = new JButton("Submit");
+    private final JComboBox<String> DesignationComboBox = new JComboBox<>(new String[]{"Student", "Employee"});
     private DLSU_SRSUser_controller controller;
 
     public UserSRSFRAME1_REGISTRATION(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
+        setDesignationTitle("User Registration", 10, 0, 0, 0);
+        
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
+	public static boolean isEmail(String input){
+        return input.endsWith("@dlsu.edu.ph");
+    }
+
+    public static boolean isString(String input){
+		return input.matches("\\D+");
+	}
+
     @Override
     public void initComponets() {
-        setDesignationTitle("User Registration", 0, 0, 0, 0);
+        
+        innerPanel.setLayout(null);
+        createLabel("Full Name:", 50, 80, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        JTextField FullNameTF = createTextField(210, 80, 300, 30);
 
-        FullNameLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        FullNameLabel.setForeground(Color.WHITE);
-        FullNameLabel.setBounds(50, 60, 150, 30); // Set bounds for absolute positioning
-        innerPanel.add(FullNameLabel);
+        createLabel("Email:", 50, 120, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        JTextField EmailTF = createTextField(210, 120, 300, 30);
 
-        FullNameTF.setBounds(210, 60, 300, 30); // Set bounds for absolute positioning
-        innerPanel.add(FullNameTF);
+        createLabel("ID Number:", 50, 160, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        JTextField UserIDTF = createTextField(210, 160, 300, 30);
 
-        EmailLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        EmailLabel.setForeground(Color.WHITE);
-        EmailLabel.setBounds(50, 100, 150, 30); // Set bounds for absolute positioning
-        innerPanel.add(EmailLabel);
-
-        EmailTF.setBounds(210, 100, 300, 30); // Set bounds for absolute positioning
-        innerPanel.add(EmailTF);
-
-        UserIDLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        UserIDLabel.setForeground(Color.WHITE);
-        UserIDLabel.setBounds(50, 140, 150, 30); // Set bounds for absolute positioning
-        innerPanel.add(UserIDLabel);
-
-        UserIDTF.setBounds(210, 140, 300, 30); // Set bounds for absolute positioning
-        innerPanel.add(UserIDTF);
-
-        PasswordLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        PasswordLabel.setForeground(Color.WHITE);
-        PasswordLabel.setBounds(50, 180, 150, 30); // Set bounds for absolute positioning
-        innerPanel.add(PasswordLabel);
-
-        PasswordTF.setBounds(210, 180, 300, 30); // Set bounds for absolute positioning
+        createLabel("Password:", 50, 200, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        PasswordTF.setBounds(210, 200, 300, 30);
         innerPanel.add(PasswordTF);
 
-        DesignationLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        DesignationLabel.setForeground(Color.WHITE);
-        DesignationLabel.setBounds(50, 220, 150, 30); // Set bounds for absolute positioning
-        innerPanel.add(DesignationLabel);
-
-        DesignationComboBox.setBounds(210, 220, 300, 30); // Set bounds for absolute positioning
+        createLabel("Designation:", 50, 240, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        DesignationComboBox.setBounds(210, 240, 300, 30);
         innerPanel.add(DesignationComboBox);
 
-        SubmitButton.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        SubmitButton.setBounds(210, 260, 300, 50); // Set bounds for absolute positioning
-        SubmitButton.addActionListener(e -> controller.SRS2FRAME_VERIFY_userController());
-        innerPanel.add(SubmitButton);
+        configureButton("Submit", new Font("Helvetica Neue", Font.PLAIN, 20), Color.BLACK, 210, 280, new Dimension(300, 50), e -> {
+            String FullName = FullNameTF.getText();
+            String Email = EmailTF.getText();
+            String StringUserID = UserIDTF.getText();
+            String Password = new String(PasswordTF.getPassword());
+            String Designation = (String) DesignationComboBox.getSelectedItem();
+
+            if (FullName.isEmpty() || Email.isEmpty() || StringUserID.isEmpty() || Password.isEmpty()) {
+                JOptionPane.showMessageDialog(outerPanel, "Please input in all fields.");
+            } else if (!isString(FullName)) {
+                JOptionPane.showMessageDialog(outerPanel, "Full name cannot contain numbers.");
+            } else if (!isEmail(Email)) {
+                JOptionPane.showMessageDialog(outerPanel, "Please input a valid DLSU email.");
+            } else if (!StringUserID.chars().allMatch(Character::isDigit)) {
+                JOptionPane.showMessageDialog(outerPanel, "Please input a valid ID.");
+            } else if (Password.length() != 8) {
+                JOptionPane.showMessageDialog(outerPanel, "Password must be 8 digits long.");
+            } else {
+                int UserID = Integer.parseInt(UserIDTF.getText());
+                if (Designation.equals("Student")) {
+                    this.dispose();
+                    controller.SRS2FRAME_VERIFY_userController();
+                } else {
+                    JOptionPane.showMessageDialog(outerPanel, "Account successfully registered");
+                    this.dispose();
+                    new SRS_LOGIN();
+                }
+            }
+        });
 
         setVisible(true);
     }

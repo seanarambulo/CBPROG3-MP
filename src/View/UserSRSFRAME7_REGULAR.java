@@ -1,7 +1,6 @@
 package src.View;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 import src.Controller.DLSU_SRSUser_controller;
 
@@ -97,15 +96,6 @@ public class UserSRSFRAME7_REGULAR extends FrameBackground {
         innerPanel.repaint();
     }
 
-    private JButton createButton(String text, int x, int y, int width, int height, ActionListener actionListener) {
-        JButton button = new JButton(text);
-        button.setForeground(new Color(108, 194, 162));
-        button.setBounds(x, y, width, height);
-        button.addActionListener(actionListener);
-        innerPanel.add(button);
-        return button;
-    }
-
     private void handleSubmitAction() {
         String line = (String) lineComboBox.getSelectedItem();
         String date = (String) dateComboBox.getSelectedItem();
@@ -118,6 +108,7 @@ public class UserSRSFRAME7_REGULAR extends FrameBackground {
     }
 
     private void handleBackAction() {
+        this.dispose();
         controller.SRSFRAME4_ADDSHUTTLEBOOKING_userController();
         // You can close this frame or perform other actions here
     }

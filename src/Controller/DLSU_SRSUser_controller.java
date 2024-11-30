@@ -16,7 +16,7 @@ public class DLSU_SRSUser_controller {
     protected ShuttleBookingView selectedReservation = new ShuttleBookingView();
 
     public DLSU_SRSUser_controller() {
-        
+        // blank constructor
     }
 
     public DLSU_SRSUser_controller(int userID, String password) throws SQLException {
