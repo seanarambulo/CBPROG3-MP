@@ -15,7 +15,7 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
     private final JLabel UserIDLabel = new JLabel("ID Number:");
     private final JLabel PasswordLabel = new JLabel("Password:");
     private final JLabel DesignationLabel = new JLabel("Designation:");
-    private final JComboBox<String> DesignationComboBox = new JComboBox<>(new String[]{"", "Student", "Employee"});
+    private final JComboBox<String> DesignationComboBox = new JComboBox<>(new String[]{"Student", "Employee"});
     private final JButton SubmitButton = new JButton("Submit");
     private DLSU_SRSUser_controller controller;
 
@@ -24,6 +24,14 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
         this.controller = controller;
         SwingUtilities.invokeLater(() -> initComponets());
     }
+	
+	public static boolean isEmail(String input){
+        return input.endsWith("@dlsu.edu.ph");
+    }
+
+    public static boolean isString(String input){
+		return input.matches("\\D+");
+	}
 
     @Override
     public void initComponets() {
@@ -90,9 +98,38 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
         innerGbc.gridy = 6;
         innerGbc.gridwidth = 2;
         innerGbc.anchor = GridBagConstraints.CENTER;
-        SubmitButton.addActionListener(e -> controller.SRS2FRAME_VERIFY_userController());
-        innerPanel.add(SubmitButton, innerGbc);
+        SubmitButton.addActionListener(e -> {
+            String FullName = FullNameTF.getText();
+            String Email = EmailTF.getText();
+            String StringUserID = UserIDTF.getText();
+            String Password = PasswordTF.getPassword();
+            String Designation = (String) DesignationComboBox.getSelectedItem();
 
+           if (FullName.isEmpty() || Email.isEmpty() || StringUserID.isEmpty() || Password.isEmpty()) {
+                JOptionPane.showMessageDialog(outerPanel, "Please input in all fields.");
+           } else if (!isString(FullName)) {
+                JOptionPane.showMessageDialog(outerPanel, "Full name cannot contain numbers.");
+           } else if (!isEmail(Email)) {
+                JOptionPane.showMessageDialog(outerPanel, "Please input a valid DLSU email.");
+           } else if (!StringUserID.isDigit()) {
+                JOptionPane.showMessageDialog(outerPanel, "Please input a valid ID.");
+           } else {
+                int UserID = Integer.parseInt(UserIDTF.getText()); //change UserID into int
+                    if (Designation.equals("Student")){ // User is Student
+                        // input SQL input query?
+                        this.dispose();
+                        controller.SRS2FRAME_VERIFY_userController();
+                    } else { // User is Employee
+                        // input SQL input query
+                        JOptionPane.showMessageDialog(outerPanel, "Account successfully registered");
+                        this.dispose();
+                        new SRS_LOGIN();
+                    }
+                }
+            }
+
+});
+        innerPanel.add(SubmitButton, innerGbc);
         setVisible(true);
     }
 }
