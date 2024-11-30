@@ -34,9 +34,6 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
 
         createButton("Submit", 205, 300, 300, 50, e -> {/* Action listener code */});
 
-        // Revalidate and repaint to ensure the layout is updated
-        innerPanel.revalidate();
-        innerPanel.repaint();
     }
 
     private JCheckBox createCheckbox(String text) {
