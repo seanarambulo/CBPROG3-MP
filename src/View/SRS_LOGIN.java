@@ -71,7 +71,7 @@ public class SRS_LOGIN extends FrameBackground {
                                 // Add logic for case 2 if needed
                                 DLSU_SRSDispatcher_controller Dcontroller = new DLSU_SRSDispatcher_controller(username, password);
                                 this.dispose();
-                                Dcontroller.DispatcherMenu1Frame();                                
+                                Dcontroller.DispatcherMenu1Frame_Menu_DispatcherController();                                
                             }
                             case 3 -> {
                                 Ucontroller = new DLSU_SRSUser_controller(username, password);  

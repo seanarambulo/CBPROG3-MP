@@ -20,6 +20,14 @@ public class DatabaseManager {
         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 
+    public void updateAttendance(int shuttleBookingID) throws SQLException {
+        String sql = "UPDATE Booking SET Attendance = TRUE WHERE ShuttleBookingID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, shuttleBookingID);
+            pstmt.executeUpdate();
+        }
+    }
+
     // Method to insert into the Designation table
     public void insertIntoDesignation(int id, String type) throws SQLException {
         String sql = "INSERT INTO Designation (DesignationID, DesignationType) VALUES (?, ?)";

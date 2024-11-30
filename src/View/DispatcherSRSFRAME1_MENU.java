@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import src.Controller.DLSU_SRSDispatcher_controller;
 
-public class DispatcherMenu1Frame extends FrameBackground {
+public class DispatcherSRSFRAME1_MENU extends FrameBackground {
 
     private JLabel titleLabel;
     private JComboBox<String> lineComboBox;
@@ -21,7 +21,7 @@ public class DispatcherMenu1Frame extends FrameBackground {
     private ArrayList<String> dateList;
     private ArrayList<String> timeList;
 
-    public DispatcherMenu1Frame(DLSU_SRSDispatcher_controller Dcontroller) {
+    public DispatcherSRSFRAME1_MENU(DLSU_SRSDispatcher_controller Dcontroller) {
         super();
         setDesignationTitle("Dispatcher Menu", 30, 0, 0, 0);
         this.Dcontroller = Dcontroller;
@@ -88,7 +88,7 @@ public class DispatcherMenu1Frame extends FrameBackground {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Dcontroller.DispatcherCheckReservation((String) lineComboBox.getSelectedItem(),
+                Dcontroller.DispatcherViewSRSFRAME2_CheckReservation_DispatchController((String) lineComboBox.getSelectedItem(),
                         (String) dateComboBox.getSelectedItem(),
                         (String) timeComboBox.getSelectedItem());
             }

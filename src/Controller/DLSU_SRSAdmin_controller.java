@@ -46,7 +46,7 @@ public class DLSU_SRSAdmin_controller {
     }
 
     public void AdminSRSFRAME1_VIEWSHUTTLEROUTES_adminController(){
-        new AdminSRSFRAME1_VIEWSHUTTLEROUTES_adminController(this);
+        new AdminSRSFRAME1_VIEWSHUTTLEROUTES(this);
     }
 
 }

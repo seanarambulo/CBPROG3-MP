@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import src.Controller.DLSU_SRSDispatcher_controller;
 import src.Model.ShuttleBookingView;
 
-public class DispatcherCheckReservation extends TableFrame {
+public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
     
     private DLSU_SRSDispatcher_controller Dcontroller;
     private ArrayList<ShuttleBookingView> shuttleBookings;
@@ -16,7 +16,7 @@ public class DispatcherCheckReservation extends TableFrame {
     private JTable reservationTable;
     private JScrollPane scrollPane;
 
-    public DispatcherCheckReservation(DLSU_SRSDispatcher_controller Dcontroller, ArrayList<ShuttleBookingView> shuttleBookings) {
+    public DispatcherSRSFRAME2_CheckReservation(DLSU_SRSDispatcher_controller Dcontroller, ArrayList<ShuttleBookingView> shuttleBookings) {
         super();
         setDesignationTitle("Pending Reservations", 20, 0, 0, 0);
         this.Dcontroller = Dcontroller;
@@ -56,7 +56,7 @@ public class DispatcherCheckReservation extends TableFrame {
                 JOptionPane.showMessageDialog(this, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
             this.dispose();
-            Dcontroller.DispatcherMenu1Frame();
+            Dcontroller.DispatcherMenu1Frame_Menu_DispatcherController();
         }));
         innerPanel.add(this.buttonPanel, BorderLayout.SOUTH);
         

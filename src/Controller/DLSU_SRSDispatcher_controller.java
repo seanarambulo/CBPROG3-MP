@@ -20,14 +20,13 @@ public class DLSU_SRSDispatcher_controller {
         
     }
 
-    public void DispatcherMenu1Frame(){
-        view.DispatcherMenu1Frame(this);
+    public void DispatcherMenu1Frame_Menu_DispatcherController(){
+        view.DispatcherViewSRSFRAME1_MENU(this);
     }
 
-
-    public void DispatcherCheckReservation(String LineName, String date, String time){
+    public void DispatcherViewSRSFRAME2_CheckReservation_DispatchController(String LineName, String date, String time){
         try {
-            view.DispatcherCheckReservation(this,dbManager.getReservations( LineName, date, time));
+            view.DispatcherViewSRSFRAME2_CheckReservation(this,dbManager.getReservations( LineName, date, time));
         } catch (SQLException e) {
            
             e.printStackTrace();
