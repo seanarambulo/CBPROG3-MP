@@ -3,20 +3,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "UserSRSFRAME5_VIEWSHUTTLEBOOKING",
-            "request": "launch",
-            "mainClass": "src.View.UserSRSFRAME5_VIEWSHUTTLEBOOKING",
-            "projectName": "CBPROG3_MP_77a0f4c5"
-        },
-        {
-            "type": "java",
-            "name": "SRS_LOGIN",
-            "request": "launch",
-            "mainClass": "src.View.SRS_LOGIN",
-            "projectName": "CBPROG3_MP_77a0f4c5"
-        },
-        {
-            "type": "java",
             "name": "DLSU_SRS",
             "request": "launch",
             "mainClass": "src.DLSU_SRS",
@@ -28,70 +14,6 @@
             "request": "launch",
             "mainClass": "test.UserSRSFRAME_test",
             "projectName": "CBPROG3_MP_77a0f4c5"
-        },
-        {
-            "type": "java",
-            "name": "UserSRSFRAME1_REGISTRATIONtest",
-            "request": "launch",
-            "mainClass": "test.UserSRSFRAME1_REGISTRATIONtest",
-            "projectName": "CBPROG3_MP_77a0f4c5"
-        },
-        {
-            "type": "java",
-            "name": "AddReservationFrame",
-            "request": "launch",
-            "mainClass": "src.View.AddReservationFrame",
-            "projectName": "CBPROG3_MP_deee30b2"
-        },
-        {
-            "type": "java",
-            "name": "UserMenu1Frame",
-            "request": "launch",
-            "mainClass": "src.View.UserMenu1Frame",
-            "projectName": "CBPROG3_MP_deee30b2"
-        },
-        {
-            "type": "java",
-            "name": "DatabaseManager",
-            "request": "launch",
-            "mainClass": "src.Model.DatabaseManager",
-            "projectName": "CBPROG3_MP_deee30b2",
-            "classPaths": [
-                "lib/mysql-connector-java-8.0.26.jar"
-            ]
-        },
-        {
-            "type": "java",
-            "name": "DispatcherMenu1Frame",
-            "request": "launch",
-            "mainClass": "src.View.DispatcherMenu1Frame",
-            "projectName": "CBPROG3_MP_deee30b2"
-        },
-        {
-            "type": "java",
-            "name": "MultiTimeSlotReservations",
-            "request": "launch",
-            "mainClass": "src.View.MultiTimeSlotReservations",
-            "projectName": "CBPROG3_MP_deee30b2"
-        },
-        {
-            "type": "java",
-            "name": "DLSU_SRS",
-            "request": "launch",
-            "mainClass": "src.DLSU_SRS",
-            "projectName": "CBPROG3_MP_deee30b2"
-        },
-        {
-            "type": "java",
-            "name": "Launch AdminMenu1Frame",
-            "request": "launch",
-            "mainClass": "src.View.AdminMenu1Frame",
-            "projectName": "your-project-name",
-            "vmArgs": "-Xlint:deprecation",
-            "cwd": "${workspaceFolder}",
-            "classPaths": [
-                "bin"
-            ]
         }
     ]
 }

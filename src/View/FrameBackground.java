@@ -7,8 +7,6 @@ public abstract class FrameBackground extends JFrame{
     
     protected JPanel outerPanel;
     protected JPanel innerPanel;
-    protected GridBagConstraints innerGbc;
-    protected GridBagConstraints outerGbc;
     private JLabel DesignationTitle;
 
     public FrameBackground() {
@@ -29,44 +27,31 @@ public abstract class FrameBackground extends JFrame{
         createOuterPanel();
         createInnerPanel();
 
-        this.outerPanel.add(this.innerPanel, createInnerGbc());
+        this.outerPanel.add(this.innerPanel);
         this.add(outerPanel, BorderLayout.CENTER);
-
     }
 
     private void createOuterPanel() {
         this.outerPanel = new JPanel();
         this.outerPanel.setBackground(new Color(108, 194, 162));
-        this.outerPanel.setLayout(new GridBagLayout()); // Use GridBagLayout to center innerPanel
+        this.outerPanel.setLayout(new BorderLayout()); // Use BorderLayout to center innerPanel
         this.outerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
     private void createInnerPanel() {
         this.innerPanel = new JPanel();
         this.innerPanel.setBackground(new Color(53, 95, 79));
-        this.innerPanel.setLayout(new GridBagLayout());
+        this.innerPanel.setLayout(null); // Use null layout for absolute positioning
         this.innerPanel.setPreferredSize(new Dimension(710, 430)); // Set preferred size to make the panel larger
-    }
-
-    private GridBagConstraints createInnerGbc() {
-        this.innerGbc = new GridBagConstraints();
-        this.innerGbc.insets = new Insets(10, 10, 10, 10);
-        this.innerGbc.anchor = GridBagConstraints.NORTH;
-        this.innerGbc.fill = GridBagConstraints.BOTH;
-        this.innerGbc.weightx = 1.0;
-        this.innerGbc.weighty = 1.0;
-        return this.innerGbc;
     }
 
     public JLabel setDesignationTitle(String title) {
         this.DesignationTitle = new JLabel(title);
-        this.innerGbc.gridx = 0;
-        this.innerGbc.gridy = 0;
-        this.innerGbc.gridwidth = 2;
-        this.DesignationTitle.setFont(new Font("Baskerville", Font.PLAIN, 36));
+        this.DesignationTitle.setFont(new Font("Baskerville", Font.PLAIN, 24));
         this.DesignationTitle.setForeground(Color.WHITE);
         this.DesignationTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        this.innerPanel.add(DesignationTitle, innerGbc);
+        this.DesignationTitle.setBounds(0, 0, 710, 50); // Set bounds for absolute positioning
+        this.innerPanel.add(DesignationTitle);
         return this.DesignationTitle;
     }
 

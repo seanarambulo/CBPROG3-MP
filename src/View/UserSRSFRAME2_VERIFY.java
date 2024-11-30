@@ -27,57 +27,39 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
     public void initComponets() {
         
         setDesignationTitle("Verify Schedule");
-        // Center the FullNameLabel3
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 1;
-        innerGbc.gridwidth = 1;
-        innerGbc.anchor = GridBagConstraints.CENTER;
+
         FullNameLabel3.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         FullNameLabel3.setForeground(Color.WHITE);
         FullNameLabel3.setHorizontalAlignment(SwingConstants.CENTER);
-        innerPanel.add(FullNameLabel3, innerGbc);
+        FullNameLabel3.setBounds(205, 60, 300, 50); // Set bounds for absolute positioning
+        innerPanel.add(FullNameLabel3);
 
-        // Center the jButton2
-        innerGbc.gridx = 1;
-        innerGbc.gridy = 1;
-        innerGbc.gridwidth = 1;
-        innerGbc.anchor = GridBagConstraints.CENTER;
         jButton2.setFont(new Font("Helvetica Neue", Font.BOLD, 20));
         jButton2.setForeground(new Color(102, 102, 102));
-        innerPanel.add(jButton2, innerGbc);
+        jButton2.setBounds(205, 120, 300, 50); // Set bounds for absolute positioning
+        innerPanel.add(jButton2);
 
-        innerGbc.gridwidth = 1; // Reset gridwidth for checkboxes
-        innerGbc.anchor = GridBagConstraints.CENTER; // Reset anchor for checkboxes
+        jCheckBox2.setBounds(205, 180, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(jCheckBox2);
 
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 3;
-        innerPanel.add(jCheckBox2, innerGbc);
+        jCheckBox3.setBounds(205, 220, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(jCheckBox3);
 
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 4;
-        innerPanel.add(jCheckBox3, innerGbc);
+        jCheckBox4.setBounds(205, 260, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(jCheckBox4);
 
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 5;
-        innerPanel.add(jCheckBox4, innerGbc);
+        jCheckBox5.setBounds(355, 180, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(jCheckBox5);
 
-        innerGbc.gridx = 1;
-        innerGbc.gridy = 3;
-        innerPanel.add(jCheckBox5, innerGbc);
+        jCheckBox7.setBounds(355, 220, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(jCheckBox7);
 
-        innerGbc.gridx = 1;
-        innerGbc.gridy = 4;
-        innerPanel.add(jCheckBox7, innerGbc);
+        jCheckBox8.setBounds(355, 260, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(jCheckBox8);
 
-        innerGbc.gridx = 1;
-        innerGbc.gridy = 5;
-        innerPanel.add(jCheckBox8, innerGbc);
-
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 6;
-        innerGbc.gridwidth = 2;
         jButton3.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        innerPanel.add(jButton3, innerGbc);
+        jButton3.setBounds(205, 300, 300, 50); // Set bounds for absolute positioning
+        innerPanel.add(jButton3);
         
         // Revalidate and repaint to ensure the layout is updated
         innerPanel.revalidate();

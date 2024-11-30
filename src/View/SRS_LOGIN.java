@@ -26,38 +26,26 @@ public class SRS_LOGIN extends FrameBackground {
         
         setDesignationTitle("DLSU Shuttle Reservation");
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        innerPanel.setLayout(null); // Use absolute positioning
 
         // Username Label and Field
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
+        usernameLabel.setBounds(50, 50, 100, 30); // x, y, width, height
         usernameLabel.setForeground(Color.WHITE);
-        innerPanel.add(usernameLabel, gbc);
+        innerPanel.add(usernameLabel);
 
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        innerPanel.add(usernameField, gbc);
+        usernameField.setBounds(160, 50, 200, 30); // x, y, width, height
+        innerPanel.add(usernameField);
 
         // Password Label and Field
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
+        passwordLabel.setBounds(50, 100, 100, 30); // x, y, width, height
         passwordLabel.setForeground(Color.WHITE);
-        innerPanel.add(passwordLabel, gbc);
+        innerPanel.add(passwordLabel);
 
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        innerPanel.add(passwordField, gbc);
+        passwordField.setBounds(160, 100, 200, 30); // x, y, width, height
+        innerPanel.add(passwordField);
 
         // Login Button
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
+        loginButton.setBounds(160, 150, 100, 30); // x, y, width, height
         loginButton.setBackground(new Color(220, 248, 232)); // Light green
         loginButton.setName("loginButton");
         loginButton.addActionListener(e -> {
@@ -116,25 +104,21 @@ public class SRS_LOGIN extends FrameBackground {
                 JOptionPane.showMessageDialog(outerPanel, "An error occurred while accessing the database.");
             }
         });
-        innerPanel.add(loginButton, gbc);
+        innerPanel.add(loginButton);
 
         // Register Link
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
+        registerLabel.setBounds(50, 200, 150, 30); // x, y, width, height
         registerLabel.setForeground(Color.WHITE);
-        innerPanel.add(registerLabel, gbc);
+        innerPanel.add(registerLabel);
 
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
+        registerButton.setBounds(160, 200, 100, 30); // x, y, width, height
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(new Color(220, 248, 232)); // Light green text
         registerButton.setName("registerButton");
         registerButton.addActionListener(e -> {
             this.dispose();
         });
-        innerPanel.add(registerButton, gbc);
+        innerPanel.add(registerButton);
 
         // Add innerPanel to frame
         innerPanel.revalidate();

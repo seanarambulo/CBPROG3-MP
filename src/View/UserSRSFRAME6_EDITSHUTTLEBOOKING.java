@@ -46,84 +46,64 @@ public class UserSRSFRAME6_EDITSHUTTLEBOOKING extends FrameBackground {
 
         JPanel innerPanel = new JPanel();
         innerPanel.setBackground(new Color(53, 95, 79));
-        innerPanel.setLayout(new GridBagLayout());
+        innerPanel.setLayout(null);
         innerPanel.setPreferredSize(new Dimension(600, 400)); // Set preferred size to make the panel larger
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         lineLabel = new JLabel("Shuttle Line:");
         lineLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         lineLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(lineLabel, gbc);
+        lineLabel.setBounds(50, 50, 150, 30);
+        innerPanel.add(lineLabel);
 
         lineComboBox = new JComboBox<>(shuttleLines);
         lineComboBox.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(lineComboBox, gbc);
+        lineComboBox.setBounds(200, 50, 200, 30);
+        innerPanel.add(lineComboBox);
 
         dateLabel = new JLabel("Date:");
         dateLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         dateLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(dateLabel, gbc);
+        dateLabel.setBounds(50, 100, 150, 30);
+        innerPanel.add(dateLabel);
 
         dateComboBox = new JComboBox<>(dates);
         dateComboBox.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(dateComboBox, gbc);
+        dateComboBox.setBounds(200, 100, 200, 30);
+        innerPanel.add(dateComboBox);
 
         timeLabel = new JLabel("Time:");
         timeLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         timeLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(timeLabel, gbc);
+        timeLabel.setBounds(50, 150, 150, 30);
+        innerPanel.add(timeLabel);
 
         timeComboBox = new JComboBox<>();
         timeComboBox.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(timeComboBox, gbc);
+        timeComboBox.setBounds(200, 150, 200, 30);
+        innerPanel.add(timeComboBox);
 
         originLabel = new JLabel("Origin:");
         originLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         originLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(originLabel, gbc);
+        originLabel.setBounds(50, 200, 150, 30);
+        innerPanel.add(originLabel);
 
         originValueLabel = new JLabel(selectedReservation.getOrigin());
         originValueLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         originValueLabel.setForeground(Color.WHITE);
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(originValueLabel, gbc);
+        originValueLabel.setBounds(200, 200, 200, 30);
+        innerPanel.add(originValueLabel);
 
         destinationLabel = new JLabel("Destination:");
         destinationLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         destinationLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(destinationLabel, gbc);
+        destinationLabel.setBounds(50, 250, 150, 30);
+        innerPanel.add(destinationLabel);
     
         destinationBox = new JComboBox<>(destinations);
         destinationBox.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(destinationBox, gbc);
+        destinationBox.setBounds(200, 250, 200, 30);
+        innerPanel.add(destinationBox);
 
         // Set initial values from selectedReservation
         lineComboBox.setSelectedItem(selectedReservation.getArrowsExpressLine());

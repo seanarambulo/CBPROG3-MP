@@ -128,6 +128,7 @@ public class UserSRSFRAME8_PRESET extends JFrame {
         JLabel mnlLabel = new JLabel("MNL<->LAG");
         mnlLabel.setFont(new Font("Helvetica Neue", Font.BOLD, 16));
         mnlLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mnlLabel.setBounds(50, 50, 400, 30);
         centerPanel.add(mnlLabel);
         centerPanel.add(mnlScrollPane);
 
@@ -135,6 +136,7 @@ public class UserSRSFRAME8_PRESET extends JFrame {
         JLabel lagLabel = new JLabel("LAG<->MNL");
         lagLabel.setFont(new Font("Helvetica Neue", Font.BOLD, 16));
         lagLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lagLabel.setBounds(50, 100, 400, 30);
         centerPanel.add(lagLabel);
         centerPanel.add(lagScrollPane);
 

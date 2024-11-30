@@ -31,67 +31,48 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
 
         FullNameLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         FullNameLabel.setForeground(Color.WHITE);
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 1;
-        innerGbc.gridwidth = 1;
-        innerGbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(FullNameLabel, innerGbc);
+        FullNameLabel.setBounds(50, 60, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(FullNameLabel);
 
-        innerGbc.gridx = 1;
-        innerGbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(FullNameTF, innerGbc);
+        FullNameTF.setBounds(210, 60, 300, 30); // Set bounds for absolute positioning
+        innerPanel.add(FullNameTF);
 
         EmailLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         EmailLabel.setForeground(Color.WHITE);
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 2;
-        innerGbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(EmailLabel, innerGbc);
+        EmailLabel.setBounds(50, 100, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(EmailLabel);
 
-        innerGbc.gridx = 1;
-        innerGbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(EmailTF, innerGbc);
+        EmailTF.setBounds(210, 100, 300, 30); // Set bounds for absolute positioning
+        innerPanel.add(EmailTF);
 
         UserIDLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         UserIDLabel.setForeground(Color.WHITE);
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 3;
-        innerGbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(UserIDLabel, innerGbc);
+        UserIDLabel.setBounds(50, 140, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(UserIDLabel);
 
-        innerGbc.gridx = 1;
-        innerGbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(UserIDTF, innerGbc);
+        UserIDTF.setBounds(210, 140, 300, 30); // Set bounds for absolute positioning
+        innerPanel.add(UserIDTF);
 
         PasswordLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         PasswordLabel.setForeground(Color.WHITE);
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 4;
-        innerGbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(PasswordLabel, innerGbc);
+        PasswordLabel.setBounds(50, 180, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(PasswordLabel);
 
-        innerGbc.gridx = 1;
-        innerGbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(PasswordTF, innerGbc);
+        PasswordTF.setBounds(210, 180, 300, 30); // Set bounds for absolute positioning
+        innerPanel.add(PasswordTF);
 
         DesignationLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
         DesignationLabel.setForeground(Color.WHITE);
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 5;
-        innerGbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(DesignationLabel, innerGbc);
+        DesignationLabel.setBounds(50, 220, 150, 30); // Set bounds for absolute positioning
+        innerPanel.add(DesignationLabel);
 
-        innerGbc.gridx = 1;
-        innerGbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(DesignationComboBox, innerGbc);
+        DesignationComboBox.setBounds(210, 220, 300, 30); // Set bounds for absolute positioning
+        innerPanel.add(DesignationComboBox);
 
         SubmitButton.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 6;
-        innerGbc.gridwidth = 2;
-        innerGbc.anchor = GridBagConstraints.CENTER;
+        SubmitButton.setBounds(210, 260, 300, 50); // Set bounds for absolute positioning
         SubmitButton.addActionListener(e -> controller.SRS2FRAME_VERIFY_userController());
-        innerPanel.add(SubmitButton, innerGbc);
+        innerPanel.add(SubmitButton);
 
         setVisible(true);
     }

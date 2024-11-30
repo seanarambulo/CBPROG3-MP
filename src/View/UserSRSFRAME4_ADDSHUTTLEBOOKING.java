@@ -24,26 +24,23 @@ public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
         jButton1.setForeground(new Color(108, 194, 162));
         jButton1.setPreferredSize(buttonSize);
         jButton1.addActionListener(e -> controller.SRSFRAME7_REGULAR_userController());
-        innerGbc.gridy = 1;
-        innerGbc.gridwidth = 2;
-        innerPanel.add(jButton1, innerGbc);
+        jButton1.setBounds(50, 100, 300, 50);
+        innerPanel.add(jButton1);
 
         
         jButton2.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         jButton2.setForeground(new Color(108, 194, 162));
         jButton2.setPreferredSize(buttonSize);
         jButton2.addActionListener(e -> controller.SRSFRAME8_PRESET_userController());
-        innerGbc.gridy = 2;
-        innerGbc.gridwidth = 2;
-        innerPanel.add(jButton2, innerGbc);
+        jButton2.setBounds(50, 200, 300, 50);
+        innerPanel.add(jButton2);
 
         jButton3.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         jButton3.setForeground(new Color(108, 194, 162));
         jButton3.setPreferredSize(buttonSize);
         jButton3.addActionListener(e -> controller.SRSFRAME9_IRREGULAR_userController());
-        innerGbc.gridy = 3;
-        innerGbc.gridwidth = 2;
-        innerPanel.add(jButton3, innerGbc);
+        jButton3.setBounds(50, 300, 300, 50);
+        innerPanel.add(jButton3);
 
         getContentPane().add(outerPanel, BorderLayout.CENTER);
         setVisible(true);

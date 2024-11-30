@@ -46,6 +46,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
         tableHeader.setForeground(new Color(255, 255, 255)); // White header text
 
         JScrollPane scrollPane = new JScrollPane(reservationTable);
+        scrollPane.setBounds(50, 100, 700, 300);
         try {
             reservations = controller.ReservationsList();
         } catch (SQLException e) {
@@ -62,13 +63,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends FrameBackground {
         // Add panel to the frame
         // Populate table with reservations
         // Add scrollPane to the innerPanel
-        innerGbc.gridx = 0;
-        innerGbc.gridy = 1;
-        innerGbc.gridwidth = 2;
-        innerGbc.fill = GridBagConstraints.BOTH;
-        innerGbc.weightx = 1.0;
-        innerGbc.weighty = 1.0;
-        innerPanel.add(scrollPane, innerGbc);
+        innerPanel.add(scrollPane);
 
         // Add a ListSelectionListener to handle row selection
         reservationTable.getSelectionModel().addListSelectionListener(event -> {

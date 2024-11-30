@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import src.Model.*;
 import src.View.*;
 
@@ -23,6 +24,7 @@ public class DLSU_SRSUser_controller {
             dbm = new DatabaseManager();
             userModel = dbm.getUserByID(userID, password);
             if (userModel == null) {
+                JOptionPane.showMessageDialog(null, "User not found with the given credentials", "Error", JOptionPane.ERROR_MESSAGE);
                 throw new RuntimeException("User not found with the given credentials");
             }
         } catch (SQLException e) {

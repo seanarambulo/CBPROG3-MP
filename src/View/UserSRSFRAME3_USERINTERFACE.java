@@ -28,6 +28,7 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
         jButton1.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         jButton1.setForeground(new Color(108, 194, 162));
         jButton1.setPreferredSize(buttonSize);
+        jButton1.setBounds(205, 60, 300, 50); // Set bounds for absolute positioning
         jButton1.addActionListener(e -> {
             try {
                 this.dispose();
@@ -36,13 +37,12 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 e1.printStackTrace();
             }
         });
-        innerGbc.gridy = 1;
-        innerGbc.gridwidth = 2;
-        innerPanel.add(jButton1, innerGbc);
+        innerPanel.add(jButton1);
 
         jButton2.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         jButton2.setForeground(new Color(108, 194, 162));
         jButton2.setPreferredSize(buttonSize);
+        jButton2.setBounds(205, 120, 300, 50); // Set bounds for absolute positioning
         jButton2.addActionListener(e -> {
                 try {
                     this.dispose();
@@ -52,13 +52,12 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 }
             }
         );
-        innerGbc.gridy = 2;
-        innerGbc.gridwidth = 2;
-        innerPanel.add(jButton2, innerGbc);
+        innerPanel.add(jButton2);
 
         jButton3.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         jButton3.setForeground(new Color(108, 194, 162));
         jButton3.setPreferredSize(buttonSize);
+        jButton3.setBounds(205, 180, 300, 50); // Set bounds for absolute positioning
         jButton3.addActionListener(e -> {
                 try {
                     this.dispose();
@@ -68,13 +67,12 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 }
             }      
         );
-        innerGbc.gridy = 3;
-        innerGbc.gridwidth = 2;
-        innerPanel.add(jButton3, innerGbc);
+        innerPanel.add(jButton3);
 
         jButton4.setFont(new Font("Helvetica Neue", Font.BOLD, 18));
         jButton4.setForeground(new Color(108, 194, 162));
         jButton4.setPreferredSize(buttonSize);
+        jButton4.setBounds(205, 240, 300, 50); // Set bounds for absolute positioning
         jButton4.addActionListener(e -> {
             try {
                 this.dispose();
@@ -83,9 +81,7 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
                 e1.printStackTrace();
             }
         });
-        innerGbc.gridy = 4;
-        innerGbc.gridwidth = 2;
-        innerPanel.add(jButton4, innerGbc);
+        innerPanel.add(jButton4);
 
         getContentPane().add(outerPanel, BorderLayout.CENTER);
         setVisible(true);
