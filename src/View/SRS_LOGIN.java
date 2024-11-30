@@ -132,7 +132,9 @@ public class SRS_LOGIN extends FrameBackground {
         registerButton.setForeground(new Color(220, 248, 232)); // Light green text
         registerButton.setName("registerButton");
         registerButton.addActionListener(e -> {
+            Ucontroller = new DLSU_SRSUser_controller();
             this.dispose();
+            Ucontroller.registrationFrame();
         });
         innerPanel.add(registerButton, gbc);
 
