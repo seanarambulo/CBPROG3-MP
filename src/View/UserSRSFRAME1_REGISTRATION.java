@@ -30,20 +30,20 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
     public void initComponets() {
         
         innerPanel.setLayout(null);
-        createLabel("Full Name:", 50, 80, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        createLabel("Full Name:", 50, 80, new Dimension(150, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
         JTextField FullNameTF = createTextField(210, 80, 300, 30);
 
-        createLabel("Email:", 50, 120, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        createLabel("Email:", 50, 120, new Dimension(150, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
         JTextField EmailTF = createTextField(210, 120, 300, 30);
 
-        createLabel("ID Number:", 50, 160, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        createLabel("ID Number:", 50, 160, new Dimension(150, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
         JTextField UserIDTF = createTextField(210, 160, 300, 30);
 
-        createLabel("Password:", 50, 200, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        createLabel("Password:", 50, 200, new Dimension(150, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
         PasswordTF.setBounds(210, 200, 300, 30);
         innerPanel.add(PasswordTF);
 
-        createLabel("Designation:", 50, 240, new Dimension(150, 30), "Helvetica Neue", Font.PLAIN, 20, Color.WHITE);
+        createLabel("Designation:", 50, 240, new Dimension(150, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
         DesignationComboBox.setBounds(210, 240, 300, 30);
         innerPanel.add(DesignationComboBox);
 

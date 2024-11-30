@@ -30,14 +30,10 @@ public class UserSRSFRAME7_REGULAR extends FrameBackground {
         int panelWidth = innerPanel.getWidth();
 
         // Line Label and ComboBox
-        lineLabel = new JLabel("Line:");
-        lineLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        lineLabel.setBounds((panelWidth - 80) / 2 - 200, 100, 80, 40); // Adjusted vertically
-        innerPanel.add(lineLabel);
-
+        createLabel("Line:", (panelWidth - 80) / 2 - 200, 100, new Dimension(80, 40), new Font("Segoe UI", Font.PLAIN, 24), Color.BLACK);
         lineComboBox = new JComboBox<>(new String[]{"Line 1", "Line 2", "Line 3"});
         lineComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        lineComboBox.setBounds((panelWidth - 400) / 2 + 80, 100, 400, 50); // Wider and centered horizontally
+        lineComboBox.setBounds((panelWidth - 400) / 2 + 80, 100, 400, 50);
         lineComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -49,14 +45,10 @@ public class UserSRSFRAME7_REGULAR extends FrameBackground {
         innerPanel.add(lineComboBox);
 
         // Date Label and ComboBox
-        dateLabel = new JLabel("Date:");
-        dateLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        dateLabel.setBounds((panelWidth - 80) / 2 - 200, 180, 80, 40); // Adjusted vertically
-        innerPanel.add(dateLabel);
-
+        createLabel("Date:", (panelWidth - 80) / 2 - 200, 180, new Dimension(80, 40), new Font("Segoe UI", Font.PLAIN, 24), Color.BLACK);
         dateComboBox = new JComboBox<>(new String[]{"2024-11-16", "2024-11-17", "2024-11-18"});
         dateComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        dateComboBox.setBounds((panelWidth - 400) / 2 + 80, 180, 400, 50); // Wider and centered horizontally
+        dateComboBox.setBounds((panelWidth - 400) / 2 + 80, 180, 400, 50);
         dateComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -68,14 +60,10 @@ public class UserSRSFRAME7_REGULAR extends FrameBackground {
         innerPanel.add(dateComboBox);
 
         // Time Label and ComboBox
-        timeLabel = new JLabel("Time:");
-        timeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        timeLabel.setBounds((panelWidth - 80) / 2 - 200, 260, 80, 40); // Adjusted vertically
-        innerPanel.add(timeLabel);
-
+        createLabel("Time:", (panelWidth - 80) / 2 - 200, 260, new Dimension(80, 40), new Font("Segoe UI", Font.PLAIN, 24), Color.BLACK);
         timeComboBox = new JComboBox<>(new String[]{"8:00 AM", "12:00 PM", "6:00 PM"});
         timeComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        timeComboBox.setBounds((panelWidth - 400) / 2 + 80, 260, 400, 50); // Wider and centered horizontally
+        timeComboBox.setBounds((panelWidth - 400) / 2 + 80, 260, 400, 50);
         timeComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -87,10 +75,10 @@ public class UserSRSFRAME7_REGULAR extends FrameBackground {
         innerPanel.add(timeComboBox);
 
         // Submit Button
-        createButton("SUBMIT", (panelWidth - 150) / 2 - 80, 350, 150, 50, e -> handleSubmitAction()); // Adjusted vertically
+        createButton("SUBMIT", (panelWidth - 150) / 2 - 80, 350, 150, 50, e -> handleSubmitAction());
 
         // Back Button
-        createButton("BACK", (panelWidth - 150) / 2 + 80, 350, 150, 50, e -> handleBackAction()); // Adjusted vertically
+        createButton("BACK", (panelWidth - 150) / 2 + 80, 350, 150, 50, e -> handleBackAction());
 
         innerPanel.revalidate();
         innerPanel.repaint();

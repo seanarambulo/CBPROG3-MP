@@ -41,11 +41,11 @@ public abstract class FrameBackground extends JFrame{
     private void createInnerPanel() {
         this.innerPanel = new JPanel();
         this.innerPanel.setBackground(new Color(53, 95, 79));
-        this.innerPanel.setLayout(new BorderLayout()); // Use BorderLayout to center components
+        this.innerPanel.setLayout(new BorderLayout()); // Set layout to BorderLayout
         this.innerPanel.setPreferredSize(new Dimension(710, 430)); // Set preferred size to make the panel larger
     }
     
-    public void setDesignationTitle(String title, int top, int left, int bottom, int right) {
+    protected void setDesignationTitle(String title, int top, int left, int bottom, int right) {
         this.DesignationTitle = new JLabel(title, SwingConstants.CENTER);
         this.DesignationTitle.setFont(new Font("Baskerville Old Face", Font.PLAIN, 48)); // Adjusted font size to 24
         this.DesignationTitle.setForeground(Color.WHITE);
@@ -54,22 +54,24 @@ public abstract class FrameBackground extends JFrame{
         this.innerPanel.add(DesignationTitle, BorderLayout.NORTH); // Add to the top of the inner panel
     }
 
-    public void createButton(String text, int x, int y, int width, int height, ActionListener actionListener){
+    protected JButton createButton(String text, int x, int y, int width, int height, ActionListener actionListener){
         JButton button = new JButton(text);
         button.setBounds(x, y, width, height);
         button.addActionListener(actionListener);
         innerPanel.add(button);
+        return button;
     }
 
-    public void createLabel(String text, int x, int y, Dimension size, String font, int fontStyle, int fontSize, Color color){
+    protected JLabel createLabel(String text, int x, int y, Dimension size, Font font, Color color){
         JLabel label = new JLabel(text, SwingConstants.CENTER);
-        label.setFont(new Font(font, fontStyle, fontSize));
+        label.setFont(font);
         label.setForeground(color);
         label.setBounds(x, y, size.width, size.height);
         innerPanel.add(label);
+        return label;
     }
 
-    public void configureButton(String text, Font font, Color color, int x, int y, Dimension size, ActionListener action) {
+    protected JButton configureButton(String text, Font font, Color color, int x, int y, Dimension size, ActionListener action) {
         JButton button = new JButton(text);
         button.setFont(font);
         button.setForeground(color);
@@ -77,16 +79,23 @@ public abstract class FrameBackground extends JFrame{
         button.addActionListener(action);
         button.setBounds(x, y, size.width, size.height);
         innerPanel.add(button);
+        return button;
     }
 
-    public JTextField createTextField(int x, int y, int width, int height) {
+    protected JTextField createTextField(int x, int y, int width, int height) {
         JTextField textField = new JTextField();
         textField.setBounds(x, y, width, height);
         innerPanel.add(textField);
         return textField;
     }
 
-    public abstract void initComponets();
+    protected JPasswordField createPasswordField(int x, int y, int width, int height) {
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(x, y, width, height);
+        innerPanel.add(passwordField);
+        return passwordField;
+    }
 
+    protected abstract void initComponets();
 
 }

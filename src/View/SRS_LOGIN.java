@@ -24,11 +24,12 @@ public class SRS_LOGIN extends FrameBackground {
         innerPanel.setLayout(null); // Use absolute positioning
 
         // Username Label and Field
-        createLabel("Username:", 80, 120, new Dimension(80, 20), "Arial", Font.PLAIN, 12, Color.WHITE);
+        createLabel("Username:", 80, 120, new Dimension(80, 20), new Font("Arial", Font.PLAIN, 12), Color.WHITE);
         JTextField usernameField = createTextField(160, 120, 460, 25);
+        innerPanel.add(usernameField); // Add the usernameField to the panel
 
         // Password Label and Field
-        createLabel("Password:", 80, 160, new Dimension(80, 20), "Arial", Font.PLAIN, 12, Color.WHITE);
+        createLabel("Password:", 80, 160, new Dimension(80, 20), new Font("Arial", Font.PLAIN, 12), Color.WHITE);
         JPasswordField passwordField = new JPasswordField();
         passwordField.setBounds(160, 160, 460, 25);
         innerPanel.add(passwordField);
@@ -38,8 +39,10 @@ public class SRS_LOGIN extends FrameBackground {
         loginButton.setBackground(new Color(220, 248, 232)); // Light green
         loginButton.setName("loginButton");
         loginButton.addActionListener(e -> {
-            String usernameText = "12300002";//usernameField.getText(); // Get text from the field
-            String password = "b2b4de62";//new String(passwordField.getPassword());
+            String usernameText = usernameField.getText();//"20000002";
+             // Get text from the field
+            String password = new String(passwordField.getPassword());//"password2";
+             // Get text from the field
 
             try {
                 if (usernameText.isEmpty() || password.isEmpty()) {
@@ -62,12 +65,13 @@ public class SRS_LOGIN extends FrameBackground {
                     if (tempID != -1) {
                         switch (tempID) {
                             case 1 -> {
-                                DLSU_SRSDispatcher_controller Dcontroller = new DLSU_SRSDispatcher_controller(username, password);
-                                this.dispose();
-                                Dcontroller.DispatcherMenu1Frame();
+
                             }
                             case 2 -> {
                                 // Add logic for case 2 if needed
+                                DLSU_SRSDispatcher_controller Dcontroller = new DLSU_SRSDispatcher_controller(username, password);
+                                this.dispose();
+                                Dcontroller.DispatcherMenu1Frame();                                
                             }
                             case 3 -> {
                                 Ucontroller = new DLSU_SRSUser_controller(username, password);  
@@ -95,7 +99,7 @@ public class SRS_LOGIN extends FrameBackground {
         innerPanel.add(loginButton);
 
         // Register Link
-        createLabel("Not yet Registered?", 235, 260, new Dimension(120, 20), "Arial", Font.PLAIN, 12, Color.WHITE);
+        createLabel("Not yet Registered?", 235, 260, new Dimension(120, 20), new Font("Arial", Font.PLAIN, 12), Color.WHITE);
         registerButton.setBounds(365, 256, 100, 30);
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(new Color(220, 248, 232)); // Light green text

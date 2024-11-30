@@ -1,61 +1,69 @@
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+package src.View;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import src.Controller.DLSU_SRSDispatcher_controller;
+import src.Model.ShuttleBookingView;
 
-public class DispatcherCheckReservation extends AbstractReservationFrame {
-    protected DLSU_SRSDispatcher_controller Dcontroller;
-    protected ArrayList<Reservation> reservations;
-    public DispatcherCheckReservation(DLSU_SRSDispatcher_controller Dcontroller, ArrayList<Reservation> reservations) {
-        super("Pending Reservations");
+public class DispatcherCheckReservation extends TableFrame {
+    
+    private DLSU_SRSDispatcher_controller Dcontroller;
+    private ArrayList<ShuttleBookingView> shuttleBookings;
+    private DefaultTableModel tableModel;
+    private JTable reservationTable;
+    private JScrollPane scrollPane;
+
+    public DispatcherCheckReservation(DLSU_SRSDispatcher_controller Dcontroller, ArrayList<ShuttleBookingView> shuttleBookings) {
+        super();
+        setDesignationTitle("Pending Reservations", 20, 0, 0, 0);
         this.Dcontroller = Dcontroller;
-        this.reservations = reservations;
-       
-        DefaultTableModel tableModel = createTableModel(reservations);
-        JTable table = new JTable(tableModel);
-        frame.add(new JScrollPane(table), BorderLayout.CENTER);
-
-        // Add Submit button
-        addButton("SUBMIT",tableModel);
-
-        display();
+        this.shuttleBookings = shuttleBookings;
+        SwingUtilities.invokeLater(() -> initComponets());
     }
 
     @Override
-    protected void addButton(String buttonName, DefaultTableModel tableModel){
-        JButton submitButton = new JButton("SUBMIT");
-        buttonPanel.add(submitButton);
-        frame.add(buttonPanel, BorderLayout.SOUTH);
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    for (int i = 0; i < tableModel.getRowCount(); i++) {
-                        boolean isChecked = (boolean) tableModel.getValueAt(i, 0); // Check the 'Verify' column
-                        if (isChecked) {
-                            int bookingID = (int) tableModel.getValueAt(i, 1); // Get the Booking ID
-                            
-                            Dcontroller.updateAttendance(bookingID); // Update attendance
-                            System.out.println(bookingID);
-                        }
+    protected void initComponets(){
+
+        Dimension buttonSize = new Dimension(100, 50);
+        Font buttonFont = new Font("Helvetica Neue", Font.BOLD, 18);
+        Color buttonColor = new Color(108, 194, 162);
+
+        innerPanel.setLayout(null);
+        int panelWidth = innerPanel.getWidth();
+        int xPosition = (panelWidth - buttonSize.width) / 2;
+
+        this.tableModel = createTableModel(new String[] {"Verify", "Booking ID","ID Number", "Date", "Time", "Destination"});
+        this.reservationTable = createReservationTable(this.tableModel);
+        this.scrollPane = createScrollPane(this.reservationTable);
+        innerPanel.add(this.scrollPane, BorderLayout.CENTER);
+        
+        this.buttonPanel.add(configureButton(getName(), buttonFont, buttonColor, xPosition, 700, buttonSize, e -> {
+            try {
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    boolean isChecked = (boolean) tableModel.getValueAt(i, 0); // Check the 'Verify' column
+                    if (isChecked) {
+                        int bookingID = (int) tableModel.getValueAt(i, 1); // Get the Booking ID
+                        
+                        Dcontroller.updateAttendance(bookingID); // Update attendance
+                        System.out.println(bookingID);
                     }
-                    JOptionPane.showMessageDialog(frame, "Attendance updated successfully!");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(frame, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                frame.dispose();
-                Dcontroller.DispatcherMenu1Frame();
+                JOptionPane.showMessageDialog(this, "Attendance updated successfully!");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
-}
+            this.dispose();
+            Dcontroller.DispatcherMenu1Frame();
+        }));
+        innerPanel.add(this.buttonPanel, BorderLayout.SOUTH);
+        
+    }
 
     @Override
-    protected DefaultTableModel createTableModel(ArrayList<Reservation> reservations) {
-        String[] columns = {"Verify", "Booking ID","ID Number", "Date", "Time", "Destination"};
+    protected DefaultTableModel createTableModel(String[] columns) {
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -70,17 +78,21 @@ public class DispatcherCheckReservation extends AbstractReservationFrame {
                 return super.getColumnClass(columnIndex);
             }
         };
-
-        for (Reservation reservation : reservations) {
-            tableModel.addRow(new Object[]{
-                false, // Checkbox is initially unchecked
-                reservation.getbookingID(),
-                reservation.getUserID(),
-                reservation.getDate(),
-                reservation.getTime(),
-                reservation.getDestination()
-            });
-        }
         return tableModel;
     }
+
+    @Override
+    protected void loadReservations(DefaultTableModel tableModel, ArrayList<ShuttleBookingView> reservations) {
+        for (ShuttleBookingView reservation : reservations) {
+            tableModel.addRow(new Object[]{
+                false,
+                reservation.getShuttleBookingID(), 
+                reservation.getArrowsExpressLine(), 
+                reservation.getDate(), 
+                reservation.getTime(), 
+                reservation.getOrigin(), 
+                reservation.getDestination()});
+        }
+    }
+
 }

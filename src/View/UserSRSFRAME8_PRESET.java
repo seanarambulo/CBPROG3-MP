@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import src.Controller.DLSU_SRSUser_controller;
 import src.Model.ShuttleBookingPreset;
+import src.Model.ShuttleBookingView;
 
 public class UserSRSFRAME8_PRESET extends FrameBackground {
 
@@ -129,19 +130,11 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
         // Add MNL<->LAG label and table
-        JLabel mnlLabel = new JLabel("MNL<->LAG");
-        mnlLabel.setFont(new Font("Helvetica Neue", Font.BOLD, 16));
-        mnlLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mnlLabel.setBounds(50, 50, 400, 30);
-        centerPanel.add(mnlLabel);
+        createLabel("MNL<->LAG", 50, 50, new Dimension(400, 30), new Font("Helvetica Neue", Font.BOLD, 16), Color.BLACK);
         centerPanel.add(mnlScrollPane);
 
         // Add LAG<->MNL label and table
-        JLabel lagLabel = new JLabel("LAG<->MNL");
-        lagLabel.setFont(new Font("Helvetica Neue", Font.BOLD, 16));
-        lagLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lagLabel.setBounds(50, 100, 400, 30);
-        centerPanel.add(lagLabel);
+        createLabel("LAG<->MNL", 50, 100, new Dimension(400, 30), new Font("Helvetica Neue", Font.BOLD, 16), Color.BLACK);
         centerPanel.add(lagScrollPane);
 
         // Add the center panel to the main panel
@@ -150,10 +143,8 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
 
         // Create a panel for the buttons
         JPanel buttonPanel = new JPanel();
-        JButton savePresetButton = new JButton("Save as Preset");
-        savePresetButton.addActionListener(e -> saveSelectedReservationsAsPreset());
-        JButton viewPresetsButton = new JButton("View Presets");
-        viewPresetsButton.addActionListener(e -> cardLayout.show(mainPanel, "viewPresetsPanel"));
+        configureButton("Save as Preset", new Font("Helvetica Neue", Font.PLAIN, 20), Color.BLACK, 0, 0, new Dimension(150, 30), e -> saveSelectedReservationsAsPreset());
+        configureButton("View Presets", new Font("Helvetica Neue", Font.PLAIN, 20), Color.BLACK, 0, 0, new Dimension(150, 30), e -> cardLayout.show(mainPanel, "viewPresetsPanel"));
         buttonPanel.add(savePresetButton);
         buttonPanel.add(viewPresetsButton);
         addPresetPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -201,7 +192,7 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
         });
 
         // Populate the dropdown with preset names
-        for (Preset preset : presets) {
+        for (ShuttleBookingPreset preset : presets) {
             presetDropdown.addItem(preset.getPresetName());
         }
 
@@ -220,9 +211,9 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
 
     private void updateViewPresetTable(String presetName) {
         viewPresetTableModel.setRowCount(0); // Clear the table
-        for (Preset preset : presets) {
+        for (ShuttleBookingPreset preset : presets) {
             if (preset.getPresetName().equals(presetName)) {
-                for (Reservation reservation : preset.getReservations()) {
+                for (ShuttleBookingView reservation : preset.getReservations()) {
                     viewPresetTableModel.addRow(new Object[]{
                             reservation.getShuttleLine(),
                             reservation.getTime(),
@@ -237,7 +228,7 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
 
     private void saveSelectedReservationsAsPreset() {
         int presetID = presets.size() + 1; // Generate a new preset ID
-        Preset newPreset = new Preset("Preset " + presetID);
+        ShuttleBookingPreset newPreset = new ShuttleBookingPreset(presetID);
 
         // Save selected reservations from MNL table
         for (int row = 0; row < mnlTableModel.getRowCount(); row++) {
@@ -259,7 +250,7 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
         }
     }
 
-    private void processReservationRow(DefaultTableModel tableModel, int row, Preset newPreset) {
+    private void processReservationRow(DefaultTableModel tableModel, int row, ShuttleBookingPreset newPreset) {
         Boolean isSelected = (Boolean) tableModel.getValueAt(row, 0);
         if (isSelected != null && isSelected) {
             String shuttleLine = (String) tableModel.getValueAt(row, 1);
@@ -267,7 +258,7 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
             String origin = (String) tableModel.getValueAt(row, 3);
             String destination = (String) tableModel.getValueAt(row, 4);
 
-            Reservation reservation = new Reservation(shuttleLine, time, origin, destination);
+            ShuttleBookingView reservation = new ShuttleBookingView(0, origin, destination, date, shuttleLine, time);
             newPreset.addReservation(reservation);
         }
     }

@@ -251,6 +251,72 @@ public class DatabaseManager {
             return reservations;
         }
 
+        public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time) throws SQLException {
+            String sql = """
+                SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
+                FROM Booking b
+                JOIN ArrowsExpressLine l ON b.LineID = l.LineID
+                JOIN `Time` t ON t.TimeID = l.TimeID
+                WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
+                """;
+    
+            ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+    
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, LineName);
+                pstmt.setString(2, date);
+                pstmt.setString(3, time);
+    
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        ShuttleBookingView reservation = new ShuttleBookingView();
+                        reservation.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
+                        reservation.setAttendance(rs.getBoolean("Attendance"));
+                        reservation.setUserID(rs.getInt("UserID"));
+                        reservation.setDestination(rs.getString("Destination"));
+                        reservation.setDate(rs.getString("Date"));
+                        reservation.setTime(rs.getString("Time"));
+                        reservations.add(reservation);
+                    }
+                }
+            }
+    
+            return reservations;
+        }
+    
+        public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time, int Attandance) throws SQLException {
+            String sql = """
+                SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
+                FROM Booking b
+                JOIN ArrowsExpressLine l ON b.LineID = l.LineID
+                JOIN `Time` t ON t.TimeID = l.TimeID
+                WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
+                """;
+    
+            ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+    
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, LineName);
+                pstmt.setString(2, date);
+                pstmt.setString(3, time);
+    
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        ShuttleBookingView reservation = new ShuttleBookingView();
+                        reservation.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
+                        reservation.setAttendance(rs.getBoolean("Attendance"));
+                        reservation.setUserID(rs.getInt("UserID"));
+                        reservation.setDestination(rs.getString("Destination"));
+                        reservation.setDate(rs.getString("Date"));
+                        reservation.setTime(rs.getString("Time"));
+                        reservations.add(reservation);
+                    }
+                }
+            }
+    
+            return reservations;
+        }
+
     // Method to close the connection
     public void close() throws SQLException {
         if (connection != null && !connection.isClosed()) {

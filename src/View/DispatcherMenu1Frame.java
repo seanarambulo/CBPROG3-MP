@@ -1,33 +1,46 @@
-import javax.swing.*;
+package src.View;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.*;
+import src.Controller.DLSU_SRSDispatcher_controller;
 
-public class DispatcherMenu1Frame {
+public class DispatcherMenu1Frame extends FrameBackground {
 
     private JLabel titleLabel;
-    private JLabel lineLabel;
     private JComboBox<String> lineComboBox;
-    private JLabel dateLabel;
     private JComboBox<String> dateComboBox;
-    private JLabel designationTitle;
-    private JButton submitButton;
-    private JButton backButton;
     private JComboBox<String> timeComboBox;
-    private JLabel timeLabel;
+    private DLSU_SRSDispatcher_controller Dcontroller;
 
     private ArrayList<String> lineList;
     private ArrayList<String> dateList;
     private ArrayList<String> timeList;
 
     public DispatcherMenu1Frame(DLSU_SRSDispatcher_controller Dcontroller) {
-        initComponents(Dcontroller);
+        super();
+        setDesignationTitle("Dispatcher Menu", 30, 0, 0, 0);
+        this.Dcontroller = Dcontroller;
+        SwingUtilities.invokeLater(() -> initComponets());
     }
 
-    private void initComponents(DLSU_SRSDispatcher_controller Dcontroller) {
+    @Override
+    protected void initComponets() {
+
+        Dimension buttonSize = new Dimension(100, 50);
+        Font buttonFont = new Font("Helvetica Neue", Font.BOLD, 18);
+        Color buttonColor = Color.WHITE;
+
+        innerPanel.setLayout(null);
+        int panelWidth = innerPanel.getWidth();
+        int xPosition = (panelWidth - buttonSize.width) / 2;
+        int yPosition = 100; // Starting y position
+        int yOffset = 70; // Vertical space between buttons
+
         // Initialize ArrayLists for ComboBox items
         lineList = new ArrayList<>();
         dateList = new ArrayList<>();
@@ -50,122 +63,43 @@ public class DispatcherMenu1Frame {
         dateComboBox = new JComboBox<>(dateList.toArray(new String[0]));
         timeComboBox = new JComboBox<>(timeList.toArray(new String[0]));
 
-        JFrame frame = new JFrame("Dispatcher Menu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(810, 530);
-        frame.setResizable(false); // Make the frame non-resizable
-        frame.setLayout(new BorderLayout());
-
-        JPanel outerPanel = new JPanel();
-        outerPanel.setBackground(new Color(108, 194, 162));
-        outerPanel.setLayout(new GridBagLayout()); // Use GridBagLayout to center innerPanel
-        outerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        JPanel innerPanel = new JPanel();
-        innerPanel.setBackground(new Color(53, 95, 79));
-        innerPanel.setLayout(new GridBagLayout());
-        innerPanel.setPreferredSize(new Dimension(710, 430)); // Set preferred size to make the panel larger
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        designationTitle = new JLabel("DLSU Shuttle Reservation");
-        designationTitle.setFont(new Font("Baskerville", Font.PLAIN, 36));
-        designationTitle.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        innerPanel.add(designationTitle, gbc);
-
-        titleLabel = new JLabel("Dispatcher Menu");
+        titleLabel = new JLabel("Dispatcher Menu", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 24));
         titleLabel.setForeground(Color.WHITE);
-        gbc.gridy = 1;
-        gbc.gridx = 1;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        innerPanel.add(titleLabel, gbc);
+        innerPanel.add(titleLabel, BorderLayout.CENTER);
 
-        lineLabel = new JLabel("Line:");
-        lineLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        lineLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(lineLabel, gbc);
+        createLabel("Line:", xPosition-230, yPosition, buttonSize, buttonFont, buttonColor);
+        lineComboBox.setBounds(xPosition-100, yPosition, 300, 50);
+        innerPanel.add(lineComboBox);
 
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(lineComboBox, gbc);
+        yPosition += yOffset;
+        createLabel("Date:", xPosition-230, yPosition, buttonSize, buttonFont, buttonColor);
+        dateComboBox.setBounds(xPosition-100, yPosition, 300, 50);
+        innerPanel.add(dateComboBox);
 
-        dateLabel = new JLabel("Date:");
-        dateLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        dateLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(dateLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(dateComboBox, gbc);
-
-        timeLabel = new JLabel("Time:");
-        timeLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        timeLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(timeLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(timeComboBox, gbc);
-
-        submitButton = new JButton("Submit");
-        submitButton.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        innerPanel.add(submitButton, gbc);
-
-        backButton = new JButton("Back");
-        backButton.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        innerPanel.add(backButton, gbc);
-
-        // Add ActionListener to Submit Button
-        submitButton.addActionListener(new ActionListener() {
+        yPosition += yOffset;
+        createLabel("Time:", xPosition-230, yPosition, buttonSize, buttonFont, buttonColor);
+        timeComboBox.setBounds(xPosition-100, yPosition, 300, 50);
+        innerPanel.add(timeComboBox);
+       
+        yPosition += yOffset;   
+            
+        configureButton("Submit", buttonFont, Color.BLACK, xPosition+100, yPosition, buttonSize, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 Dcontroller.DispatcherCheckReservation((String) lineComboBox.getSelectedItem(),
                         (String) dateComboBox.getSelectedItem(),
                         (String) timeComboBox.getSelectedItem());
             }
         });
 
-        // Add ActionListener to Back Button
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the current frame
-                System.out.println("Back button clicked. Returning to the previous menu.");
-            }
+        configureButton("Back", buttonFont, Color.BLACK, xPosition-100, yPosition, buttonSize, e -> {
+            this.dispose(); // Close the current frame
+            System.out.println("Back button clicked. Returning to the previous menu.");
         });
 
-        GridBagConstraints outerGbc = new GridBagConstraints();
-        outerGbc.gridx = 0;
-        outerGbc.gridy = 0;
-        outerGbc.anchor = GridBagConstraints.CENTER;
-        outerPanel.add(innerPanel, outerGbc);
 
-        frame.getContentPane().add(outerPanel, BorderLayout.CENTER);
-        frame.setVisible(true);
     }
 
     private void populateDateComboBox() {

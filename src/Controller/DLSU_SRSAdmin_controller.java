@@ -1,8 +1,13 @@
+package src.Controller;
+
+import src.Model.*;
+import src.View.*;
+
 import java.util.List;
 
 public class DLSU_SRSAdmin_controller {
 
-    private Admin admin;
+    private Admin admin = new Admin();
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
@@ -38,6 +43,10 @@ public class DLSU_SRSAdmin_controller {
 
     public Admin getAdmin() {
         return admin;
+    }
+
+    public void AdminSRSFRAME1_VIEWSHUTTLEROUTES_adminController(){
+        new AdminSRSFRAME1_VIEWSHUTTLEROUTES_adminController(this);
     }
 
 }

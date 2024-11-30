@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AdminSRSFRAME1_VIEWSHUTTLEROUTES",
+            "request": "launch",
+            "mainClass": "src.View.AdminSRSFRAME1_VIEWSHUTTLEROUTES",
+            "projectName": "CBPROG3_MP_77a0f4c5"
+        },
+        {
+            "type": "java",
             "name": "DLSU_SRS",
             "request": "launch",
             "mainClass": "src.DLSU_SRS",

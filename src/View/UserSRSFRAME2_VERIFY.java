@@ -22,7 +22,7 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
     public void initComponets() {
         innerPanel.setLayout(null);
 
-        createLabel("Select EAF File:", 205, 80, new Dimension(300, 50), "Helvetica Neue", Font.BOLD, 20, Color.WHITE);
+        createLabel("Select EAF File:", 205, 80, new Dimension(300, 50), new Font("Helvetica Neue", Font.BOLD, 20), Color.WHITE);
         createButton("Select a File", 205, 120, 300, 50, e -> {/* Action listener code */});
 
         DesignationCB.setBounds(205, 180, 400, 50); // Made wider
