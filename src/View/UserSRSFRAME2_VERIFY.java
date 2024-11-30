@@ -7,6 +7,7 @@ import src.Controller.DLSU_SRSUser_controller;
 public class UserSRSFRAME2_VERIFY extends FrameBackground {
 
     private final String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private final JComboBox<String> DesignationCB = new JComboBox<>(new String[]{"College - Laguna Enrolled without class/es in Manila", "College - Laguna Enrolled with class/es in Manila", "College - Manila Enrolled without class/es in Laguna", "College - Manila Enrolled with class/es in Laguna", "Integrated School - Laguna Enrolled", "Integrated School - Manila Enrolled"}); // New ComboBox
     private final JCheckBox[] checkBoxes = new JCheckBox[days.length];
     private DLSU_SRSUser_controller controller;
 
@@ -24,15 +25,21 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
         createLabel("Select EAF File:", 205, 80, new Dimension(300, 50), "Helvetica Neue", Font.BOLD, 20, Color.WHITE);
         createButton("Select a File", 205, 120, 300, 50, e -> {/* Action listener code */});
 
+        DesignationCB.setBounds(205, 180, 400, 50); // Made wider
+        DesignationCB.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
+        DesignationCB.setForeground(new Color(102, 102, 102));
+        DesignationCB.setPreferredSize(new Dimension(200, 30)); // Same dimensions as fileTextField
+        innerPanel.add(DesignationCB);
+
         for (int i = 0; i < days.length; i++) {
             checkBoxes[i] = createCheckbox(days[i]);
-            int x = (i < 3) ? 205 : 355;
-            int y = 180 + (i % 3) * 40;
-            checkBoxes[i].setBounds(x, y, 150, 30);
+            int x = (i < 3) ? 205 : 405; // Adjusted x position for wider checkboxes
+            int y = 240 + (i % 3) * 40; // Shifted down by 60 pixels
+            checkBoxes[i].setBounds(x, y, 200, 30); // Made wider
             innerPanel.add(checkBoxes[i]);
         }
 
-        createButton("Submit", 205, 300, 300, 50, e -> {/* Action listener code */});
+        createButton("Submit", 205, 360, 400, 50, e -> {/* Action listener code */}); // Made wider
 
     }
 
