@@ -79,7 +79,10 @@ public class UserSRSFRAME11_VIEWSHUTTLEROUTES extends FrameBackground {
         // Add action listeners for buttons
         addButton.addActionListener(e -> addReservation());
         deleteButton.addActionListener(e -> deleteReservation());
-        backButton.addActionListener(e -> dispose());
+        backButton.addActionListener(e -> {
+            this.dispose();
+            controller.UserSRSFRAME10_VIEWSHUTTLEROUTES();
+            });
 
         // Add components to the frame
         add(inputPanel, BorderLayout.NORTH);
