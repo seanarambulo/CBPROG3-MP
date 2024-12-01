@@ -6,10 +6,10 @@ import src.Controller.DLSU_SRSUser_controller;
 
 public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
     
-    private final JButton jButton1 = new JButton("Regular Reservation");
-    private final JButton jButton2 = new JButton("Preset Reservation");
-    private final JButton jButton3 = new JButton("Irregular Reservation");
-    private final DLSU_SRSUser_controller controller;
+    private JButton jButton1 = new JButton("Regular Reservation");
+    private JButton jButton2 = new JButton("Preset Reservation");
+    private JButton jButton3 = new JButton("Irregular Reservation");
+    private DLSU_SRSUser_controller controller;
 
     public UserSRSFRAME4_ADDSHUTTLEBOOKING(DLSU_SRSUser_controller controller){
         super();
