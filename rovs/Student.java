@@ -2,7 +2,7 @@ public class Student extends User {
     private int trimester;
     private String eaf;
     private boolean isVerified;
-    private int classDaysID;
+    private String ClassDay;
 
     // Getters and Setters
     public int getTrimester() {
@@ -29,12 +29,12 @@ public class Student extends User {
         this.isVerified = isVerified;
     }
 
-    public int getClassDaysID() {
-        return classDaysID;
+    public String getClassDay() {
+        return ClassDay;
     }
 
-    public void setClassDaysID(int classDaysID) {
-        this.classDaysID = classDaysID;
+    public void setClassDay(String ClassDay) {
+        this.ClassDay = ClassDay;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Student extends User {
                "trimester=" + trimester +
                ", eaf='" + eaf + '\'' +
                ", isVerified=" + isVerified +
-               ", classDaysID=" + classDaysID +
+               ", classDaysID=" + ClassDay +
                '}';
     }
 }

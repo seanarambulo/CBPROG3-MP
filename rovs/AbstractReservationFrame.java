@@ -25,8 +25,9 @@ public abstract class AbstractReservationFrame {
     }
 
     // Abstract method to define custom table model
-    protected abstract DefaultTableModel createTableModel(ArrayList<Reservation> reservations);
+    protected abstract DefaultTableModel createTableModel();
 
+    
     
 
     

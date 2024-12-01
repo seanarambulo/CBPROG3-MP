@@ -58,7 +58,13 @@ public class AdminMenu1Frame {
         jButton1.setForeground(new Color(108, 194, 162));
         jButton1.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
         innerPanel.add(jButton1);
-
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                Acontroller.VerifyRegistrationFrame();
+            }
+        });
         // Button 2
         jButton2 = new JButton("View Reservations");
         jButton2.setFont(new Font("Helvetica Neue", Font.BOLD, 14));
@@ -86,7 +92,14 @@ public class AdminMenu1Frame {
         jButton4.setForeground(new Color(108, 194, 162));
         jButton4.setBounds(buttonX, buttonY + 180, buttonWidth, buttonHeight); // Adjusted Y position
         innerPanel.add(jButton4);
-
+        jButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            
+                Acontroller.VerifyReservationFrame();
+            }
+        });
         // Button 5
         jButton5 = new JButton("Edit Admin Data");
         jButton5.setFont(new Font("Helvetica Neue", Font.BOLD, 14));

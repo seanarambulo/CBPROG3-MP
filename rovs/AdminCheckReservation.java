@@ -15,19 +15,19 @@ public class AdminCheckReservation extends AbstractReservationFrame {
         this.Acontroller = Acontroller;
         this.reservations = reservations;
        
-        DefaultTableModel tableModel = createTableModel(reservations);
+        DefaultTableModel tableModel = createTableModel();
         JTable table = new JTable(tableModel);
         frame.add(new JScrollPane(table), BorderLayout.CENTER);
 
         // Add Submit button
-        addButton("SUBMIT",tableModel);
+        addButton("BACK",tableModel);
 
         display();
     }
 
     @Override
     protected void addButton(String buttonName, DefaultTableModel tableModel){
-        JButton submitButton = new JButton("SUBMIT");
+        JButton submitButton = new JButton(buttonName);
         buttonPanel.add(submitButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
         submitButton.addActionListener(new ActionListener() {
@@ -41,7 +41,7 @@ public class AdminCheckReservation extends AbstractReservationFrame {
 }
 
     @Override
-    protected DefaultTableModel createTableModel(ArrayList<Reservation> reservations) {
+    protected DefaultTableModel createTableModel() {
         String[] columns = {"Attendance", "Booking ID","ID Number", "Date", "Time", "Destination"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0) {
             @Override

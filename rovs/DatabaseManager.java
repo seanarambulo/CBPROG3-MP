@@ -18,6 +18,14 @@ public class DatabaseManager {
         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         connection.setAutoCommit(true);
     }
+    
+    public void updateIrregAttendance(int shuttleBookingID) throws SQLException {
+        String sql = "UPDATE irregshuttlebooking SET isApproved = TRUE WHERE IrregShuttleBookingID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, shuttleBookingID);
+            pstmt.executeUpdate();
+        }
+    }
     public void updateAttendance(int shuttleBookingID) throws SQLException {
         String sql = "UPDATE Booking SET Attendance = TRUE WHERE ShuttleBookingID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -171,7 +179,7 @@ public class DatabaseManager {
 public User getUserByID(int userID, String password) throws SQLException {
 
     String userSql = "SELECT * FROM User WHERE UserID = ? AND Password = ?";
-    String studentSql = "SELECT * FROM Student WHERE StudentID = ?";
+    String studentSql = "SELECT * FROM user U, Student S, ClassDays C, Days D WHERE U.UserID = S.StudentID  AND C.StudentID = S.StudentID AND C.DaysID = D.DaysID AND S.StudentID = ?";
 
     User user = null;
     
@@ -202,7 +210,7 @@ public User getUserByID(int userID, String password) throws SQLException {
                                 student.setTrimester(studentRs.getInt("Trimester"));
                                 student.setEaf(studentRs.getString("EAF"));
                                 student.setVerified(studentRs.getBoolean("isVerified"));
-                                student.setClassDaysID(studentRs.getInt("ClassDaysID"));
+                                student.setClassDay(studentRs.getString("DayName"));
 
                                 user = student;
                             }
@@ -223,6 +231,37 @@ public User getUserByID(int userID, String password) throws SQLException {
 
     return user;
 }
+   
+public ArrayList<IrregReservation> getIrregularReservations() throws SQLException {
+    String sql = """
+        SELECT IR.IrregShuttleBookingID, B.Destination, B.Date, T.Time, IR.Reason, B.UserID, IR.isApproved
+        FROM irregshuttlebooking IR
+        JOIN booking B ON IR.IrregShuttleBookingID = B.ShuttleBookingID
+        JOIN `time` T ON T.TimeID = B.TimeID
+        WHERE IR.isApproved = 0
+    """;
+
+    ArrayList<IrregReservation> irregularReservations = new ArrayList<>();
+
+    try (PreparedStatement pstmt = connection.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+        while (rs.next()) {
+            IrregReservation irregReservation = new IrregReservation();
+            irregReservation.setbookingID(rs.getInt("IrregShuttleBookingID"));
+            irregReservation.setDestination(rs.getString("Destination"));
+            irregReservation.setDate(rs.getString("Date"));
+            irregReservation.setTime(rs.getString("Time"));
+            irregReservation.setReason(rs.getString("Reason"));
+            irregReservation.setUserID(rs.getInt("UserID"));
+            irregReservation.setApproved(rs.getBoolean("isApproved"));
+
+            irregularReservations.add(irregReservation);
+        }
+    }
+
+    return irregularReservations;
+}
+
 
 // Method to fetch pending reservations
     public ArrayList<Reservation> getReservations( String LineName, String date, String time) throws SQLException {
@@ -297,6 +336,48 @@ public User getUserByID(int userID, String password) throws SQLException {
             connection.close();
         }
     }
+
+    public ArrayList<Student> getRegistration() throws SQLException {
+        String sql = """
+            SELECT S.StudentID, S.Trimester, S.EAF, D.DayName, S.isVerified
+            FROM User U, Student S, ClassDays C, Days D
+            WHERE U.UserID = S.StudentID 
+              AND C.StudentID = S.StudentID 
+              AND C.DaysID = D.DaysID AND S.isVerified = 0
+        """;
+    
+        ArrayList<Student> students = new ArrayList<>();
+    
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Student student = new Student();
+                student.setUserID(rs.getInt("StudentID"));
+                student.setTrimester(rs.getInt("Trimester"));
+                student.setEaf(rs.getString("EAF"));
+                student.setClassDay(rs.getString("DayName"));
+                student.setVerified(rs.getBoolean("isVerified"));
+    
+                students.add(student);
+            }
+        }
+    
+        return students;
+    }
+
+    public void updateVerification(int userID) throws SQLException {
+        String query = "UPDATE Student SET isVerified = TRUE WHERE StudentID = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userID);
+            preparedStatement.executeUpdate();
+           
+        } catch (SQLException e) {
+            System.err.println("Error updating verification for StudentID: " + userID);
+            throw e;
+        }
+    }
+    
 
     // Main method for testing
     

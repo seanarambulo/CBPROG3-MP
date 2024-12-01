@@ -7,12 +7,14 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DispatcherCheckReservation extends AbstractReservationFrame {
-    protected DLSU_SRSDispatcher_controller Dcontroller;
-    protected ArrayList<Reservation> reservations;
-    public DispatcherCheckReservation(DLSU_SRSDispatcher_controller Dcontroller, ArrayList<Reservation> reservations) {
+
+
+    public class VerifyReservationFrame extends AbstractReservationFrame {
+    protected DLSU_SRSAdmin_controller Acontroller;
+    protected ArrayList<IrregReservation> reservations;
+    public VerifyReservationFrame(DLSU_SRSAdmin_controller Acontroller, ArrayList<IrregReservation> reservations) {
         super("Pending Reservations");
-        this.Dcontroller = Dcontroller;
+        this.Acontroller = Acontroller;
         this.reservations = reservations;
        
         DefaultTableModel tableModel = createTableModel();
@@ -24,7 +26,6 @@ public class DispatcherCheckReservation extends AbstractReservationFrame {
 
         display();
     }
-
     @Override
     protected void addButton(String buttonName, DefaultTableModel tableModel){
         JButton submitButton = new JButton(buttonName);
@@ -35,11 +36,13 @@ public class DispatcherCheckReservation extends AbstractReservationFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     for (int i = 0; i < tableModel.getRowCount(); i++) {
-                        boolean isChecked = (boolean) tableModel.getValueAt(i, 0); // Check the 'Verify' column
+                        boolean isChecked = (boolean) tableModel.getValueAt(i, 5); // Check the 'Verify' column
                         if (isChecked) {
-                            int bookingID = (int) tableModel.getValueAt(i, 1); // Get the Booking ID
+                            IrregReservation reservation = reservations.get(i); // Access the corresponding reservation
+                            int bookingID = reservation.getbookingID();
                             
-                            Dcontroller.updateAttendance(bookingID); // Update attendance
+                            
+                            Acontroller.updateIrregAttendance(bookingID); // Update attendance
                             System.out.println(bookingID);
                         }
                     }
@@ -48,39 +51,40 @@ public class DispatcherCheckReservation extends AbstractReservationFrame {
                     JOptionPane.showMessageDialog(frame, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 frame.dispose();
-                Dcontroller.DispatcherMenu1Frame();
+                Acontroller.AdminMenu1Frame();
             }
         });
-}
+           
+    }
 
     @Override
     protected DefaultTableModel createTableModel() {
-        String[] columns = {"Verify", "Booking ID","ID Number", "Date", "Time", "Destination"};
+        String[] columns = {"Destination", "Date", "Time", "ID Number", "Reason","Verify"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 0; // Only the 'Verify' column is editable
+                return column == 5; // Only the 'Verify' column is editable
             }
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) {
-                    return Boolean.class; // The 'Verify' column contains Boolean values
-                }
+                if (columnIndex == 5) return Boolean.class; // Boolean for 'Verify' column
                 return super.getColumnClass(columnIndex);
             }
         };
 
-        for (Reservation reservation : reservations) {
+        // Populate table with reservations
+        for (IrregReservation reservation : reservations) {
             tableModel.addRow(new Object[]{
-                false, // Checkbox is initially unchecked
-                reservation.getbookingID(),
-                reservation.getUserID(),
+                reservation.getDestination(),
                 reservation.getDate(),
                 reservation.getTime(),
-                reservation.getDestination()
+                reservation.getUserID(),
+                reservation.getReason(),
+                false
             });
         }
+
         return tableModel;
     }
 }
