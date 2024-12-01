@@ -20,7 +20,7 @@ public class AdminSRSFRAME1_ADMINMENU extends FrameBackground {
     public AdminSRSFRAME1_ADMINMENU(DLSU_SRSAdmin_controller Acontroller) {
         super();
         this.Acontroller = Acontroller;
-        setDesignationTitle("Admin Menu", 10, 0, 0, 0);
+        setDesignationTitle("Admin Menu", 30, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
@@ -31,11 +31,12 @@ public class AdminSRSFRAME1_ADMINMENU extends FrameBackground {
         int buttonWidth = 320;
         int buttonHeight = 50;
         int buttonX = (innerPanel.getWidth() - buttonWidth) / 2;
-        int buttonY = 67;
+        int buttonY = 100;
 
         // Button 1
         jButton1 = configureButton("Verify Registrations", new Font("Helvetica Neue", Font.BOLD, 14), new Color(108, 194, 162), buttonX, buttonY, new Dimension(buttonWidth, buttonHeight), e -> {
             try {
+                this.dispose();
                 Acontroller.AdminSRSFRAME2_VERIFYREGISTRATIONS_adminController();
             } catch (SQLException ex) {
                 Logger.getLogger(AdminSRSFRAME1_ADMINMENU.class.getName()).log(Level.SEVERE, null, ex);
@@ -47,12 +48,14 @@ public class AdminSRSFRAME1_ADMINMENU extends FrameBackground {
 
         // Button 2
         jButton2 = configureButton("View Reservations", new Font("Helvetica Neue", Font.BOLD, 14), new Color(108, 194, 162), buttonX, buttonY + 60, new Dimension(buttonWidth, buttonHeight), e -> {
+            this.dispose();
             Acontroller.AdminSRSFRAME3_VIEWRESERVATIONS_adminController();
         });
         innerPanel.add(jButton2);
 
         // Button 3
         jButton3 = configureButton("View Shuttle Routes", new Font("Helvetica Neue", Font.BOLD, 14), new Color(108, 194, 162), buttonX, buttonY + 120, new Dimension(buttonWidth, buttonHeight), e -> {
+            this.dispose();
             Acontroller.AdminSRSFRAME4_VIEWSHUTTLEROUTES_adminController();
         });
         innerPanel.add(jButton3);
@@ -60,6 +63,7 @@ public class AdminSRSFRAME1_ADMINMENU extends FrameBackground {
         // Button 4
         jButton4 = configureButton("Verify Reservations", new Font("Helvetica Neue", Font.BOLD, 14), new Color(108, 194, 162), buttonX, buttonY + 180, new Dimension(buttonWidth, buttonHeight), e -> {
             try {
+                this.dispose();
                 Acontroller.AdminSRSFRAME5_VERIFYRESERVATION_adminController();
             } catch (SQLException ex) {
                 Logger.getLogger(AdminSRSFRAME1_ADMINMENU.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,7 +83,7 @@ public class AdminSRSFRAME1_ADMINMENU extends FrameBackground {
 
                     if (userExists) {
                         JOptionPane.showMessageDialog(this, "User ID entered: " + userIdInt, "User ID Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                        dispose();
+                        this.dispose();
                         Acontroller.AdminSRSFRAME6_EDITUSERDATA_adminController(userIdInt);
                     } else {
                         JOptionPane.showMessageDialog(this, "User ID not found in the database.", "Error", JOptionPane.ERROR_MESSAGE);

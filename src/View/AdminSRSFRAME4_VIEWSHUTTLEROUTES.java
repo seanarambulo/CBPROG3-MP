@@ -44,7 +44,8 @@ public class AdminSRSFRAME4_VIEWSHUTTLEROUTES extends TableFrame {
     
         // Panel for buttons
         backButton = configureButton("Back", new Font("Arial", Font.PLAIN, 14), Color.BLACK, 0, 0, new Dimension(80, 30), e -> {
-            // Back button action
+            this.dispose();
+            controller.AdminSRSFRAME1_Menu_AdminController();
         });
         editButton = configureButton("Edit", new Font("Arial", Font.PLAIN, 14), Color.BLACK, 0, 0, new Dimension(80, 30), e -> {
             // Edit button action

@@ -15,13 +15,14 @@ public class AdminSRSFRAME2_VERIFYREGISTRATIONS extends TableFrame {
         super();
         this.Acontroller = Acontroller;
         this.students = students;
-        setDesignationTitle("Pending Reservations", 20, 0, 0, 0);
-        innerPanel.setLayout(null);
+        setDesignationTitle("Pending Reservations", 30, 0, 0, 0);
+        
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
     @Override
-    protected void initComponets() {        
+    protected void initComponets() {   
+        innerPanel.setLayout(null);     
         this.tableModel = createTableModel(new String[] {"Student ID", "Day", "EAF", "Verify"});
         this.reservationTable = createReservationTable(this.tableModel);
         this.scrollPane = createScrollPane(this.reservationTable);
