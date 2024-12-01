@@ -1,94 +1,108 @@
 package src.View;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.SQLException;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableModel;
 import src.Controller.DLSU_SRSAdmin_controller;
 import src.Model.*;
 
-public class AdminSRSFRAME5_VERIFYRESERVATION extends TableFrame {
+
+
+    public class AdminSRSFRAME5_VERIFYRESERVATION extends TableFrame {
     protected DLSU_SRSAdmin_controller Acontroller;
-    protected ArrayList<IrregReservation> reservations;
-
-    public AdminSRSFRAME5_VERIFYRESERVATION(DLSU_SRSAdmin_controller Acontroller, ArrayList<IrregReservation> reservations) {
-        super();
+    protected ArrayList<Student> students;
+    public AdminSRSFRAME5_VERIFYRESERVATION(DLSU_SRSAdmin_controller Acontroller, ArrayList<Student> students) {
+        super("Pending Reservations");
         this.Acontroller = Acontroller;
-        this.reservations = reservations;
+        this.students = students;
+       
+        DefaultTableModel tableModel = createTableModel();
+        JTable table = new JTable(tableModel);
+        frame.add(new JScrollPane(table), BorderLayout.CENTER);
 
-        SwingUtilities.invokeLater(() -> initComponets());
+        // Add Submit button
+        addButton("SUBMIT",tableModel);
+
+        display();
     }
-
     @Override
-    protected void initComponets() {
-        String[] columns = {"Destination", "Line", "Date", "Time", "ID Number", "Reason", "Verify"};
-        this.tableModel = createTableModel(columns);
-        this.reservationTable = new JTable(this.tableModel);
-        
-        loadObjects(this.tableModel, this.reservations);
+protected void addButton(String buttonName, DefaultTableModel tableModel) {
+    JButton submitButton = new JButton(buttonName);
+    buttonPanel.add(submitButton);
+    frame.add(buttonPanel, BorderLayout.SOUTH);
+    submitButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                // Collect user IDs that should be updated
+                ArrayList<Integer> userIdsToUpdate = new ArrayList<>();
 
-        JTable table = createReservationTable(tableModel);
-        innerPanel.add(createScrollPane(table), BorderLayout.CENTER);
-        JButton submitButton = configureButton("SUBMIT", new Font("Arial", Font.PLAIN, 14), Color.BLACK, 0, 0, new Dimension(100, 30), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    for (int i = 0; i < tableModel.getRowCount(); i++) {
-                        boolean isChecked = (boolean) tableModel.getValueAt(i, 5); // Check the 'Verify' column
-                        if (isChecked) {
-                            IrregReservation reservation = (IrregReservation) reservations.get(i); // Access the corresponding reservation
-                            int bookingID = reservation.getShuttleBookingID();
-                            Acontroller.updateIrregAttendance(bookingID); // Update attendance
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    int userId = (int) tableModel.getValueAt(i, 0);
+                    boolean allChecked = true;
+
+                    // Check if all rows for this user ID have checkboxes ticked
+                    for (int j = 0; j < tableModel.getRowCount(); j++) {
+                        if ((int) tableModel.getValueAt(j, 0) == userId) {
+                            boolean isChecked = (boolean) tableModel.getValueAt(j, 3);
+                            if (!isChecked) {
+                                allChecked = false;
+                                break;
+                            }
                         }
                     }
-                    JOptionPane.showMessageDialog(AdminSRSFRAME5_VERIFYRESERVATION.this, "Attendance updated successfully!");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(AdminSRSFRAME5_VERIFYRESERVATION.this, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+                    // If all checkboxes for this user ID are ticked, add to list
+                    if (allChecked && !userIdsToUpdate.contains(userId)) {
+                        userIdsToUpdate.add(userId);
+                    }
                 }
-                AdminSRSFRAME5_VERIFYRESERVATION.this.dispose();
+
+                // Update verification for all valid user IDs
+                for (int userId : userIdsToUpdate) {
+                    Acontroller.updateVerification(userId);
+                }
+
+                JOptionPane.showMessageDialog(frame, "Verification updated successfully!");
+                frame.dispose();
                 Acontroller.AdminSRSFRAME1_Menu_AdminController();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Error updating verification: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        });
-        buttonPanel.add(submitButton);
-        innerPanel.add(buttonPanel, BorderLayout.SOUTH);
-    }
+        }
+    });
+}
+
 
     @Override
-    protected DefaultTableModel createTableModel(String[] columns) {
-        return new DefaultTableModel(columns, 0) {
+    protected DefaultTableModel createTableModel() {
+        String[] columns = {"Student ID", "Day", "EAF", "Verify"};
+        DefaultTableModel tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6; // Only the 'Verify' column is editable
+                return column == 3; // Only the 'Verify' column is editable
             }
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 6) return Boolean.class; // Boolean for 'Verify' column
+                if (columnIndex == 3) return Boolean.class; // Boolean for 'Verify' column
                 return super.getColumnClass(columnIndex);
             }
         };
-    }
 
-    @Override
-    protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> objs) {
-        IrregReservation reservation;
-        for (Object obj : objs) {
-            if (!(obj instanceof IrregReservation)){
-                throw new IllegalArgumentException("Invalid reservation type");
-            } else {
-                reservation = (IrregReservation) obj;
-                tableModel.addRow(new Object[]{
-                    reservation.getDestination(),
-                    reservation.getArrowsExpressLine(),
-                    reservation.getDate(),
-                    reservation.getTime(),
-                    reservation.getUserID(),
-                    reservation.getReason(),
-                    false
-                });
-            }
+        // Populate table with reservations
+        for (Student student: students) {
+            tableModel.addRow(new Object[]{
+                student.getUserID(),
+                student.getClassDay(),
+                student.getEAF(),
+                false
+            });
         }
+
+        return tableModel;
     }
 }

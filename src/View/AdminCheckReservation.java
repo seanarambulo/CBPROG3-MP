@@ -1,58 +1,60 @@
 package src.View;
-
-import java.awt.BorderLayout;
-import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import src.Controller.DLSU_SRSAdmin_controller;
-import src.Model.*;
+import src.Model.ShuttleBookingView;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.ArrayList;
 
 public class AdminCheckReservation extends TableFrame {
-
     protected DLSU_SRSAdmin_controller Acontroller;
     protected ArrayList<ShuttleBookingView> reservations;
-
-
     public AdminCheckReservation(DLSU_SRSAdmin_controller Acontroller, ArrayList<ShuttleBookingView> reservations) {
-        super();
+        super("Pending Reservations");
         this.Acontroller = Acontroller;
         this.reservations = reservations;
-        setDesignationTitle("Pending Reservations", 20,0,0,0);
-        innerPanel.setLayout(null);
-        SwingUtilities.invokeLater(() -> initComponets());
+       
+        DefaultTableModel tableModel = createTableModel();
+        JTable table = new JTable(tableModel);
+        frame.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        // Add Submit button
+        addButton("BACK",tableModel);
+
+        display();
     }
 
     @Override
-    protected void initComponets(){
-        tableModel = createTableModel(new String[] {"Attendance", "Booking ID","ID Number", "Date", "Time", "Destination"});
-        reservationTable = new JTable(tableModel);
-        scrollPane = new JScrollPane(reservationTable);
-        innerPanel.add(this.scrollPane, BorderLayout.CENTER);
-        JButton submitButton = new JButton("BACK");
+    protected void addButton(String buttonName, DefaultTableModel tableModel){
+        JButton submitButton = new JButton(buttonName);
         buttonPanel.add(submitButton);
-        add(buttonPanel, BorderLayout.SOUTH);
-        submitButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Attendance updated successfully!");
-            this.dispose();
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                frame.dispose();
+                Acontroller.AdminSRSFRAME1_Menu_AdminController();
+            }
         });
-    }
+}
 
     @Override
-    protected DefaultTableModel createTableModel(String[] columns) {
+    protected DefaultTableModel createTableModel() {
+        String[] columns = {"Attendance", "Booking ID","ID Number", "Date", "Time", "Destination"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; 
             }
         };
-        return tableModel;
-    }
-    
-    @Override
-    protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> objs){
-        ShuttleBookingView reservation;
-        for (Object obj : objs) {
-            reservation = new ShuttleBookingView();
+
+        for (ShuttleBookingView reservation : reservations) {
             tableModel.addRow(new Object[]{
                 reservation.getAttendance(),
                 reservation.getShuttleBookingID(),
@@ -62,8 +64,6 @@ public class AdminCheckReservation extends TableFrame {
                 reservation.getDestination()
             });
         }
-        
+        return tableModel;
     }
-
-
 }

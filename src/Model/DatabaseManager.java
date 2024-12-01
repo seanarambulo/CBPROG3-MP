@@ -291,7 +291,37 @@ public User getUserByID(int userID, String password) throws SQLException {
     return user;
 }
 
+public void adminUpdateUserData(int userID, String newUsername, String newEmail) throws SQLException {
+    // SQL query to update user data
+    String sql = "UPDATE User SET UserName = ?, Email = ? WHERE UserID = ?";
 
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        // Set the parameters for the update query
+        pstmt.setString(1, newUsername);   // Set new username
+        pstmt.setString(2, newEmail);      // Set new email
+        pstmt.setInt(3, userID);           // Specify which user to update
+        pstmt.executeUpdate();
+    }
+}
+
+
+public boolean checkIfUserExists(int userId) throws SQLException {
+    String query = "SELECT COUNT(*) FROM users WHERE user_id = ?";
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setInt(1, userId);
+        
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0; // If count > 0, user exists
+            }
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        throw ex; // Rethrow the exception after logging it
+    }
+    return false; // Default to false if no user found or any error occurs
+}
 
 
 // Method to fetch pending reservations
@@ -300,7 +330,7 @@ public User getUserByID(int userID, String password) throws SQLException {
             SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b
             JOIN ArrowsExpressLine l ON b.LineID = l.LineID
-            JOIN `Time` t ON t.TimeID = l.TimeID
+            JOIN `Time` t ON t.TimeID = b.TimeID
             WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
             """;
 
@@ -333,7 +363,7 @@ public User getUserByID(int userID, String password) throws SQLException {
             SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b
             JOIN ArrowsExpressLine l ON b.LineID = l.LineID
-            JOIN `Time` t ON t.TimeID = l.TimeID
+            JOIN `Time` t ON t.TimeID = b.TimeID
             WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
             """;
 
@@ -366,7 +396,7 @@ public User getUserByID(int userID, String password) throws SQLException {
             SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b
             JOIN ArrowsExpressLine l ON b.LineID = l.LineID
-            JOIN `Time` t ON t.TimeID = l.TimeID
+            JOIN `Time` t ON t.TimeID = b.TimeID
             WHERE UserID = ? AND b.Attendance = 0
             """;
 
@@ -494,37 +524,7 @@ public User getUserByID(int userID, String password) throws SQLException {
 
         return times;
     }
-    public boolean checkIfUserExists(int userId) throws SQLException {
-        String query = "SELECT COUNT(*) FROM users WHERE user_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, userId);
-            
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    int count = resultSet.getInt(1);
-                    return count > 0; // If count > 0, user exists
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw ex; // Rethrow the exception after logging it
-        }
-        return false; // Default to false if no user found or any error occurs
-    }
     
-    public void adminUpdateUserData(int userID, String newUsername, String newEmail) throws SQLException {
-        // SQL query to update user data
-        String sql = "UPDATE User SET UserName = ?, Email = ? WHERE UserID = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Set the parameters for the update query
-            pstmt.setString(1, newUsername);   // Set new username
-            pstmt.setString(2, newEmail);      // Set new email
-            pstmt.setInt(3, userID);           // Specify which user to update
-            pstmt.executeUpdate();
-        }
-    }
-
     public ArrayList<IrregReservation> getIrregularReservations() throws SQLException {
         String sql = """
             SELECT IR.IrregShuttleBookingID, B.Destination, B.Date, T.Time, IR.Reason, B.UserID, IR.isApproved

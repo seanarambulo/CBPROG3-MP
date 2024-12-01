@@ -48,11 +48,11 @@ public class DispatcherSRSFRAME1_MENU extends FrameBackground {
 
         // Populate Line and Time lists
         lineList.add("Line 1");
-        lineList.add("PASEO<-->DLSU-LC");
+        lineList.add("PASEO<-->LAGUNA");
         lineList.add("Line 3");
 
-        timeList.add("10:00 AM");
-        timeList.add("12:00 PM");
+        timeList.add("10:00:00");
+        timeList.add("13:00:00");
         timeList.add("6:00 PM");
 
         

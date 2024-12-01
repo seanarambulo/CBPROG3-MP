@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import src.Controller.DLSU_SRSUser_controller;
 import src.Model.*;
 
-public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
+public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame2 {
     
     private final DLSU_SRSUser_controller controller;
     private ArrayList<ShuttleBookingView> shuttleBookings;
@@ -21,7 +21,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
         this.shuttleBookings = shuttleBookings;
         setDesignationTitle("View Bookings", 20, 0, 0, 0);
         this.controller = controller;
-        SwingUtilities.invokeLater(() -> initComponets());
+        initComponets();
     }
 
     @Override

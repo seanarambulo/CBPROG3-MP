@@ -42,7 +42,7 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
 
         // Populate Line and Time lists
         lineList.add("DLSU-MNL<-->DLSU-LC");
-        lineList.add("PASEO<-->DLSU-LC");
+        lineList.add("PASEO<-->LAGUNA");
         lineList.add("Line 3");
 
         timeList.add("10:00:00");
