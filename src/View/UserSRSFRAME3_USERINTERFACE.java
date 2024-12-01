@@ -17,7 +17,7 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
         super();
         this.controller = controller;
         setDesignationTitle("Welcome " + controller.getUserName_userController(), 15, 0, 0, 0);
-        SwingUtilities.invokeLater(() -> initComponets());
+        initComponets();
     }
 
     @Override
