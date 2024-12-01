@@ -11,7 +11,6 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
     private final JPasswordField PasswordTF  = new JPasswordField(20);
     private final JComboBox<String> DesignationComboBox = new JComboBox<>(new String[]{"Student", "Employee"});
     private DLSU_SRSUser_controller controller;
-
     public UserSRSFRAME1_REGISTRATION(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
@@ -71,14 +70,20 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
                 if (Designation.equals("Student")) {
                     this.dispose();
                     try {
-                        controller.insertIntoUser(UserID, Designation, Password, Email, 0);
+                        controller.insertIntoUser(UserID, FullName, Password, Email, 4);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
-                    controller.SRS2FRAME_VERIFY_userController();
+                     new UserSRSFRAME2_VERIFY(UserID);
                 } else {
                     JOptionPane.showMessageDialog(outerPanel, "Account successfully registered");
                     this.dispose();
+                    try {
+                        controller.insertIntoUser(UserID, FullName, Password, Email, 3);
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                     new SRS_LOGIN();
                 }
             }

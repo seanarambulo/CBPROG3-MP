@@ -16,7 +16,12 @@ public class DLSU_SRSUser_controller {
     protected ShuttleBookingView selectedReservation = new ShuttleBookingView();
 
     public DLSU_SRSUser_controller() {
-        // blank constructor
+        try {
+            this.dbm = new DatabaseManager();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public DLSU_SRSUser_controller(int userID, String password) throws SQLException {
@@ -103,9 +108,9 @@ public class DLSU_SRSUser_controller {
     }
     
     // Method to insert into the ClassDays table
-    public void insertIntoClassDays(int id, String dayName) throws SQLException {
+    public void insertIntoClassDays(int id, int dayID) throws SQLException {
         try {
-            dbm.insertIntoClassDays(id, dayName);
+            dbm.insertIntoClassDays(id, dayID);
         } catch (SQLException e) {
             Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
             throw e; // Rethrow the exception after logging it
@@ -273,9 +278,7 @@ public class DLSU_SRSUser_controller {
         userView.UserSRSFRAME1_REGISTRATION(this);
     }
     
-    public void SRS2FRAME_VERIFY_userController() {
-        userView.UserSRSFRAME2_VERIFY(this);
-    }
+  
     
     public void SRSFRAME3_USERINTERFACE_userController() {
         userView.UserSRSFRAME3_USERINTERFACE(this);

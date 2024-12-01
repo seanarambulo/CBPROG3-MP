@@ -12,9 +12,7 @@ public class UserView {
         new UserSRSFRAME1_REGISTRATION(controller);
     }
 
-    public void UserSRSFRAME2_VERIFY(DLSU_SRSUser_controller controller){
-        new UserSRSFRAME2_VERIFY(controller);
-    }
+  
 
     public void UserSRSFRAME3_USERINTERFACE(DLSU_SRSUser_controller controller){
         new UserSRSFRAME3_USERINTERFACE(controller);

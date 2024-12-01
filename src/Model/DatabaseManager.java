@@ -11,7 +11,7 @@ public class DatabaseManager {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/shuttlesystem";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "kyss092722SMDA";
+    private static final String DB_PASSWORD = "12345678";
 
     private Connection connection;
 
@@ -39,11 +39,11 @@ public class DatabaseManager {
     }
 
     // Method to insert into the ClassDays table
-    public void insertIntoClassDays(int id, String dayName) throws SQLException {
-        String sql = "INSERT INTO ClassDays (ClassDaysID, DayName) VALUES (?, ?)";
+    public void insertIntoClassDays(int id, int dayName) throws SQLException {
+        String sql = "INSERT INTO classdays (DaysID, StudentID) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            pstmt.setString(2, dayName);
+            pstmt.setInt(1, dayName);
+            pstmt.setInt(2, id);
             pstmt.executeUpdate();
         }
     }
