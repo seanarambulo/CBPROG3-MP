@@ -1,11 +1,9 @@
 package src.View;
 
-import src.Controller.DLSU_SRSUser_controller;
-import src.Model.*;
 import java.awt.*;
 import javax.swing.*;
 
-public class UserSRSFRAME10_EditUserData {
+public class UserSRSFRAME10_EditUserData extends FrameBackground {
 
     private JTextField EmailTF;
     private JTextField UsernameTF;
@@ -13,116 +11,49 @@ public class UserSRSFRAME10_EditUserData {
     private JLabel EmailLabel;
     private JLabel UsernameLabel;
     private JLabel PasswordLabel;
-    private JLabel TitleLabel;
     private JButton SubmitButton;
     private JButton BackButton;
 
-    public UserSRSFRAME10_EditUserData() {
-        initComponents();
+    public UserSRSFRAME10_EditUserData(int buttonWidth, int buttonHeight, int buttonX, int buttonY) {
+        super();
+        setDesignationTitle("Edit User Data", 20, 0, 0, 0);
+        SwingUtilities.invokeLater(() -> initComponets());
     }
 
-    private void initComponents() {
-        JFrame frame = new JFrame("Edit User Data");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(810, 530);
-        frame.setResizable(false);
-        frame.setLayout(new BorderLayout());
+    @Override
+    protected void initComponets() {
+        
+        setLayout(null);
 
-        JPanel outerPanel = new JPanel();
-        outerPanel.setBackground(new Color(108, 194, 162));
-        outerPanel.setLayout(new GridBagLayout());
-        outerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        int buttonWidth = 320;
+        int buttonHeight = 30;
+        int buttonX = (innerPanel.getWidth() - buttonWidth) / 2;
+        int buttonY = 100;
 
-        JPanel innerPanel = new JPanel();
-        innerPanel.setBackground(new Color(53, 95, 79));
-        innerPanel.setLayout(new GridBagLayout());
-        innerPanel.setPreferredSize(new Dimension(710, 430));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(15, 20, 15, 20); // More space between components
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        EmailLabel = createLabel("Email:", buttonX, buttonY, new Dimension(buttonWidth, buttonHeight), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
 
-        // Title Label
-        TitleLabel = new JLabel("Edit User Data");
-        TitleLabel.setFont(new Font("Baskerville", Font.PLAIN, 36));
-        TitleLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(40, 87, 30, 0); // Adjust margin for title
-        innerPanel.add(TitleLabel, gbc);
+        EmailTF = createTextField(buttonX, buttonY + buttonHeight, buttonWidth, buttonHeight);
 
-        // Email Label and TextField
-        EmailLabel = new JLabel("Email:");
-        EmailLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        EmailLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(10, 12, 10, 10); // More space between label and text field
-        innerPanel.add(EmailLabel, gbc);
+        UsernameLabel = createLabel("Username:", buttonX, buttonY + 2 * buttonHeight, new Dimension(buttonWidth, buttonHeight), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
 
-        EmailTF = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridwidth = 1;
-        innerPanel.add(EmailTF, gbc);
+        UsernameTF = createTextField(buttonX, buttonY + 3 * buttonHeight, buttonWidth, buttonHeight);
 
-        // Username Label and TextField
-        UsernameLabel = new JLabel("Username:");
-        UsernameLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        UsernameLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(20, 12, 10, 10); // More space between label and text field
-        innerPanel.add(UsernameLabel, gbc);
+        PasswordLabel = createLabel("Password:", buttonX, buttonY + 4 * buttonHeight, new Dimension(buttonWidth, buttonHeight), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
 
-        UsernameTF = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridwidth = 1;
-        innerPanel.add(UsernameTF, gbc);
+        PasswordTF = createPasswordField(buttonX, buttonY + 5 * buttonHeight, buttonWidth, buttonHeight);
 
-        // Password Label and TextField
-        PasswordLabel = new JLabel("Password:");
-        PasswordLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        PasswordLabel.setForeground(Color.WHITE);
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(20, 12, 10, 10); // More space between label and text field
-        innerPanel.add(PasswordLabel, gbc);
+        BackButton = configureButton("Back", new Font("Helvetica Neue", Font.PLAIN, 20), Color.BLACK, buttonX, buttonY + 6 * buttonHeight, new Dimension(buttonWidth / 2, buttonHeight), e -> {
+            // Add action for Back button
+        });
+        add(BackButton);
 
-        PasswordTF = new JPasswordField(20);
-        gbc.gridx = 1;
-        gbc.gridwidth = 1;
-        innerPanel.add(PasswordTF, gbc);
-
-        // Back Button (added on the left side of Update button)
-        BackButton = new JButton("Back");
-        BackButton.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(40, 0, 20, 10); // Space for Back button
-        innerPanel.add(BackButton, gbc);
-
-        // Submit Button (Update)
-        SubmitButton = new JButton("Update");
-        SubmitButton.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        gbc.insets = new Insets(40, 10, 20, 0); // Space for Submit button
-        innerPanel.add(SubmitButton, gbc);
-
-        // Adding innerPanel to outerPanel
-        outerPanel.add(innerPanel);
-        frame.add(outerPanel, BorderLayout.CENTER);
-
-        frame.setVisible(true);
+        SubmitButton = configureButton("Update", new Font("Helvetica Neue", Font.PLAIN, 20), Color.BLACK, buttonX + buttonWidth / 2 + 10, buttonY + 6 * buttonHeight, new Dimension(buttonWidth / 2, buttonHeight), e -> {
+            // Add action for Submit button
+        });
+        add(SubmitButton);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(UserSRSFRAME10_EditUserData::new);
+        SwingUtilities.invokeLater(() -> new UserSRSFRAME10_EditUserData(320, 50, 50, 100));
     }
 }

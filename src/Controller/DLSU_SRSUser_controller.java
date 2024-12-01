@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import src.DLSU_SRS;
 import src.Model.*;
 import src.View.*;
 
@@ -207,8 +206,6 @@ public class DLSU_SRSUser_controller {
             throw e; // Rethrow the exception after logging it
         }
     }
-    
-
     
     // Method to close the connection
     public void close() throws SQLException {
