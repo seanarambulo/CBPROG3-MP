@@ -30,7 +30,7 @@ public class AdminView {
         new AdminSRSFRAME6_EDITUSERDATA(Acontroller, userId);
     }
 
-    public void AdminCheckReservation(DLSU_SRSAdmin_controller Acontroller, ArrayList<ShuttleBooking> reservations) {
+    public void AdminCheckReservation(DLSU_SRSAdmin_controller Acontroller, ArrayList<ShuttleBookingView> reservations) {
         new AdminCheckReservation(Acontroller, reservations);
     }
 

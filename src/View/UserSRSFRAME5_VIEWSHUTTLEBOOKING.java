@@ -78,7 +78,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
                     if (response == JOptionPane.YES_OPTION) {
                         this.dispose();
                         controller.setShuttleBookingView(selectedReservation);
-                        controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController();
+                        controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController(this.controller);
                     }
                 }
             }

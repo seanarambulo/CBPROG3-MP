@@ -56,7 +56,7 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
         configureButton("Edit Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             try {
                 this.dispose();
-                controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController();
+                controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController(this.controller);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

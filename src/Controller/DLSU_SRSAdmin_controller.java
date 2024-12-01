@@ -1,6 +1,5 @@
 package src.Controller;
 
-import java.util.ArrayList;
 import java.sql.SQLException;
 import src.Model.*;
 import src.View.*;
@@ -21,7 +20,6 @@ public class DLSU_SRSAdmin_controller {
         
     }
 
-
     public void updateIrregAttendance(int shuttleBookingID) throws SQLException {
         dbManager.updateIrregAttendance(shuttleBookingID);
     }
@@ -39,11 +37,7 @@ public class DLSU_SRSAdmin_controller {
     }
 
     public void VerifyReservationFrame() {
-        try {
-            //view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this, dbManager.getIrregularReservations());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        view.ViewAdminSRSFRAME3_VIEWRESERVATIONS(this);
     }
 
     public void VerifyRegistrationFrame() {
@@ -97,15 +91,11 @@ public class DLSU_SRSAdmin_controller {
     }
 
     public void AdminSRSFRAME5_VERIFYRESERVATION_adminController() throws SQLException{
-        view.ViewAdminSRSFRAME5_VERIFYRESERVATION(this, dbManager.getIrregularReservations());
+        view.ViewAdminSRSFRAME5_VERIFYRESERVATIONS(this, dbManager.getIrregularReservations());
     }
 
-    public void AdminSRSFRAME6_EDITADMINDATA_adminController(){
-        view.ViewAdminSRSFRAME6_EDITADMINDATA(this);
-    }
-
-    public void AdminSRSFRAME7_EDITUSERDATA_adminController(int userID){
-        view.ViewAdminSRSFRAME7_EDITUSERDATA(this, userID);
+    public void AdminSRSFRAME6_EDITUSERDATA_adminController(int userID){
+        view.ViewAdminSRSFRAME6_EDITUSERDATA(this, userID);
     }
 
 }

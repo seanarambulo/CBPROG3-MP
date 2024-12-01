@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import src.DLSU_SRS;
 import src.Model.*;
 import src.View.*;
 
@@ -289,8 +290,8 @@ public class DLSU_SRSUser_controller {
         userView.UserSRSFRAME5_VIEWSHUTTLEBOOKING(this);
     }
     
-    public void SRSFRAME6_EDITSHUTTLEBOOKING_userController() {
-        userView.UserSRSFRAME6_EDITSHUTTLEBOOKING(this);
+    public void SRSFRAME6_EDITSHUTTLEBOOKING_userController(DLSU_SRSUser_controller controller) {
+        userView.UserSRSFRAME6_EDITSHUTTLEBOOKING(controller);
     }
     
     public void SRSFRAME7_REGULAR_userController() {
