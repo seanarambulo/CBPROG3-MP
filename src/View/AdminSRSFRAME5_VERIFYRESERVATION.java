@@ -1,7 +1,6 @@
 package src.View;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -17,7 +16,7 @@ public class AdminSRSFRAME5_VERIFYRESERVATION extends TableFrame {
         super();
         this.Acontroller = Acontroller;
         this.reservations = reservations;
-
+        setDesignationTitle("Verify Reservation", 20, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
@@ -25,34 +24,32 @@ public class AdminSRSFRAME5_VERIFYRESERVATION extends TableFrame {
     protected void initComponets() {
         String[] columns = {"Destination", "Line", "Date", "Time", "ID Number", "Reason", "Verify"};
         this.tableModel = createTableModel(columns);
-        this.reservationTable = new JTable(this.tableModel);
+        this.reservationTable = createReservationTable(tableModel);
+        this.scrollPane = createScrollPane(this.reservationTable);
         
         loadObjects(this.tableModel, this.reservations);
 
-        JTable table = createReservationTable(tableModel);
-        innerPanel.add(createScrollPane(table), BorderLayout.CENTER);
-        JButton submitButton = configureButton("SUBMIT", new Font("Arial", Font.PLAIN, 14), Color.BLACK, 0, 0, new Dimension(100, 30), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    for (int i = 0; i < tableModel.getRowCount(); i++) {
-                        boolean isChecked = (boolean) tableModel.getValueAt(i, 5); // Check the 'Verify' column
-                        if (isChecked) {
-                            IrregReservation reservation = (IrregReservation) reservations.get(i); // Access the corresponding reservation
-                            int bookingID = reservation.getShuttleBookingID();
-                            Acontroller.updateIrregAttendance(bookingID); // Update attendance
-                        }
+        innerPanel.add(this.scrollPane, BorderLayout.CENTER);
+        JButton submitButton = configureButton("SUBMIT", new Font("Arial", Font.PLAIN, 14), Color.BLACK, 0, 0, new Dimension(100, 20), e -> {
+            try {
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    boolean isChecked = (boolean) tableModel.getValueAt(i, 5); // Check the 'Verify' column
+                    if (isChecked) {
+                        IrregReservation reservation = (IrregReservation) reservations.get(i); // Access the corresponding reservation
+                        int bookingID = reservation.getShuttleBookingID();
+                        Acontroller.updateIrregAttendance(bookingID); // Update attendance
                     }
-                    JOptionPane.showMessageDialog(AdminSRSFRAME5_VERIFYRESERVATION.this, "Attendance updated successfully!");
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(AdminSRSFRAME5_VERIFYRESERVATION.this, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                AdminSRSFRAME5_VERIFYRESERVATION.this.dispose();
-                Acontroller.AdminSRSFRAME1_Menu_AdminController();
+                JOptionPane.showMessageDialog(AdminSRSFRAME5_VERIFYRESERVATION.this, "Attendance updated successfully!");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(AdminSRSFRAME5_VERIFYRESERVATION.this, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
+            AdminSRSFRAME5_VERIFYRESERVATION.this.dispose();
+            Acontroller.AdminSRSFRAME1_Menu_AdminController();
         });
-        buttonPanel.add(submitButton);
-        innerPanel.add(buttonPanel, BorderLayout.SOUTH);
+        innerPanel.add(submitButton, BorderLayout.SOUTH);
+        innerPanel.revalidate();
+        innerPanel.repaint();
     }
 
     @Override

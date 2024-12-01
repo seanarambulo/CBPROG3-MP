@@ -156,7 +156,7 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
         // Add ActionListener to Back Button
         backButton.addActionListener(e -> {
             frame.dispose(); // Close the current frame
-            System.out.println("Back button clicked. Returning to the previous menu.");
+            Acontroller.AdminSRSFRAME1_Menu_AdminController(); // Open the Admin Menu
         });
 
         GridBagConstraints outerGbc = new GridBagConstraints();

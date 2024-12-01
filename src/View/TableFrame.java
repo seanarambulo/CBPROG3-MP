@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-
+import javax.swing.table.*;
 public abstract class TableFrame extends FrameBackground {
 
     protected JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

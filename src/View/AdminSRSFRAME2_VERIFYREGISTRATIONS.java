@@ -16,19 +16,17 @@ public class AdminSRSFRAME2_VERIFYREGISTRATIONS extends TableFrame {
         this.Acontroller = Acontroller;
         this.students = students;
         setDesignationTitle("Pending Reservations", 30, 0, 0, 0);
-        
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
     @Override
     protected void initComponets() {   
-        innerPanel.setLayout(null);     
         this.tableModel = createTableModel(new String[] {"Student ID", "Day", "EAF", "Verify"});
         this.reservationTable = createReservationTable(this.tableModel);
         this.scrollPane = createScrollPane(this.reservationTable);
         innerPanel.add(this.scrollPane, BorderLayout.CENTER);
         
-        JButton submitButton = createButton("SUBMIT", 0, 0, 100, 30, e -> {
+        JButton submitButton = createButton("SUBMIT", 0, 0, 100, 20, e -> {
             try {
                 ArrayList<Integer> userIdsToUpdate = new ArrayList<>();
 
@@ -62,8 +60,9 @@ public class AdminSRSFRAME2_VERIFYREGISTRATIONS extends TableFrame {
                 JOptionPane.showMessageDialog(AdminSRSFRAME2_VERIFYREGISTRATIONS.this, "Error updating verification: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
-        buttonPanel.add(submitButton);
-        AdminSRSFRAME2_VERIFYREGISTRATIONS.this.add(buttonPanel, BorderLayout.SOUTH);
+        innerPanel.add(submitButton, BorderLayout.SOUTH);
+        innerPanel.revalidate();
+        innerPanel.repaint();
     }
 
     @Override

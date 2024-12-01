@@ -24,21 +24,13 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
     @Override
     protected void initComponets(){
 
-        Dimension buttonSize = new Dimension(100, 50);
-        Font buttonFont = new Font("Helvetica Neue", Font.BOLD, 18);
-        Color buttonColor = new Color(108, 194, 162);
-
-        innerPanel.setLayout(null);
-        int panelWidth = innerPanel.getWidth();
-        int xPosition = (panelWidth - buttonSize.width) / 2;
-
         this.tableModel = createTableModel(new String[] {"Verify", "Booking ID","ID Number", "Date", "Time", "Destination"});
         this.reservationTable = createReservationTable(this.tableModel);
         this.scrollPane = createScrollPane(this.reservationTable);
         innerPanel.add(this.scrollPane, BorderLayout.CENTER);
         loadObjects(this.tableModel, this.shuttleBookings);
         
-        this.buttonPanel.add(configureButton(getName(), buttonFont, buttonColor, xPosition, 700, buttonSize, e -> {
+        JButton submitButton = configureButton("SUBMIT", new Font("Arial", Font.PLAIN, 14), Color.BLACK, 0, 0, new Dimension(100, 20), e -> {
             try {
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
                     boolean isChecked = (boolean) tableModel.getValueAt(i, 0); // Check the 'Verify' column
@@ -47,17 +39,20 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
                         
                         Dcontroller.updateAttendance(bookingID); // Update attendance
                         System.out.println(bookingID);
+                                    
                     }
                 }
                 JOptionPane.showMessageDialog(this, "Attendance updated successfully!");
+                this.dispose();
+                Dcontroller.DispatcherMenu1Frame_Menu_DispatcherController();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error updating attendance: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            this.dispose();
-            Dcontroller.DispatcherMenu1Frame_Menu_DispatcherController();
-        }));
-        innerPanel.add(this.buttonPanel, BorderLayout.SOUTH);
-        
+        });
+        innerPanel.add(submitButton, BorderLayout.SOUTH);
+        innerPanel.revalidate();
+        innerPanel.repaint();
+
     }
 
     @Override
