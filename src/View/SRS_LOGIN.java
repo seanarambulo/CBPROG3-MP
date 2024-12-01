@@ -24,7 +24,7 @@ public class SRS_LOGIN extends FrameBackground {
         innerPanel.setLayout(null); // Use absolute positioning
 
         // Username Label and Field
-        createLabel("USERID:", 80, 120, new Dimension(80, 20), new Font("Arial", Font.PLAIN, 12), Color.WHITE);
+        createLabel("UserId!:", 80, 120, new Dimension(80, 20), new Font("Arial", Font.PLAIN, 12), Color.WHITE);
         JTextField usernameField = createTextField(160, 120, 460, 25);
         innerPanel.add(usernameField); // Add the usernameField to the panel
 
@@ -103,7 +103,7 @@ public class SRS_LOGIN extends FrameBackground {
         registerButton.setBounds(365, 256, 100, 30);
         registerButton.setBackground(Color.BLACK);
         registerButton.setForeground(new Color(220, 248, 232)); // Light green text
-        registerButton.setName("registerButton");
+        registerButton.setName("registerButton!");
         registerButton.addActionListener(e -> {
             this.dispose();
             Ucontroller = new DLSU_SRSUser_controller();

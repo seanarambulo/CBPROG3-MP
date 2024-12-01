@@ -1,9 +1,7 @@
 package src.View;
 
-import java.sql.SQLException;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import src.Controller.DLSU_SRSUser_controller;
@@ -16,33 +14,54 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
     private DefaultTableModel tableModel;
     private JTable reservationTable;
     private JScrollPane scrollPane;
+    private JButton backButton, deleteButton;
 
-    public UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller) {
+    public UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller, ArrayList<ShuttleBookingView> shuttleBookings) {
         super();
+        this.shuttleBookings = shuttleBookings;
         setDesignationTitle("View Bookings", 20, 0, 0, 0);
         this.controller = controller;
         SwingUtilities.invokeLater(() -> initComponets());
-    };
+    }
 
     @Override
     protected void initComponets() {        
-        this.tableModel = createTableModel(new String[] {"Booking ID", "Shuttle Line", "Date", "Time", "Origin", "Destination"});
+        this.tableModel = createTableModel(new String[] {"Select", "Booking ID", "UserID", "Date", "Time", "Destination"});
         this.reservationTable = createReservationTable(this.tableModel);
         this.scrollPane = createScrollPane(this.reservationTable);
-        
+
         innerPanel.setLayout(null);
-        try {
-            shuttleBookings = controller.ReservationsList();
-        } catch (SQLException e) {
-            Logger.getLogger(UserSRSFRAME5_VIEWSHUTTLEBOOKING.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(this, "An error occurred while retrieving reservations.", "Error", JOptionPane.ERROR_MESSAGE);
-            shuttleBookings = new ArrayList<>(); // Initialize with an empty list in case of error
-        }
+
         loadReservations(this.tableModel, this.shuttleBookings);
 
+        this.scrollPane.setBounds(50, 70, 600, 300); // Adjust table position and size
         innerPanel.add(this.scrollPane);
 
-        addTableSelectionListener(this.reservationTable, shuttleBookings, this.controller);
+        // Back button
+        this.backButton = new JButton("Back");
+        this.backButton.setBounds(200, 380, 100, 30); // Position button at the bottom left
+        this.backButton.addActionListener(e -> {
+            this.dispose(); // Close this frame
+            controller.SRSFRAME3_USERINTERFACE_userController(); // Navigate to the previous menu
+        });
+        innerPanel.add(this.backButton);
+
+        // Delete button
+        this.deleteButton = new JButton("Delete");
+        this.deleteButton.setBounds(400, 380, 100, 30); // Position button at the bottom right
+        this.deleteButton.addActionListener(e -> {
+            ArrayList<Integer> selectedBookingIDs = getSelectedBookingIDs();
+            if (!selectedBookingIDs.isEmpty()) {
+                for (Integer bookingID : selectedBookingIDs) {
+                    controller.deleteBookings(bookingID); // Pass each ID individually to the controller
+                }
+                JOptionPane.showMessageDialog(this, "Selected bookings deleted successfully.");
+                controller.SRSFRAME3_USERINTERFACE_userController();
+            } else {
+                JOptionPane.showMessageDialog(this, "No bookings selected for deletion.");
+            }
+        });
+        innerPanel.add(this.deleteButton);
 
         innerPanel.revalidate();
         innerPanel.repaint();
@@ -53,48 +72,50 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
         return new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                // Only allow checkbox column to be editable
+                return column == 0;
+            }
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                // Return Boolean class for the checkbox column
+                if (columnIndex == 0) {
+                    return Boolean.class;
+                }
+                return super.getColumnClass(columnIndex);
             }
         };
-        
-    }
-
-    protected void addTableSelectionListener(JTable reservationTable, ArrayList<ShuttleBookingView> reservations, DLSU_SRSUser_controller controller) {
-        reservationTable.getSelectionModel().addListSelectionListener(event -> {
-            if (!event.getValueIsAdjusting()) {
-                int selectedRow = reservationTable.getSelectedRow();
-                if (selectedRow != -1) {
-                    ShuttleBookingView selectedReservation = reservations.get(selectedRow);
-                    int response = JOptionPane.showConfirmDialog(this,
-                        "Reservation ID: " + selectedReservation.getShuttleBookingID() + "\n" +
-                        "Shuttle Line: " + selectedReservation.getArrowsExpressLine() + "\n" +
-                        "Date: " + selectedReservation.getDate() + "\n" +
-                        "Time: " + selectedReservation.getTime() + "\n" +
-                        "Origin: " + selectedReservation.getOrigin() + "\n" +
-                        "Destination: " + selectedReservation.getDestination() + "\n\n" +
-                        "Do you want to edit this information?",
-                        "Selected Reservation",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-
-                    if (response == JOptionPane.YES_OPTION) {
-                        this.dispose();
-                        controller.setShuttleBookingView(selectedReservation);
-                        controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController();
-                    }
-                }
-            }
-        });
     }
 
     @Override
     protected void loadReservations(DefaultTableModel tableModel, ArrayList<ShuttleBookingView> reservations) {
         for (ShuttleBookingView reservation : reservations) {
-            tableModel.addRow(new Object[]{reservation.getShuttleBookingID(), 
-                reservation.getArrowsExpressLine(), reservation.getDate(), 
-                reservation.getTime(), reservation.getOrigin(), 
-                reservation.getDestination()});
+            tableModel.addRow(new Object[] {
+                false, // Checkbox initially unchecked
+                reservation.getShuttleBookingID(),
+                reservation.getUserID(),
+                reservation.getDate(),
+                reservation.getTime(),
+                reservation.getDestination()
+            });
         }
     }
-}
 
+    /**
+     * Collects the Booking IDs of the rows where the checkbox is selected.
+     *
+     * @return ArrayList<Integer> containing selected Booking IDs.
+     */
+    private ArrayList<Integer> getSelectedBookingIDs() {
+        ArrayList<Integer> selectedBookingIDs = new ArrayList<>();
+        for (int i = 0; i < reservationTable.getRowCount(); i++) {
+            Boolean isSelected = (Boolean) reservationTable.getValueAt(i, 0); // Check checkbox value
+            if (isSelected != null && isSelected) {
+                Integer bookingID = (Integer) reservationTable.getValueAt(i, 1); // Get Booking ID as Integer
+                selectedBookingIDs.add(bookingID);
+            }
+        }
+        return selectedBookingIDs;
+    }
+
+}

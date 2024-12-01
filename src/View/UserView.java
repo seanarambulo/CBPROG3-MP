@@ -1,6 +1,9 @@
 package src.View;
 
+import java.util.ArrayList;
+
 import src.Controller.DLSU_SRSUser_controller;
+import src.Model.ShuttleBookingView;
 
 public class UserView {
    
@@ -12,8 +15,8 @@ public class UserView {
         new UserSRSFRAME1_REGISTRATION(controller);
     }
 
-    public void UserSRSFRAME2_VERIFY ( DLSU_SRSUser_controller controller){
-        new UserSRSFRAME2_VERIFY(controller);
+    public void UserSRSFRAME2_VERIFY ( int studentID){
+        new UserSRSFRAME2_VERIFY( studentID);
     }
 
     public void UserSRSFRAME3_USERINTERFACE(DLSU_SRSUser_controller controller){
@@ -24,8 +27,8 @@ public class UserView {
         new UserSRSFRAME4_ADDSHUTTLEBOOKING(controller);
     }
 
-    public void UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller){
-        new UserSRSFRAME5_VIEWSHUTTLEBOOKING(controller);
+    public void UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller,ArrayList<ShuttleBookingView> shuttleBookings){
+        new UserSRSFRAME5_VIEWSHUTTLEBOOKING(controller,shuttleBookings);
     }
     
     public void UserSRSFRAME6_EDITSHUTTLEBOOKING(DLSU_SRSUser_controller controller){
@@ -35,17 +38,20 @@ public class UserView {
     public void UserSRSFRAME7_REGULAR(DLSU_SRSUser_controller controller){
         new UserSRSFRAME7_REGULAR(controller);
     }
-
-    public void UserSRSFRAME8_PRESET(DLSU_SRSUser_controller controller){
-        new UserSRSFRAME8_PRESET(controller);
+    public void UserSRSFRAME8_REGULAR(DLSU_SRSUser_controller controller, ShuttleBookingView booking){
+        new UserSRSFRAME8_REGULAR(controller,booking);
+    }
+    
+    public void UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller){
+        new UserSRSFRAME10_PRESET(controller);
     }
 
     public void UserSRSFRAME9_IRREGULAR(DLSU_SRSUser_controller controller){
         new UserSRSFRAME9_IRREGULAR(controller);
     }
 
-    public void UserSRSFRAME10_EDITUSERDATA(DLSU_SRSUser_controller controller){
-        //new UserSRSFRAME10_EDITUSERDATA(controller);
+    public void UserSRSFRAME11_EDITUSERDATA(DLSU_SRSUser_controller controller){
+        new EditUserData(controller);
     }
 }
 

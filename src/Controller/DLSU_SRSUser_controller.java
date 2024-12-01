@@ -177,15 +177,7 @@ public class DLSU_SRSUser_controller {
         }
     }
     
-    // Method to insert into the Booking table
-    public void insertIntoBooking(int id, boolean attendance, String origin, String destination, String date, int shuttleScheduleId, int lineId) throws SQLException {
-        try {
-            dbm.insertIntoBooking(id, attendance, origin, destination, date, shuttleScheduleId, lineId);
-        } catch (SQLException e) {
-            Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
-            throw e; // Rethrow the exception after logging it
-        }
-    }
+   
     
     // Add more methods for other tables as needed...
     public User getUserByCredentials(String username, String password) throws SQLException {
@@ -215,14 +207,7 @@ public class DLSU_SRSUser_controller {
         }
     }
     
-    public ArrayList<ShuttleBookingView> ReservationsList() throws SQLException {
-        try {
-            return dbm.ReservationsList();
-        } catch (SQLException e) {
-            Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
-            throw e; // Rethrow the exception after logging it
-        }
-    }
+
     
     // Method to close the connection
     public void close() throws SQLException {
@@ -289,7 +274,12 @@ public class DLSU_SRSUser_controller {
     }
     
     public void SRSFRAME5_VIEWSHUTTLEBOOKING_userController() {
-        userView.UserSRSFRAME5_VIEWSHUTTLEBOOKING(this);
+        try {
+            userView.UserSRSFRAME5_VIEWSHUTTLEBOOKING(this,dbm.getReservations(this.getUserID_userController()));
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     public void SRSFRAME6_EDITSHUTTLEBOOKING_userController() {
@@ -299,17 +289,19 @@ public class DLSU_SRSUser_controller {
     public void SRSFRAME7_REGULAR_userController() {
         userView.UserSRSFRAME7_REGULAR(this);
     }
-    
-    public void SRSFRAME8_PRESET_userController() {
-        userView.UserSRSFRAME8_PRESET(this);
+    public void SRSFRAME8_REGULAR_userController(ShuttleBookingView booking) {
+        userView.UserSRSFRAME8_REGULAR(this, booking);
     }
     
     public void SRSFRAME9_IRREGULAR_userController() {
         userView.UserSRSFRAME9_IRREGULAR(this);
     }
-    
-    public void SRSFRAME10_EDITUSERDATA_userController() {
-        userView.UserSRSFRAME10_EDITUSERDATA(this);
+
+    public void SRSFRAME10_PRESET_userController() {
+        userView.UserSRSFRAME10_PRESET(this);
+    }
+    public void SRSFRAME11_EDITUSERDATA_userController() {
+        userView.UserSRSFRAME11_EDITUSERDATA(this);
     }
 
     public void setShuttleBookingView(ShuttleBookingView selectedReservation) {
@@ -318,5 +310,36 @@ public class DLSU_SRSUser_controller {
 
     public ShuttleBookingView getShuttleBookingView() {
         return selectedReservation;
+    }
+
+    public void deleteBookings(int bookingID) {
+        dbm.deleteBookings(bookingID);
+    }
+
+    public ArrayList<String> getTimesForLine(String LineName) {
+        return dbm.getTimesForLine(LineName);
+    }
+    public int getLineIDByLineName(String LineName) {
+        return dbm.getLineIDByLineName(LineName);
+    }
+    public void insertBooking(boolean attendance, String origin, String destination, 
+    String date, int lineID, long userID, int timeID) {
+        dbm.insertBooking( attendance,  origin,  destination, 
+         date,  lineID,  userID,  timeID);
+    }
+    public Integer getTimeIDByTime(String time) {
+        return dbm.getTimeIDByTime(time);
+    }
+    public ArrayList<String> getDayNamesByStudentID(int userID) {
+        return dbm.getDayNamesByStudentID(userID);
+    }
+    
+    public void updateUserData(String username, String email, String password) {
+        try {
+            dbm.updateUserData(userModel.getUserID(),username,email,password);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
