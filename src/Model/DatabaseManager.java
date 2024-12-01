@@ -481,26 +481,5 @@ public class DatabaseManager {
         return irregularReservations;
     }
 
-
-    // Main method for testing
-    
-
-    /*public static void main(String[] args) {
-        try {
-            DatabaseManager dbManager = new DatabaseManager();
-            String username = "student1";
-            String password = "studentpass";
-    
-            User user = dbManager.getUserByCredentials(username, password);
-            if (user != null) {
-                System.out.println("Login successful!");
-                System.out.println("User details: " + user);
-            } else {
-                System.out.println("Invalid username or password.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
 }
 

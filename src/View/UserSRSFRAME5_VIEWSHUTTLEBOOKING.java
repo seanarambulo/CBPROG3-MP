@@ -13,9 +13,6 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
     
     private final DLSU_SRSUser_controller controller;
     private ArrayList<ShuttleBookingView> shuttleBookings;
-    private DefaultTableModel tableModel;
-    private JTable reservationTable;
-    private JScrollPane scrollPane;
 
     public UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller) {
         super();
@@ -32,11 +29,11 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
         
         innerPanel.setLayout(null);
         try {
-            shuttleBookings = controller.ReservationsList();
+            this.shuttleBookings = controller.ReservationsList();
         } catch (SQLException e) {
             Logger.getLogger(UserSRSFRAME5_VIEWSHUTTLEBOOKING.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(this, "An error occurred while retrieving reservations.", "Error", JOptionPane.ERROR_MESSAGE);
-            shuttleBookings = new ArrayList<>(); // Initialize with an empty list in case of error
+            this.shuttleBookings = new ArrayList<>(); // Initialize with an empty list in case of error
         }
         
         loadObjects(this.tableModel, this.shuttleBookings);

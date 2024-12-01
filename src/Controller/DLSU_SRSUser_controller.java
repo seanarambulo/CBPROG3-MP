@@ -163,9 +163,9 @@ public class DLSU_SRSUser_controller {
     }
     
     // Method to insert into the Student table
-    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified, int classDaysId) throws SQLException {
+    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified) throws SQLException {
         try {
-            dbm.insertIntoStudent(id, trimester, eaf, isVerified, classDaysId);
+            dbm.insertIntoStudent(id, trimester, eaf, isVerified);
         } catch (SQLException e) {
             Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
             throw e; // Rethrow the exception after logging it
