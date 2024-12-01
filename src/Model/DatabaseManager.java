@@ -494,28 +494,37 @@ public User getUserByID(int userID, String password) throws SQLException {
 
         return times;
     }
-    // Main method for testing
-    
-
-    /*public static void main(String[] args) {
-        try {
-            DatabaseManager dbManager = new DatabaseManager();
-            String username = "student1";
-            String password = "studentpass";
-    
-            User user = dbManager.getUserByCredentials(username, password);
-            if (user != null) {
-                System.out.println("Login successful!");
-                System.out.println("User details: " + user);
-            } else {
-                System.out.println("Invalid username or password.");
+    public boolean checkIfUserExists(int userId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM users WHERE user_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userId);
+            
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0; // If count > 0, user exists
+                }
             }
-        } catch (SQLException e) {
-            System.err.println("Error updating verification for StudentID: " + userID);
-            throw e;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex; // Rethrow the exception after logging it
         }
+        return false; // Default to false if no user found or any error occurs
     }
     
+    public void adminUpdateUserData(int userID, String newUsername, String newEmail) throws SQLException {
+        // SQL query to update user data
+        String sql = "UPDATE User SET UserName = ?, Email = ? WHERE UserID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Set the parameters for the update query
+            pstmt.setString(1, newUsername);   // Set new username
+            pstmt.setString(2, newEmail);      // Set new email
+            pstmt.setInt(3, userID);           // Specify which user to update
+            pstmt.executeUpdate();
+        }
+    }
+
     public ArrayList<IrregReservation> getIrregularReservations() throws SQLException {
         String sql = """
             SELECT IR.IrregShuttleBookingID, B.Destination, B.Date, T.Time, IR.Reason, B.UserID, IR.isApproved

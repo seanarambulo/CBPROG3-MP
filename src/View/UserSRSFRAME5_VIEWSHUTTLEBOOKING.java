@@ -32,7 +32,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
 
         innerPanel.setLayout(null);
 
-        loadReservations(this.tableModel, this.shuttleBookings);
+        loadObjects(this.tableModel, this.shuttleBookings);
 
         this.scrollPane.setBounds(50, 70, 600, 300); // Adjust table position and size
         innerPanel.add(this.scrollPane);
@@ -87,19 +87,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
         };
     }
 
-    @Override
-    protected void loadReservations(DefaultTableModel tableModel, ArrayList<ShuttleBookingView> reservations) {
-        for (ShuttleBookingView reservation : reservations) {
-            tableModel.addRow(new Object[] {
-                false, // Checkbox initially unchecked
-                reservation.getShuttleBookingID(),
-                reservation.getUserID(),
-                reservation.getDate(),
-                reservation.getTime(),
-                reservation.getDestination()
-            });
-        }
-    }
+
 
     /**
      * Collects the Booking IDs of the rows where the checkbox is selected.
@@ -116,6 +104,23 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
             }
         }
         return selectedBookingIDs;
+    }
+
+    @Override
+    protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> objs) {
+        for (Object obj : objs) {
+            if (obj instanceof ShuttleBookingView) {
+                ShuttleBookingView reservation = (ShuttleBookingView) obj; // Proper casting
+                tableModel.addRow(new Object[] {
+                    false, // Checkbox initially unchecked
+                    reservation.getShuttleBookingID(),
+                    reservation.getUserID(),
+                    reservation.getDate(),
+                    reservation.getTime(),
+                    reservation.getDestination()
+                });
+            }
+        }
     }
 
 }
