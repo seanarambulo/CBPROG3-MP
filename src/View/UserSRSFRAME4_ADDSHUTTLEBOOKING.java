@@ -17,6 +17,8 @@ public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
         setDesignationTitle("Add Shuttle Booking", 25, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
+
+    @Override
     public void initComponets() {
 
         Dimension buttonSize = new Dimension(400, 70);
