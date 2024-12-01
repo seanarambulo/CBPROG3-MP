@@ -24,7 +24,7 @@ public class SRS_LOGIN extends FrameBackground {
         innerPanel.setLayout(null); // Use absolute positioning
 
         // Username Label and Field
-        createLabel("Username:", 80, 120, new Dimension(80, 20), new Font("Arial", Font.PLAIN, 12), Color.WHITE);
+        createLabel("USERID:", 80, 120, new Dimension(80, 20), new Font("Arial", Font.PLAIN, 12), Color.WHITE);
         JTextField usernameField = createTextField(160, 120, 460, 25);
         innerPanel.add(usernameField); // Add the usernameField to the panel
 

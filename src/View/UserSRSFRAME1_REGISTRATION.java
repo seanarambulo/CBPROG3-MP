@@ -19,7 +19,9 @@ public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
-	public static boolean isEmail(String input){
+	
+
+    public static boolean isEmail(String input){
         return input.endsWith("@dlsu.edu.ph");
     }
 
