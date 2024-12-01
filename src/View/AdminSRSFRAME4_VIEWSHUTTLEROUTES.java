@@ -7,7 +7,7 @@ import javax.swing.table.*;
 import src.Controller.*;
 import src.Model.*;
 
-public class AdminSRSFRAME1_VIEWSHUTTLEROUTES extends TableFrame {
+public class AdminSRSFRAME4_VIEWSHUTTLEROUTES extends TableFrame {
 
     private final DLSU_SRSAdmin_controller controller;
     private JTable reservationTable;
@@ -16,7 +16,7 @@ public class AdminSRSFRAME1_VIEWSHUTTLEROUTES extends TableFrame {
     private JComboBox<String> lineComboBox;
     private JButton backButton, editButton;
 
-    public AdminSRSFRAME1_VIEWSHUTTLEROUTES(DLSU_SRSAdmin_controller controller) {
+    public AdminSRSFRAME4_VIEWSHUTTLEROUTES(DLSU_SRSAdmin_controller controller) {
         super();
         this.controller = controller;
         setDesignationTitle("View Shuttle Routes", 20, 0, 0, 0);
@@ -94,7 +94,4 @@ public class AdminSRSFRAME1_VIEWSHUTTLEROUTES extends TableFrame {
         };
     }
 
-    public static void main(String[] args) {
-        new AdminSRSFRAME1_VIEWSHUTTLEROUTES(new DLSU_SRSAdmin_controller());
-    }
 }

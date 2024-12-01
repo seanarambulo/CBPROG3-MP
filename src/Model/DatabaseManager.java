@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.ArrayList;;
 
 public class DatabaseManager {
 
@@ -18,6 +18,7 @@ public class DatabaseManager {
     // Constructor to establish a connection
     public DatabaseManager() throws SQLException {
         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        connection.setAutoCommit(true);
     }
 
     public void updateAttendance(int shuttleBookingID) throws SQLException {
@@ -152,6 +153,7 @@ public class DatabaseManager {
 
         return user;
     }
+
     public int getDesignationID(int userID, String password) throws SQLException {
         String sql = "SELECT DesignationID FROM User WHERE UserID = ? AND Password = ?";
         int designationID = -1; // Default value if no user is found
@@ -171,15 +173,11 @@ public class DatabaseManager {
     }
 
     public User getUserByID(int userID, String password) throws SQLException {
+
         String userSql = "SELECT * FROM User WHERE UserID = ? AND Password = ?";
         String studentSql = "SELECT * FROM Student WHERE StudentID = ?";
 
         User user = null;
-        // pseudo inner join booking/time
-        // booking new booking (instantiate booking class)
-        // time new time (instantiate time class)
-        // shuttleBooking new shuttleBooking (instantiate shuttleBooking class)
-        // basically instantiate class for every table you want to join
 
         try (PreparedStatement userStmt = connection.prepareStatement(userSql)) {
             userStmt.setInt(1, userID);
@@ -190,7 +188,7 @@ public class DatabaseManager {
                     int designationID = userRs.getInt("DesignationID");
 
                     // Check if the user is a Student
-                    if (designationID == 3) { // Assuming 1 is Student's designation
+                    if (designationID == 1) { // Assuming 1 is Student's designation
                         try (PreparedStatement studentStmt = connection.prepareStatement(studentSql)) {
                             studentStmt.setInt(1, userID);
 
@@ -228,102 +226,210 @@ public class DatabaseManager {
         }
 
         return user;
+    }
+
+    // Method to Register User / InsertIntoUser
+
+    public void RegisterUser(int userID, String userName, String password, String email, int designationID) throws SQLException {
+        // SQL query to insert new user
+        String sql = "INSERT INTO User (UserID, UserName, Password, Email, DesignationID) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Set the parameters for the query
+            pstmt.setInt(1, userID);          // Set UserID
+            pstmt.setString(2, userName);     // Set Username
+            pstmt.setString(3, password);     // Set Password
+            pstmt.setString(4, email);        // Set Email
+            pstmt.setInt(5, designationID);   // Set DesignationID (from ComboBox selection)
+
+            // Execute the update (insert new user)
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("User registered successfully.");
+            } else {
+                System.out.println("Failed to register the user.");
+            }
         }
+    }
 
-        public ArrayList<ShuttleBookingView> ReservationsList() throws SQLException {
-            ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+    // Method for User to update User Data
+    public void updateUserData(int userID, String newUsername, String newEmail, String newPassword) throws SQLException {
+        // SQL query to update user data
+        String sql = "UPDATE User SET UserName = ?, Email = ?, Password = ? WHERE UserID = ?";
 
-            String sql = "SELECT booking.ShuttleBookingID, booking.Origin, booking.Destination, booking.Date, time.Time, arrowsexpressline.LineName "
-                + "FROM booking "
-                + "INNER JOIN user ON user.UserID = booking.UserID "
-                + "INNER JOIN student ON student.StudentID = user.UserID "
-                + "INNER JOIN shuttleschedule ON booking.ShuttleScheduleID = shuttleschedule.ShuttleScheduleID "
-                + "INNER JOIN time ON shuttleschedule.TimeID = time.TimeID "
-                + "INNER JOIN arrowsexpressline on arrowsexpressline.LineID = booking.LineID "
-                + "ORDER BY booking.Date, time.Time";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Set the parameters for the update query
+            pstmt.setString(1, newUsername);   // Set new username
+            pstmt.setString(2, newEmail);      // Set new email
+            pstmt.setString(3, newPassword);   // Set new password
+            pstmt.setInt(4, userID);           // Specify which user to update
+            pstmt.executeUpdate();
+        }
+    }
 
-            try (PreparedStatement stmt = connection.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+    // Method for Admin to update User Data
 
+    public void adminUpdateUserData(int userID, String newUsername, String newEmail) throws SQLException {
+        // SQL query to update user data
+        String sql = "UPDATE User SET UserName = ?, Email = ? WHERE UserID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Set the parameters for the update query
+            pstmt.setString(1, newUsername);   // Set new username
+            pstmt.setString(2, newEmail);      // Set new email
+            pstmt.setInt(3, userID);           // Specify which user to update
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Method to check if a user exists based on user ID
+    public boolean checkIfUserExists(int userId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM User WHERE UserID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0; // If count > 0, user exists
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw ex; // Rethrow the exception after logging it
+        }
+        return false; // Default to false if no user found or any error occurs
+    }
+
+    // Method to fetch pending reservations
+    public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time) throws SQLException {
+        String sql = """
+            SELECT b.ShuttleBookingID, b.Attendance, b.UserID, b.Destination, b.Date, t.Time
+            FROM Booking b
+            JOIN ArrowsExpressLine l ON b.LineID = l.LineID
+            JOIN `Time` t ON t.TimeID = l.TimeID
+            WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
+            """;
+
+        ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, LineName);
+            pstmt.setString(2, date);
+            pstmt.setString(3, time);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    reservations.add(new ShuttleBookingView(
-                        rs.getInt("ShuttleBookingID"), 
-                        rs.getString("Origin"), 
-                        rs.getString("Destination"), 
-                        rs.getString("Date"), 
-                        rs.getString("Time"), 
-                        rs.getString("LineName")));
-                    }
-            }
-
-            return reservations;
-        }
-
-        public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time) throws SQLException {
-            String sql = """
-                SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
-                FROM Booking b
-                JOIN ArrowsExpressLine l ON b.LineID = l.LineID
-                JOIN `Time` t ON t.TimeID = l.TimeID
-                WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
-                """;
-    
-            ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
-    
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setString(1, LineName);
-                pstmt.setString(2, date);
-                pstmt.setString(3, time);
-    
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    while (rs.next()) {
-                        ShuttleBookingView reservation = new ShuttleBookingView();
-                        reservation.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
-                        reservation.setAttendance(rs.getBoolean("Attendance"));
-                        reservation.setUserID(rs.getInt("UserID"));
-                        reservation.setDestination(rs.getString("Destination"));
-                        reservation.setDate(rs.getString("Date"));
-                        reservation.setTime(rs.getString("Time"));
-                        reservations.add(reservation);
-                    }
+                    ShuttleBookingView reservation = new ShuttleBookingView();
+                    reservation.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
+                    reservation.setAttendance(rs.getBoolean("Attendance"));
+                    reservation.setUserID(rs.getInt("UserID"));
+                    reservation.setDestination(rs.getString("Destination"));
+                    reservation.setDate(rs.getString("Date"));
+                    reservation.setTime(rs.getString("Time"));
+                    reservations.add(reservation);
                 }
             }
-    
-            return reservations;
         }
-    
-        public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time, int Attandance) throws SQLException {
-            String sql = """
-                SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
-                FROM Booking b
-                JOIN ArrowsExpressLine l ON b.LineID = l.LineID
-                JOIN `Time` t ON t.TimeID = l.TimeID
-                WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
-                """;
-    
-            ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
-    
-            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setString(1, LineName);
-                pstmt.setString(2, date);
-                pstmt.setString(3, time);
-    
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    while (rs.next()) {
-                        ShuttleBookingView reservation = new ShuttleBookingView();
-                        reservation.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
-                        reservation.setAttendance(rs.getBoolean("Attendance"));
-                        reservation.setUserID(rs.getInt("UserID"));
-                        reservation.setDestination(rs.getString("Destination"));
-                        reservation.setDate(rs.getString("Date"));
-                        reservation.setTime(rs.getString("Time"));
-                        reservations.add(reservation);
-                    }
+
+        return reservations;
+    }
+
+    public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time, int Attandance) throws SQLException {
+        String sql = """
+            SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
+            FROM Booking b
+            JOIN ArrowsExpressLine l ON b.LineID = l.LineID
+            JOIN `Time` t ON t.TimeID = l.TimeID
+            WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
+            """;
+
+        ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, LineName);
+            pstmt.setString(2, date);
+            pstmt.setString(3, time);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ShuttleBookingView reservation = new ShuttleBookingView();
+                    reservation.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
+                    reservation.setAttendance(rs.getBoolean("Attendance"));
+                    reservation.setUserID(rs.getInt("UserID"));
+                    reservation.setDestination(rs.getString("Destination"));
+                    reservation.setDate(rs.getString("Date"));
+                    reservation.setTime(rs.getString("Time"));
+                    reservations.add(reservation);
                 }
             }
-    
-            return reservations;
         }
+
+        return reservations;
+    }
+
+    public ArrayList<ShuttleBookingView> ReservationsList() throws SQLException {
+        ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+
+        String sql = "SELECT booking.ShuttleBookingID, booking.Origin, booking.Destination, booking.Date, time.Time, arrowsexpressline.LineName "
+            + "FROM booking "
+            + "INNER JOIN user ON user.UserID = booking.UserID "
+            + "INNER JOIN student ON student.StudentID = user.UserID "
+            + "INNER JOIN shuttleschedule ON booking.ShuttleScheduleID = shuttleschedule.ShuttleScheduleID "
+            + "INNER JOIN time ON shuttleschedule.TimeID = time.TimeID "
+            + "INNER JOIN arrowsexpressline on arrowsexpressline.LineID = booking.LineID "
+            + "ORDER BY booking.Date, time.Time";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                reservations.add(new ShuttleBookingView(
+                    rs.getInt("ShuttleBookingID"), 
+                    rs.getString("Origin"), 
+                    rs.getString("Destination"), 
+                    rs.getString("Date"), 
+                    rs.getString("Time"), 
+                    rs.getString("LineName")));
+                }
+        }
+
+        return reservations;
+    }
+
+    // Method to fetch pending reservations
+    public ArrayList<ShuttleBookingView> getPendingReservations(String LineName, String date, String time) throws SQLException {
+        String sql = """
+            SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
+            FROM Booking b
+            JOIN ArrowsExpressLine l ON b.LineID = l.LineID
+            JOIN `Time` t ON t.TimeID = l.TimeID
+            WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
+            """;
+
+        ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, LineName);
+            pstmt.setString(2, date);
+            pstmt.setString(3, time);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ShuttleBookingView reservation = new ShuttleBookingView();
+                    reservation.setShuttleBookingID(rs.getInt("ShuttleBookingID"));
+                    reservation.setAttendance(rs.getBoolean("Attendance"));
+                    reservation.setUserID(rs.getInt("UserID"));
+                    reservation.setDestination(rs.getString("Destination"));
+                    reservation.setDate(rs.getString("Date"));
+                    reservation.setTime(rs.getString("Time"));
+                    reservations.add(reservation);
+                }
+            }
+        }
+
+        return reservations;
+    }
 
     // Method to close the connection
     public void close() throws SQLException {
@@ -332,24 +438,4 @@ public class DatabaseManager {
         }
     }
 
-    // Main method for testing
-    
-
-    /*public static void main(String[] args) {
-        try {
-            DatabaseManager dbManager = new DatabaseManager();
-            String username = "student1";
-            String password = "studentpass";
-    
-            User user = dbManager.getUserByCredentials(username, password);
-            if (user != null) {
-                System.out.println("Login successful!");
-                System.out.println("User details: " + user);
-            } else {
-                System.out.println("Invalid username or password.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
 }

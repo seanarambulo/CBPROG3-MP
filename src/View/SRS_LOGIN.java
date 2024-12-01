@@ -65,10 +65,11 @@ public class SRS_LOGIN extends FrameBackground {
                     if (tempID != -1) {
                         switch (tempID) {
                             case 1 -> {
-
+                                DLSU_SRSAdmin_controller Acontroller = new DLSU_SRSAdmin_controller(username, password);
+                                this.dispose();
+                                Acontroller.AdminSRSFRAME1_Menu_AdminController();
                             }
                             case 2 -> {
-                                // Add logic for case 2 if needed
                                 DLSU_SRSDispatcher_controller Dcontroller = new DLSU_SRSDispatcher_controller(username, password);
                                 this.dispose();
                                 Dcontroller.DispatcherMenu1Frame_Menu_DispatcherController();                                

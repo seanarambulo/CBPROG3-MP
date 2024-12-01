@@ -1,52 +1,103 @@
 package src.Controller;
 
+import java.util.ArrayList;
+import java.sql.SQLException;
 import src.Model.*;
 import src.View.*;
 
-import java.util.List;
-
 public class DLSU_SRSAdmin_controller {
 
-    private Admin admin = new Admin();
+    protected User Model = null;
+    protected DatabaseManager dbManager;
+    protected AdminView view = new AdminView();
 
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public DLSU_SRSAdmin_controller(int userID, String password) {
+        try {
+            this.dbManager = new DatabaseManager();
+            this.Model = dbManager.getUserByID(userID, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
     }
 
-    public void addShuttleRoute(String ArrowsExpressLine, int lineNum) {
-        admin.addShuttleRoute(ArrowsExpressLine, lineNum);
+    public void updateIrregAttendance(int shuttleBookingID) throws SQLException {
+        dbManager.updateIrregAttendance(shuttleBookingID);
     }
 
-    public void editShuttleRoute(String ArrowsExpressLine, int lineNum) {
-        admin.editShuttleRoute(ArrowsExpressLine, lineNum);
+    public boolean checkIfUserExists(int userId) throws SQLException {
+        try {
+            // Now check if the user exists using the parsed ID
+            return dbManager.checkIfUserExists(userId); // Assuming checkIfUserExists is a method in your DatabaseManager
+        } catch (NumberFormatException ex) {
+            // If user ID is not a valid integer, return false
+            return false;
+        }
     }
 
-    public void deleteShuttleRoute(String ArrowsExpressLine, int lineNum) {
-        admin.deleteShuttleRoute(ArrowsExpressLine, lineNum);
+    public void adminUpdateUserData(int userId, String username, String email) {
+        try {
+            dbManager.adminUpdateUserData(userId, username, email); // Use the passed user ID
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void modifyUserBooking(int userShuttleBookingID, String ArrowsExpressLine, int lineNum, String date, String time) {
-        admin.modifyUserBooking(userShuttleBookingID, ArrowsExpressLine, lineNum, date, time);
+    public void AdminCheckReservation(String LineName, String date, String time){
+        try {
+            view.AdminCheckReservation(this,dbManager.getReservations( LineName, date, time));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }   
     }
 
-    public void cancelUserBooking(int userShuttleBookingID) {
-        admin.cancelUserBooking(userShuttleBookingID);
+    public void VerifyReservationFrame() {
+        try {
+            view.VerifyReservationFrame(this, dbManager.getIrregularReservations());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public boolean verifyUserReservation(String eaf, String reason) {
-        return admin.verifyUserReservation(eaf, reason);
+    public void updateVerification(int userID) {
+        try {
+            dbManager.updateVerification(userID);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-    public List<String> viewPassengerReservationData() {
-        return admin.viewPassengerReservationData();
+    public void updateAttendance(int shuttleBookingID) throws SQLException {
+        dbManager.updateAttendance(shuttleBookingID);
     }
 
-    public Admin getAdmin() {
-        return admin;
+    public void AdminSRSFRAME1_Menu_AdminController(){
+        view.ViewAdminSRSFRAME1_ADMINMENU(this);
     }
 
-    public void AdminSRSFRAME1_VIEWSHUTTLEROUTES_adminController(){
-        new AdminSRSFRAME1_VIEWSHUTTLEROUTES(this);
+    public void AdminSRSFRAME2_VERIFYREGISTRATIONS_adminController(){
+        view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this);
+    }
+
+    public void AdminSRSFRAME3_VIEWRESERVATIONS_adminController(ArrayList<ShuttleBookingView> reservations){
+        view.ViewAdminSRSFRAME3_VIEWRESERVATIONS(this, reservations);
+    }
+
+    public void AdminSRSFRAME4_VIEWSHUTTLEROUTES_adminController(){ 
+        view.ViewAdminSRSFRAME4_VIEWSHUTTLEROUTES(this);   
+    }
+
+    public void AdminSRSFRAME5_VERIFYRESERVATION_adminController(ArrayList<ShuttleBookingView> reservations){
+        view.ViewAdminSRSFRAME5_VERIFYRESERVATIONS(this, reservations);
+    }
+
+    public void AdminSRSFRAME6_EDITADMINDATA_adminController(){
+        view.ViewAdminSRSFRAME6_EDITADMINDATA(this);
+    }
+
+    public void AdminSRSFRAME7_EDITUSERDATA_adminController(int userID){
+        view.ViewAdminSRSFRAME7_EDITUSERDATA(this, userID);
     }
 
 }
