@@ -28,7 +28,6 @@ public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
         int xPosition = (panelWidth - buttonSize.width) / 2;
         int yPosition = 100; // Starting y position
         int yOffset = 100; // Vertical space between buttons
-    
 
         configureButton("Regular Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             this.dispose();
