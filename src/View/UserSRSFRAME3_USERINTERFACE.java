@@ -8,7 +8,6 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
         
     private final JButton jButton1 = new JButton("Add Reservation");
     private final JButton jButton2 = new JButton("View Reservation");
-    private final JButton jButton3 = new JButton("Edit Reservation");
     private final JButton jButton4 = new JButton("Edit User Data");
     private final JButton jButton5 = new JButton("Log Out");
     private final DLSU_SRSUser_controller controller;
@@ -53,20 +52,10 @@ public class UserSRSFRAME3_USERINTERFACE extends FrameBackground {
         });
     
         yPosition += yOffset;
-        configureButton("Edit Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
-            try {
-                this.dispose();
-                controller.SRSFRAME6_EDITSHUTTLEBOOKING_userController(this.controller);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
-        });
-    
-        yPosition += yOffset;
         configureButton("Edit User Data", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
             try {
-                this.dispose();
-                controller.SRSFRAME10_EDITUSERDATA_userController();
+                this.dispose(); // Close the current window
+                controller.SRSFRAME11_EDITUSERDATA_userController(); // This will open the E
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

@@ -6,8 +6,7 @@ public class Student extends User {
     protected boolean isVerified;
     protected String EAF;
     protected int classDayID;
-    protected String classDay;
-    
+    protected String ClassDay;
     public Student(){
         
     }
@@ -19,7 +18,13 @@ public class Student extends User {
         this.EAF = EAF;
         this.classDayID = classDaysID;
     }
+    public String getClassDay() {
+        return ClassDay;
+    }
 
+    public void setClassDay(String ClassDay) {
+        this.ClassDay = ClassDay;
+    }
     public void setTrimesterID(int trimesterID){
         this.trimesterID = trimesterID;
     }
@@ -36,9 +41,7 @@ public class Student extends User {
         this.classDayID = classDayID;
     }
 
-    public void setClassDay(String classDay){
-        this.classDay = classDay;
-    }
+
 
     public int getTrimesterID(){
         return trimesterID;
@@ -56,7 +59,5 @@ public class Student extends User {
         return classDayID;
     }
 
-    public String getClassDay(){
-        return classDay;
-    }
+    
 }

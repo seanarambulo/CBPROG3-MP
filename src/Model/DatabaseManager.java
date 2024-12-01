@@ -1,5 +1,4 @@
 package src.Model;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,7 +10,7 @@ public class DatabaseManager {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/shuttlesystem";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "kyss092722SMDA";
+    private static final String DB_PASSWORD = "12345678";
 
     private Connection connection;
 
@@ -20,7 +19,20 @@ public class DatabaseManager {
         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         connection.setAutoCommit(true);
     }
-    
+    public Integer getLineIDByLineName(String lineName) {
+        String query = "SELECT LineID FROM ArrowsExpressLine WHERE LineName = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, lineName); // Set the LineName parameter
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("LineID"); // Retrieve and return the LineID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no matching LineName is found
+    }
     public void updateIrregAttendance(int shuttleBookingID) throws SQLException {
         String sql = "UPDATE irregshuttlebooking SET isApproved = TRUE WHERE IrregShuttleBookingID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -120,45 +132,91 @@ public class DatabaseManager {
             pstmt.executeUpdate();
         }
     }
+    public Integer getTimeIDByTime(String time) {
+        String query = "SELECT TimeID FROM Time WHERE Time = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, time); // Set the Time parameter
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("TimeID"); // Retrieve and return the TimeID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no matching Time is found
+    }
+    public ArrayList<String> getDayNamesByStudentID(int studentID) {
+        String query = "SELECT D.DayName " +
+                       "FROM student S, classdays C, days D " +
+                       "WHERE S.StudentID = C.StudentID AND C.DaysID = D.DaysID AND S.StudentID = ?";
 
+        ArrayList<String> dayNames = new ArrayList<>();
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, studentID); // Set the studentID parameter
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    // Capitalize the DayName before adding it to the list
+                    String dayName = rs.getString("DayName").toUpperCase();
+                    dayNames.add(dayName); // Add the capitalized DayName to the list
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return dayNames; // Return the list of capitalized DayNames
+    }
     // Method to insert into the Booking table
-    public void insertIntoBooking(int id, boolean attendance, String origin, String destination, String date, int shuttleScheduleId, int lineId) throws SQLException {
-        String sql = "INSERT INTO Booking (ShuttleBookingID, Attendance, Origin, Destination, Date, ShuttleScheduleID, LineID) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            pstmt.setBoolean(2, attendance);
-            pstmt.setString(3, origin);
-            pstmt.setString(4, destination);
-            pstmt.setString(5, date);
-            pstmt.setInt(6, lineId);
-            pstmt.executeUpdate();
+    public boolean insertBooking(boolean attendance, String origin, String destination, 
+                                  String date, int lineID, long userID, int timeID) {
+        String query = "INSERT INTO Booking (Attendance, Origin, Destination, Date, LineID, UserID, TimeID) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Set parameters
+            preparedStatement.setBoolean(1, attendance);
+            preparedStatement.setString(2, origin);
+            preparedStatement.setString(3, destination);
+            preparedStatement.setDate(4, java.sql.Date.valueOf(date)); // Convert to java.sql.Date
+            preparedStatement.setInt(5, lineID);
+            preparedStatement.setLong(6, userID); // BIGINT maps to long in Java
+            preparedStatement.setInt(7, timeID);
+
+            // Execute the query
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if at least one row is inserted
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log the exception for debugging purposes
+            return false; // Return false if insertion fails
         }
     }
+
 
     // Add more methods for other tables as needed...
     public User getUserByCredentials(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM User WHERE UserName = ? AND Password = ?";
-        User user = null;
+    String sql = "SELECT * FROM User WHERE UserName = ? AND Password = ?";
+    User user = null;
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
 
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    user = new User();
-                    user.setUserID(rs.getInt("UserID"));
-                    user.setUserName(rs.getString("UserName"));
-                    user.setPassword(rs.getString("Password"));
-                    user.setEmail(rs.getString("Email"));
-                    user.setDesignationID(rs.getInt("DesignationID"));
-                }
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setUserName(rs.getString("UserName"));
+                user.setPassword(rs.getString("Password"));
+                user.setEmail(rs.getString("Email"));
+                user.setDesignationID(rs.getInt("DesignationID"));
             }
         }
-
-        return user;
     }
-    
+
+    return user;
+}
     public int getDesignationID(int userID, String password) throws SQLException {
         String sql = "SELECT DesignationID FROM User WHERE UserID = ? AND Password = ?";
         int designationID = -1; // Default value if no user is found
@@ -177,137 +235,67 @@ public class DatabaseManager {
         return designationID;
     }
 
-    public User getUserByID(int userID, String password) throws SQLException {
+public User getUserByID(int userID, String password) throws SQLException {
 
-        String userSql = "SELECT * FROM User WHERE UserID = ? AND Password = ?";
-        String studentSql = "SELECT * FROM user U, Student S, ClassDays C, Days D WHERE U.UserID = S.StudentID  AND C.StudentID = S.StudentID AND C.DaysID = D.DaysID AND S.StudentID = ?";
+    String userSql = "SELECT * FROM User WHERE UserID = ? AND Password = ?";
+    String studentSql = "SELECT * FROM user U, Student S, ClassDays C, Days D WHERE U.UserID = S.StudentID  AND C.StudentID = S.StudentID AND C.DaysID = D.DaysID AND S.StudentID = ?";
 
-        User user = null;
-        
-        try (PreparedStatement userStmt = connection.prepareStatement(userSql)) {
-            userStmt.setInt(1, userID);
-            userStmt.setString(2, password);
+    User user = null;
+    
+    try (PreparedStatement userStmt = connection.prepareStatement(userSql)) {
+        userStmt.setInt(1, userID);
+        userStmt.setString(2, password);
 
-            try (ResultSet userRs = userStmt.executeQuery()) {
-                if (userRs.next()) {
-                    int designationID = userRs.getInt("DesignationID");
+        try (ResultSet userRs = userStmt.executeQuery()) {
+            if (userRs.next()) {
+                int designationID = userRs.getInt("DesignationID");
 
-                    // Check if the user is a Student
-                    if (designationID == 1) { // Assuming 1 is Student's designation
-                        try (PreparedStatement studentStmt = connection.prepareStatement(studentSql)) {
-                            studentStmt.setInt(1, userID);
+                // Check if the user is a Student
+                if (designationID == 1) { // Assuming 1 is Student's designation
+                    try (PreparedStatement studentStmt = connection.prepareStatement(studentSql)) {
+                        studentStmt.setInt(1, userID);
 
-                            try (ResultSet studentRs = studentStmt.executeQuery()) {
-                                if (studentRs.next()) {
-                                    Student student = new Student();
-                                    // Populate common User fields
-                                    student.setUserID(userRs.getInt("UserID"));
-                                    student.setUserName(userRs.getString("UserName"));
-                                    student.setPassword(userRs.getString("Password"));
-                                    student.setEmail(userRs.getString("Email"));
-                                    student.setDesignationID(userRs.getInt("DesignationID"));
+                        try (ResultSet studentRs = studentStmt.executeQuery()) {
+                            if (studentRs.next()) {
+                                Student student = new Student();
+                                // Populate common User fields
+                                student.setUserID(userRs.getInt("UserID"));
+                                student.setUserName(userRs.getString("UserName"));
+                                student.setPassword(userRs.getString("Password"));
+                                student.setEmail(userRs.getString("Email"));
+                                student.setDesignationID(userRs.getInt("DesignationID"));
 
-                                    // Populate Student-specific fields
-                                    student.setTrimesterID(studentRs.getInt("Trimester"));
-                                    student.setEAF(studentRs.getString("EAF"));
-                                    student.setIsVerified(studentRs.getBoolean("isVerified"));
-                                    student.setClassDay(studentRs.getString("DayName"));
+                                // Populate Student-specific fields
+                                student.setTrimesterID(studentRs.getInt("Trimester"));
+                                student.setEAF(studentRs.getString("EAF"));
+                                student.setIsVerified(studentRs.getBoolean("isVerified"));
+                                student.setClassDay(studentRs.getString("DayName"));
 
-                                    user = student;
-                                }
+                                user = student;
                             }
                         }
-                    } else {
-                        // Normal User
-                        user = new User();
-                        user.setUserID(userRs.getInt("UserID"));
-                        user.setUserName(userRs.getString("UserName"));
-                        user.setPassword(userRs.getString("Password"));
-                        user.setEmail(userRs.getString("Email"));
-                        user.setDesignationID(userRs.getInt("DesignationID"));
                     }
+                } else {
+                    // Normal User
+                    user = new User();
+                    user.setUserID(userRs.getInt("UserID"));
+                    user.setUserName(userRs.getString("UserName"));
+                    user.setPassword(userRs.getString("Password"));
+                    user.setEmail(userRs.getString("Email"));
+                    user.setDesignationID(userRs.getInt("DesignationID"));
                 }
             }
         }
-
-        return user;
     }
 
-    public void RegisterUser(int userID, String userName, String password, String email, int designationID) throws SQLException {
-        // SQL query to insert new user
-        String sql = "INSERT INTO User (UserID, UserName, Password, Email, DesignationID) VALUES (?, ?, ?, ?, ?)";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Set the parameters for the query
-            pstmt.setInt(1, userID);          // Set UserID
-            pstmt.setString(2, userName);     // Set Username
-            pstmt.setString(3, password);     // Set Password
-            pstmt.setString(4, email);        // Set Email
-            pstmt.setInt(5, designationID);   // Set DesignationID (from ComboBox selection)
-
-            // Execute the update (insert new user)
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("User registered successfully.");
-            } else {
-                System.out.println("Failed to register the user.");
-            }
-        }
-    }
+    return user;
+}
 
 
-    // Method for User to update User Data
-    public void updateUserData(int userID, String newUsername, String newEmail, String newPassword) throws SQLException {
-        // SQL query to update user data
-        String sql = "UPDATE User SET UserName = ?, Email = ?, Password = ? WHERE UserID = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Set the parameters for the update query
-            pstmt.setString(1, newUsername);   // Set new username
-            pstmt.setString(2, newEmail);      // Set new email
-            pstmt.setString(3, newPassword);   // Set new password
-            pstmt.setInt(4, userID);           // Specify which user to update
-            pstmt.executeUpdate();
-        }
-    }
-
-    // Method for Admin to update User Data
-
-    public void adminUpdateUserData(int userID, String newUsername, String newEmail) throws SQLException {
-        // SQL query to update user data
-        String sql = "UPDATE User SET UserName = ?, Email = ? WHERE UserID = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Set the parameters for the update query
-            pstmt.setString(1, newUsername);   // Set new username
-            pstmt.setString(2, newEmail);      // Set new email
-            pstmt.setInt(3, userID);           // Specify which user to update
-            pstmt.executeUpdate();
-        }
-    }
-
-    // Method to check if a user exists based on user ID
-    public boolean checkIfUserExists(int userId) throws SQLException {
-        String query = "SELECT COUNT(*) FROM users WHERE user_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, userId);
-            
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    int count = resultSet.getInt(1);
-                    return count > 0; // If count > 0, user exists
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw ex; // Rethrow the exception after logging it
-        }
-        return false; // Default to false if no user found or any error occurs
-    }
 
 
 // Method to fetch pending reservations
-    public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time) throws SQLException {
+    public ArrayList<ShuttleBookingView> getReservations( String LineName, String date, String time) throws SQLException {
         String sql = """
             SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b
@@ -436,6 +424,7 @@ public class DatabaseManager {
                 students.add(student);
             }
         }
+    
         return students;
     }
 
@@ -446,6 +435,81 @@ public class DatabaseManager {
             preparedStatement.setInt(1, userID);
             preparedStatement.executeUpdate();
            
+        } catch (SQLException e) {
+            System.err.println("Error updating verification for StudentID: " + userID);
+            throw e;
+        }
+    }
+
+    public void deleteBookings(int bookingID) {
+        String query = "DELETE FROM Booking WHERE ShuttleBookingID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, bookingID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+    }
+    
+    public void updateUserData(int userID, String newUsername, String newEmail, String newPassword) throws SQLException {
+        // SQL query to update user data
+        String sql = "UPDATE User SET UserName = ?, Email = ?, Password = ? WHERE UserID = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Set the parameters for the update query
+            pstmt.setString(1, newUsername);   // Set new username
+            pstmt.setString(2, newEmail);      // Set new email
+            pstmt.setString(3, newPassword);   // Set new password
+            pstmt.setInt(4, userID);           // Specify which user to update
+            pstmt.executeUpdate();
+        }
+    }
+
+
+    public ArrayList<String> getTimesForLine(String lineName) {
+        ArrayList<String> times = new ArrayList<>();
+        String query = """
+                SELECT t.Time
+                FROM 
+                    ArrowsExpressLine ael
+                JOIN 
+                    LineTime lt ON ael.LineID = lt.LineID
+                JOIN 
+                    Time t ON lt.TimeID = t.TimeID
+                WHERE 
+                    ael.LineName = ?;
+                """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, lineName);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    times.add(rs.getString("Time"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error while fetching times: " + e.getMessage());
+        }
+
+        return times;
+    }
+    // Main method for testing
+    
+
+    /*public static void main(String[] args) {
+        try {
+            DatabaseManager dbManager = new DatabaseManager();
+            String username = "student1";
+            String password = "studentpass";
+    
+            User user = dbManager.getUserByCredentials(username, password);
+            if (user != null) {
+                System.out.println("Login successful!");
+                System.out.println("User details: " + user);
+            } else {
+                System.out.println("Invalid username or password.");
+            }
         } catch (SQLException e) {
             System.err.println("Error updating verification for StudentID: " + userID);
             throw e;

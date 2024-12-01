@@ -9,7 +9,7 @@ import src.Controller.DLSU_SRSUser_controller;
 import src.Model.ShuttleBookingPreset;
 import src.Model.ShuttleBookingView;
 
-public class UserSRSFRAME8_PRESET extends FrameBackground {
+public class UserSRSFRAME10_PRESET extends FrameBackground {
 
     private JTable mnlReservationTable;
     private DefaultTableModel mnlTableModel;
@@ -23,7 +23,7 @@ public class UserSRSFRAME8_PRESET extends FrameBackground {
     private JComboBox<String> presetDropdown;
     private DLSU_SRSUser_controller controller;
 
-    public UserSRSFRAME8_PRESET(DLSU_SRSUser_controller controller) {
+    public UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
         setDesignationTitle("Preset Booking", 0, 0, 0, 0);
