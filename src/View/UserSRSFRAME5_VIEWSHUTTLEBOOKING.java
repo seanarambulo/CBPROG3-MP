@@ -38,7 +38,8 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
             JOptionPane.showMessageDialog(this, "An error occurred while retrieving reservations.", "Error", JOptionPane.ERROR_MESSAGE);
             shuttleBookings = new ArrayList<>(); // Initialize with an empty list in case of error
         }
-        loadReservations(this.tableModel, this.shuttleBookings);
+        
+        loadObjects(this.tableModel, this.shuttleBookings);
 
         innerPanel.add(this.scrollPane);
 
@@ -88,12 +89,19 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
     }
 
     @Override
-    protected void loadReservations(DefaultTableModel tableModel, ArrayList<ShuttleBookingView> reservations) {
-        for (ShuttleBookingView reservation : reservations) {
-            tableModel.addRow(new Object[]{reservation.getShuttleBookingID(), 
-                reservation.getArrowsExpressLine(), reservation.getDate(), 
-                reservation.getTime(), reservation.getOrigin(), 
-                reservation.getDestination()});
+    protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> reservations) {
+        ShuttleBookingView booking;
+        for (Object reservation : reservations) {
+            if (!(reservation instanceof ShuttleBookingView)) {
+                throw new IllegalArgumentException("Invalid reservation type");
+                
+            } else {
+                booking = (ShuttleBookingView) reservation;
+                tableModel.addRow(new Object[]{booking.getShuttleBookingID(), 
+                booking.getArrowsExpressLine(), booking.getDate(), 
+                booking.getTime(), booking.getOrigin(), 
+                booking.getDestination()});                
+            }
         }
     }
 }

@@ -20,7 +20,14 @@ public class DatabaseManager {
         connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         connection.setAutoCommit(true);
     }
-
+    
+    public void updateIrregAttendance(int shuttleBookingID) throws SQLException {
+        String sql = "UPDATE irregshuttlebooking SET isApproved = TRUE WHERE IrregShuttleBookingID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, shuttleBookingID);
+            pstmt.executeUpdate();
+        }
+    }
     public void updateAttendance(int shuttleBookingID) throws SQLException {
         String sql = "UPDATE Booking SET Attendance = TRUE WHERE ShuttleBookingID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -28,7 +35,7 @@ public class DatabaseManager {
             pstmt.executeUpdate();
         }
     }
-
+    
     // Method to insert into the Designation table
     public void insertIntoDesignation(int id, String type) throws SQLException {
         String sql = "INSERT INTO Designation (DesignationID, DesignationType) VALUES (?, ?)";
@@ -40,11 +47,11 @@ public class DatabaseManager {
     }
 
     // Method to insert into the ClassDays table
-    public void insertIntoClassDays(int id, String dayName) throws SQLException {
+    public void insertIntoClassDays(int id, int dayName) throws SQLException {
         String sql = "INSERT INTO ClassDays (ClassDaysID, DayName) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            pstmt.setString(2, dayName);
+            pstmt.setInt(2, dayName);
             pstmt.executeUpdate();
         }
     }
@@ -103,14 +110,13 @@ public class DatabaseManager {
     }
 
     // Method to insert into the Student table
-    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified, int classDaysId) throws SQLException {
+    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified) throws SQLException {
         String sql = "INSERT INTO Student (StudentID, Trimester, EAF, isVerified, ClassDaysID) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.setInt(2, trimester);
             pstmt.setString(3, eaf);
             pstmt.setBoolean(4, isVerified);
-            pstmt.setInt(5, classDaysId);
             pstmt.executeUpdate();
         }
     }
@@ -124,8 +130,7 @@ public class DatabaseManager {
             pstmt.setString(3, origin);
             pstmt.setString(4, destination);
             pstmt.setString(5, date);
-            pstmt.setInt(6, shuttleScheduleId);
-            pstmt.setInt(7, lineId);
+            pstmt.setInt(6, lineId);
             pstmt.executeUpdate();
         }
     }
@@ -153,7 +158,7 @@ public class DatabaseManager {
 
         return user;
     }
-
+    
     public int getDesignationID(int userID, String password) throws SQLException {
         String sql = "SELECT DesignationID FROM User WHERE UserID = ? AND Password = ?";
         int designationID = -1; // Default value if no user is found
@@ -175,10 +180,10 @@ public class DatabaseManager {
     public User getUserByID(int userID, String password) throws SQLException {
 
         String userSql = "SELECT * FROM User WHERE UserID = ? AND Password = ?";
-        String studentSql = "SELECT * FROM Student WHERE StudentID = ?";
+        String studentSql = "SELECT * FROM user U, Student S, ClassDays C, Days D WHERE U.UserID = S.StudentID  AND C.StudentID = S.StudentID AND C.DaysID = D.DaysID AND S.StudentID = ?";
 
         User user = null;
-
+        
         try (PreparedStatement userStmt = connection.prepareStatement(userSql)) {
             userStmt.setInt(1, userID);
             userStmt.setString(2, password);
@@ -206,7 +211,7 @@ public class DatabaseManager {
                                     student.setTrimesterID(studentRs.getInt("Trimester"));
                                     student.setEAF(studentRs.getString("EAF"));
                                     student.setIsVerified(studentRs.getBoolean("isVerified"));
-                                    student.setClassDayID(studentRs.getInt("ClassDaysID"));
+                                    student.setClassDay(studentRs.getString("DayName"));
 
                                     user = student;
                                 }
@@ -227,8 +232,6 @@ public class DatabaseManager {
 
         return user;
     }
-
-    // Method to Register User / InsertIntoUser
 
     public void RegisterUser(int userID, String userName, String password, String email, int designationID) throws SQLException {
         // SQL query to insert new user
@@ -251,6 +254,7 @@ public class DatabaseManager {
             }
         }
     }
+
 
     // Method for User to update User Data
     public void updateUserData(int userID, String newUsername, String newEmail, String newPassword) throws SQLException {
@@ -284,10 +288,10 @@ public class DatabaseManager {
 
     // Method to check if a user exists based on user ID
     public boolean checkIfUserExists(int userId) throws SQLException {
-        String query = "SELECT COUNT(*) FROM User WHERE UserID = ?";
+        String query = "SELECT COUNT(*) FROM users WHERE user_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, userId);
-
+            
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     int count = resultSet.getInt(1);
@@ -301,10 +305,11 @@ public class DatabaseManager {
         return false; // Default to false if no user found or any error occurs
     }
 
-    // Method to fetch pending reservations
+
+// Method to fetch pending reservations
     public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time) throws SQLException {
         String sql = """
-            SELECT b.ShuttleBookingID, b.Attendance, b.UserID, b.Destination, b.Date, t.Time
+            SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b
             JOIN ArrowsExpressLine l ON b.LineID = l.LineID
             JOIN `Time` t ON t.TimeID = l.TimeID
@@ -335,7 +340,7 @@ public class DatabaseManager {
         return reservations;
     }
 
-    public ArrayList<ShuttleBookingView> getReservations(String LineName, String date, String time, int Attandance) throws SQLException {
+    public ArrayList<ShuttleBookingView> getReservations( String LineName, String date, String time, int Attandance) throws SQLException {
         String sql = """
             SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b
@@ -368,51 +373,20 @@ public class DatabaseManager {
         return reservations;
     }
 
-    public ArrayList<ShuttleBookingView> ReservationsList() throws SQLException {
-        ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
-
-        String sql = "SELECT booking.ShuttleBookingID, booking.Origin, booking.Destination, booking.Date, time.Time, arrowsexpressline.LineName "
-            + "FROM booking "
-            + "INNER JOIN user ON user.UserID = booking.UserID "
-            + "INNER JOIN student ON student.StudentID = user.UserID "
-            + "INNER JOIN shuttleschedule ON booking.ShuttleScheduleID = shuttleschedule.ShuttleScheduleID "
-            + "INNER JOIN time ON shuttleschedule.TimeID = time.TimeID "
-            + "INNER JOIN arrowsexpressline on arrowsexpressline.LineID = booking.LineID "
-            + "ORDER BY booking.Date, time.Time";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                reservations.add(new ShuttleBookingView(
-                    rs.getInt("ShuttleBookingID"), 
-                    rs.getString("Origin"), 
-                    rs.getString("Destination"), 
-                    rs.getString("Date"), 
-                    rs.getString("Time"), 
-                    rs.getString("LineName")));
-                }
-        }
-
-        return reservations;
-    }
-
-    // Method to fetch pending reservations
-    public ArrayList<ShuttleBookingView> getPendingReservations(String LineName, String date, String time) throws SQLException {
+    public ArrayList<ShuttleBookingView> getReservations(int userID) throws SQLException {
         String sql = """
             SELECT b.ShuttleBookingID,b.Attendance, b.UserID, b.Destination, b.Date, t.Time
             FROM Booking b
             JOIN ArrowsExpressLine l ON b.LineID = l.LineID
             JOIN `Time` t ON t.TimeID = l.TimeID
-            WHERE l.LineName = ? AND b.Date = ? AND t.Time = ? AND b.Attendance = 0
+            WHERE UserID = ? AND b.Attendance = 0
             """;
 
         ArrayList<ShuttleBookingView> reservations = new ArrayList<>();
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, LineName);
-            pstmt.setString(2, date);
-            pstmt.setString(3, time);
+            pstmt.setInt(1, userID);
+           
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
@@ -438,4 +412,95 @@ public class DatabaseManager {
         }
     }
 
+    public ArrayList<Student> getRegistration() throws SQLException {
+        String sql = """
+            SELECT S.StudentID, S.Trimester, S.EAF, D.DayName, S.isVerified
+            FROM User U, Student S, ClassDays C, Days D
+            WHERE U.UserID = S.StudentID 
+              AND C.StudentID = S.StudentID 
+              AND C.DaysID = D.DaysID AND S.isVerified = 0
+        """;
+    
+        ArrayList<Student> students = new ArrayList<>();
+    
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Student student = new Student();
+                student.setUserID(rs.getInt("StudentID"));
+                student.setTrimesterID(rs.getInt("Trimester"));
+                student.setEAF(rs.getString("EAF"));
+                student.setClassDay(rs.getString("DayName"));
+                student.setIsVerified(rs.getBoolean("isVerified"));
+    
+                students.add(student);
+            }
+        }
+        return students;
+    }
+
+    public void updateVerification(int userID) throws SQLException {
+        String query = "UPDATE Student SET isVerified = TRUE WHERE StudentID = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userID);
+            preparedStatement.executeUpdate();
+           
+        } catch (SQLException e) {
+            System.err.println("Error updating verification for StudentID: " + userID);
+            throw e;
+        }
+    }
+    
+    public ArrayList<IrregReservation> getIrregularReservations() throws SQLException {
+        String sql = """
+            SELECT IR.IrregShuttleBookingID, B.Destination, B.Date, T.Time, IR.Reason, B.UserID, IR.isApproved
+            FROM irregshuttlebooking IR
+            JOIN booking B ON IR.IrregShuttleBookingID = B.ShuttleBookingID
+            JOIN time T ON T.TimeID = B.TimeID
+            WHERE IR.isApproved = 0
+        """;
+    
+        ArrayList<IrregReservation> irregularReservations = new ArrayList<>();
+    
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                IrregReservation irregReservation = new IrregReservation();
+                irregReservation.setShuttleBookingID(rs.getInt("IrregShuttleBookingID"));
+                irregReservation.setDestination(rs.getString("Destination"));
+                irregReservation.setDate(rs.getString("Date"));
+                irregReservation.setTime(rs.getString("Time"));
+                irregReservation.setReason(rs.getString("Reason"));
+                irregReservation.setUserID(rs.getInt("UserID"));
+                irregReservation.setApproved(rs.getBoolean("isApproved"));
+                irregularReservations.add(irregReservation);
+            }
+        }
+    
+        return irregularReservations;
+    }
+
+
+    // Main method for testing
+    
+
+    /*public static void main(String[] args) {
+        try {
+            DatabaseManager dbManager = new DatabaseManager();
+            String username = "student1";
+            String password = "studentpass";
+    
+            User user = dbManager.getUserByCredentials(username, password);
+            if (user != null) {
+                System.out.println("Login successful!");
+                System.out.println("User details: " + user);
+            } else {
+                System.out.println("Invalid username or password.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/
 }
+

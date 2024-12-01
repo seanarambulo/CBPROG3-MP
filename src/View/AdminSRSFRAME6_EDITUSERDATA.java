@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import src.Controller.DLSU_SRSAdmin_controller;
 
-public class AdminSRSFRAME7_EDITUSERDATA extends FrameBackground {
+public class AdminSRSFRAME6_EDITUSERDATA extends FrameBackground {
 
     private JTextField EmailTF;
     private JTextField UsernameTF;
@@ -16,7 +16,7 @@ public class AdminSRSFRAME7_EDITUSERDATA extends FrameBackground {
     private DLSU_SRSAdmin_controller controller;
     private int userID;
 
-    public AdminSRSFRAME7_EDITUSERDATA(DLSU_SRSAdmin_controller controller, int userID) {
+    public AdminSRSFRAME6_EDITUSERDATA(DLSU_SRSAdmin_controller controller, int userID) {
         this.controller = controller;
         this.userID = userID;
         setDesignationTitle("Edit User Data", 20, 0, 0, 0);

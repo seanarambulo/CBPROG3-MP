@@ -21,39 +21,42 @@ public class DLSU_SRSAdmin_controller {
         
     }
 
+
     public void updateIrregAttendance(int shuttleBookingID) throws SQLException {
         dbManager.updateIrregAttendance(shuttleBookingID);
     }
 
-    public boolean checkIfUserExists(int userId) throws SQLException {
-        try {
-            // Now check if the user exists using the parsed ID
-            return dbManager.checkIfUserExists(userId); // Assuming checkIfUserExists is a method in your DatabaseManager
-        } catch (NumberFormatException ex) {
-            // If user ID is not a valid integer, return false
-            return false;
-        }
-    }
-
-    public void adminUpdateUserData(int userId, String username, String email) {
-        try {
-            dbManager.adminUpdateUserData(userId, username, email); // Use the passed user ID
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void updateAttendance(int shuttleBookingID) throws SQLException {
+        dbManager.updateAttendance(shuttleBookingID);
     }
 
     public void AdminCheckReservation(String LineName, String date, String time){
         try {
-            view.AdminCheckReservation(this,dbManager.getReservations( LineName, date, time));
+            view.AdminCheckReservation(this,dbManager.getReservations(LineName, date, time));
         } catch (SQLException e) {
             e.printStackTrace();
-        }   
+        }
     }
 
     public void VerifyReservationFrame() {
         try {
-            view.VerifyReservationFrame(this, dbManager.getIrregularReservations());
+            //view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this, dbManager.getIrregularReservations());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void VerifyRegistrationFrame() {
+        try {
+            view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this, dbManager.getRegistration());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void adminUpdateUserData(int userID, String username, String email) {
+        try {
+            dbManager.adminUpdateUserData(userID, username, email);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,28 +71,33 @@ public class DLSU_SRSAdmin_controller {
         }
     }
 
-    public void updateAttendance(int shuttleBookingID) throws SQLException {
-        dbManager.updateAttendance(shuttleBookingID);
+    public boolean checkIfUserExists(int userID) throws SQLException{
+        try {
+            return dbManager.checkIfUserExists(userID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }// or any default value you prefer
     }
 
     public void AdminSRSFRAME1_Menu_AdminController(){
         view.ViewAdminSRSFRAME1_ADMINMENU(this);
     }
 
-    public void AdminSRSFRAME2_VERIFYREGISTRATIONS_adminController(){
-        view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this);
+    public void AdminSRSFRAME2_VERIFYREGISTRATIONS_adminController() throws SQLException {
+        view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this, dbManager.getRegistration());
     }
 
-    public void AdminSRSFRAME3_VIEWRESERVATIONS_adminController(ArrayList<ShuttleBookingView> reservations){
-        view.ViewAdminSRSFRAME3_VIEWRESERVATIONS(this, reservations);
+    public void AdminSRSFRAME3_VIEWRESERVATIONS_adminController(){
+        view.ViewAdminSRSFRAME3_VIEWRESERVATIONS(this);
     }
 
     public void AdminSRSFRAME4_VIEWSHUTTLEROUTES_adminController(){ 
         view.ViewAdminSRSFRAME4_VIEWSHUTTLEROUTES(this);   
     }
 
-    public void AdminSRSFRAME5_VERIFYRESERVATION_adminController(ArrayList<ShuttleBookingView> reservations){
-        view.ViewAdminSRSFRAME5_VERIFYRESERVATIONS(this, reservations);
+    public void AdminSRSFRAME5_VERIFYRESERVATION_adminController() throws SQLException{
+        view.ViewAdminSRSFRAME5_VERIFYRESERVATION(this, dbManager.getIrregularReservations());
     }
 
     public void AdminSRSFRAME6_EDITADMINDATA_adminController(){

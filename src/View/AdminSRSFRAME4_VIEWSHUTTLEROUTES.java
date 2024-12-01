@@ -10,8 +10,6 @@ import src.Model.*;
 public class AdminSRSFRAME4_VIEWSHUTTLEROUTES extends TableFrame {
 
     private final DLSU_SRSAdmin_controller controller;
-    private JTable reservationTable;
-    private DefaultTableModel tableModel;
     private ArrayList<ShuttleBookingView> reservations;
     private JComboBox<String> lineComboBox;
     private JButton backButton, editButton;
@@ -36,10 +34,10 @@ public class AdminSRSFRAME4_VIEWSHUTTLEROUTES extends TableFrame {
         linePanel.setBounds(50, 90, 600, 30); // Adjust bounds to avoid overlap
     
         // Initialize table using TableFrame methods
-        tableModel = createTableModel(new String[] {"Time", "Route"});
-        reservationTable = createReservationTable(tableModel);
-        JScrollPane tableScrollPane = createScrollPane(reservationTable);
-        tableScrollPane.setBounds(50, 120, 600, 250); // Adjust bounds to avoid overlap
+        this.tableModel = createTableModel(new String[] {"Time", "Route"});
+        this.reservationTable = createReservationTable(tableModel);
+        this.scrollPane = createScrollPane(reservationTable);
+        this.scrollPane.setBounds(50, 120, 600, 250); // Adjust bounds to avoid overlap
     
         // Populate table with example data (optional)
         populateTable();
@@ -58,7 +56,7 @@ public class AdminSRSFRAME4_VIEWSHUTTLEROUTES extends TableFrame {
         // Add components to the inner panel
         innerPanel.setLayout(null);
         innerPanel.add(linePanel);
-        innerPanel.add(tableScrollPane);
+        innerPanel.add(this.scrollPane);
         innerPanel.add(buttonPanel);
     
         innerPanel.revalidate();
@@ -80,7 +78,7 @@ public class AdminSRSFRAME4_VIEWSHUTTLEROUTES extends TableFrame {
     }
 
     @Override
-    protected void loadReservations(DefaultTableModel tableModel, ArrayList<ShuttleBookingView> reservations) {
+    protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> reservations) {
         // Load reservations from the database
     }
 

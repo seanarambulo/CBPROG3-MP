@@ -12,9 +12,6 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
     
     private DLSU_SRSDispatcher_controller Dcontroller;
     private ArrayList<ShuttleBookingView> shuttleBookings;
-    private DefaultTableModel tableModel;
-    private JTable reservationTable;
-    private JScrollPane scrollPane;
 
     public DispatcherSRSFRAME2_CheckReservation(DLSU_SRSDispatcher_controller Dcontroller, ArrayList<ShuttleBookingView> shuttleBookings) {
         super();
@@ -39,6 +36,7 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
         this.reservationTable = createReservationTable(this.tableModel);
         this.scrollPane = createScrollPane(this.reservationTable);
         innerPanel.add(this.scrollPane, BorderLayout.CENTER);
+        loadObjects(this.tableModel, this.shuttleBookings);
         
         this.buttonPanel.add(configureButton(getName(), buttonFont, buttonColor, xPosition, 700, buttonSize, e -> {
             try {
@@ -82,16 +80,23 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
     }
 
     @Override
-    protected void loadReservations(DefaultTableModel tableModel, ArrayList<ShuttleBookingView> reservations) {
-        for (ShuttleBookingView reservation : reservations) {
-            tableModel.addRow(new Object[]{
+    protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> reservations) {
+        ShuttleBookingView booking;
+        for (Object reservation : reservations) {
+            if (!(reservation instanceof ShuttleBookingView)) {
+                throw new IllegalArgumentException("Invalid reservation type");
+            }
+            else {            
+                booking = (ShuttleBookingView) reservation;
+                tableModel.addRow(new Object[]{
                 false,
-                reservation.getShuttleBookingID(), 
-                reservation.getArrowsExpressLine(), 
-                reservation.getDate(), 
-                reservation.getTime(), 
-                reservation.getOrigin(), 
-                reservation.getDestination()});
+                booking.getShuttleBookingID(), 
+                booking.getArrowsExpressLine(), 
+                booking.getDate(), 
+                booking.getTime(), 
+                booking.getOrigin(), 
+                booking.getDestination()});
+            }
         }
     }
 

@@ -33,7 +33,7 @@ public class AdminSRSFRAME1_ADMINMENU extends FrameBackground {
 
         // Button 1
         jButton1 = configureButton("Verify Registrations", new Font("Helvetica Neue", Font.BOLD, 14), new Color(108, 194, 162), buttonX, buttonY, new Dimension(buttonWidth, buttonHeight), e -> {
-            
+            Acontroller.AdminSRSFRAME2_VERIFYREGISTRATIONS_adminController();
         });
         innerPanel.add(jButton1);
 

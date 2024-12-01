@@ -1,19 +1,19 @@
 package src.View;
 
-import javax.swing.*;
-import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.*;
 import src.Controller.DLSU_SRSAdmin_controller;
 import src.Model.*;
 
 public class AdminSRSFRAME5_VERIFYRESERVATION extends TableFrame {
     protected DLSU_SRSAdmin_controller Acontroller;
-    protected ArrayList<ShuttleBookingView> reservations;
+    protected ArrayList<IrregReservation> reservations;
 
-    public AdminSRSFRAME5_VERIFYRESERVATION(DLSU_SRSAdmin_controller Acontroller, ArrayList<ShuttleBookingView> reservations) {
+    public AdminSRSFRAME5_VERIFYRESERVATION(DLSU_SRSAdmin_controller Acontroller, ArrayList<IrregReservation> reservations) {
         super();
         this.Acontroller = Acontroller;
         this.reservations = reservations;
@@ -24,8 +24,10 @@ public class AdminSRSFRAME5_VERIFYRESERVATION extends TableFrame {
     @Override
     protected void initComponets() {
         String[] columns = {"Destination", "Line", "Date", "Time", "ID Number", "Reason", "Verify"};
-        DefaultTableModel tableModel = createTableModel(columns);
-        loadReservations(tableModel, this.reservations);
+        this.tableModel = createTableModel(columns);
+        this.reservationTable = new JTable(this.tableModel);
+        
+        loadObjects(this.tableModel, this.reservations);
 
         JTable table = createReservationTable(tableModel);
         innerPanel.add(createScrollPane(table), BorderLayout.CENTER);
@@ -70,17 +72,23 @@ public class AdminSRSFRAME5_VERIFYRESERVATION extends TableFrame {
     }
 
     @Override
-    protected void loadReservations(DefaultTableModel tableModel, ArrayList<ShuttleBookingView> reservations) {
-        for (ShuttleBookingView reservation : this.reservations) {
-            tableModel.addRow(new Object[]{
-                reservation.getDestination(),
-                reservation.getArrowsExpressLine(),
-                reservation.getDate(),
-                reservation.getTime(),
-                reservation.getUserID(),
-                ((IrregReservation) reservation).getReason(),
-                false
-            });
+    protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> objs) {
+        IrregReservation reservation;
+        for (Object obj : objs) {
+            if (!(obj instanceof IrregReservation)){
+                throw new IllegalArgumentException("Invalid reservation type");
+            } else {
+                reservation = (IrregReservation) obj;
+                tableModel.addRow(new Object[]{
+                    reservation.getDestination(),
+                    reservation.getArrowsExpressLine(),
+                    reservation.getDate(),
+                    reservation.getTime(),
+                    reservation.getUserID(),
+                    reservation.getReason(),
+                    false
+                });
+            }
         }
     }
 }
