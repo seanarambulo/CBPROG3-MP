@@ -77,15 +77,15 @@ public class UserSRSFRAME10_VIEWSHUTTLEROUTES extends FrameBackground {
         {
             JComboBox comboBox = (lineComboBox) event.getSource();
             String Line = (String) lineComboBox.getSelectedItem();
-            if (Line.equals("Line 1"){
+            if (Line.equals("Line 1")){
                 // Line 1 query
-            } else if (Line.equals("Line 2"){
+            } else if (Line.equals("Line 2")){
                 // Line 2 query
-            } else if (Line.equals("Line 3"){
+            } else if (Line.equals("Line 3")){
                 // Line 3 query
-            } else if (Line.equals("Line 4"){
+            } else if (Line.equals("Line 4")){
                 // Line 4 query
-            } else if (Line.equals("Line 5"){
+            } else if (Line.equals("Line 5")){
                 // Line 5 query
             }
         }
