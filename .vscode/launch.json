@@ -6,6 +6,13 @@
             "name": "DLSU_SRS",
             "request": "launch",
             "mainClass": "src.DLSU_SRS",
+            "projectName": "CBPROG3-MP_d4bd5576"
+        },
+        {
+            "type": "java",
+            "name": "DLSU_SRS",
+            "request": "launch",
+            "mainClass": "src.DLSU_SRS",
             "projectName": "CBPROG3-MP_af8df2e6"
         },
         {
