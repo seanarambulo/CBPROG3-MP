@@ -100,6 +100,24 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
         }
     }
 
+    protected void WriteFile(ArrayList<?> reservations) {
+		ShuttleBookingView booking;
+        // Write to a text file
+        try (FileWriter writer = new FileWriter("reservations.txt")) {
+            // Write header
+            writer.write(String.format("%-20s %-20s %-20s %-20s %-20s %-20s%n", "Shuttle Booking ID", "Arrows Express Line", "Date", "Time", "Origin", "Destination"));
+            writer.write("-------------------- -------------------- -------------------- -------------------- -------------------- --------------------\n");
+			// Write contents
+			for (Object reservation : reservations) {
+				booking = (ShuttleBookingView) reservation;
+                writer.write(String.format("%-20s %-20s %-20s %-20s %-20s %-20s%n", booking.getShuttleBookingID(), booking.getArrowsExpressLine(), booking.getDate(), booking.getTime(), booking.getOrigin(), booking.getDestination()));
+            }
+            System.out.println("Table has been successfully written to 'table.txt'!");
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
+        }
+    }
+
     
 
 }
