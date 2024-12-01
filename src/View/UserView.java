@@ -50,6 +50,10 @@ public class UserView {
         new UserSRSFRAME9_IRREGULAR(controller);
     }
 
+    public void UserSRSFRAME10_EDITUSERDATA(DLSU_SRSUser_controller controller){
+        new UserSRSFRAME10_EditUserData(controller);
+    }
+
     public void UserSRSFRAME11_EDITUSERDATA(DLSU_SRSUser_controller controller){
         new EditUserData(controller);
     }

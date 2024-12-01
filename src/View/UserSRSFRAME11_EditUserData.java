@@ -3,7 +3,7 @@ package src.View;
 import java.awt.*;
 import javax.swing.*;
 
-public class UserSRSFRAME10_EditUserData extends FrameBackground {
+public class UserSRSFRAME11_EditUserData extends FrameBackground {
 
     private JTextField EmailTF;
     private JTextField UsernameTF;
@@ -14,7 +14,7 @@ public class UserSRSFRAME10_EditUserData extends FrameBackground {
     private JButton SubmitButton;
     private JButton BackButton;
 
-    public UserSRSFRAME10_EditUserData(int buttonWidth, int buttonHeight, int buttonX, int buttonY) {
+    public UserSRSFRAME11_EditUserData() {
         super();
         setDesignationTitle("Edit User Data", 20, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
@@ -51,9 +51,5 @@ public class UserSRSFRAME10_EditUserData extends FrameBackground {
             // Add action for Submit button
         });
         add(SubmitButton);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new UserSRSFRAME10_EditUserData(320, 50, 50, 100));
     }
 }
