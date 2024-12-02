@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import src.Controller.DLSU_SRSAdmin_controller;
 
-
-
-public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
+public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground {
 
     private JLabel titleLabel;
     private JLabel lineLabel;
@@ -30,7 +28,7 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
     public AdminSRSFRAME3_VIEWRESERVATIONS(DLSU_SRSAdmin_controller Acontroller) {
         super();
         this.Acontroller = Acontroller;
-        SwingUtilities.invokeLater(() -> initComponets());
+        initComponets();
     }
 
     @Override
@@ -40,14 +38,10 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
         dateList = new ArrayList<>();
         timeList = new ArrayList<>();
 
-        // Populate Line and Time lists
+        // Populate Line list
         lineList.add("DLSU-MNL<-->DLSU-LC");
         lineList.add("PASEO<-->LAGUNA");
         lineList.add("Line 3");
-
-        timeList.add("10:00:00");
-        timeList.add("12:00 PM");
-        timeList.add("8:00:00");
 
         // Populate Date list (3 weeks ahead, excluding Sundays)
         populateDateComboBox();
@@ -55,7 +49,10 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
         // Convert ArrayLists to ComboBox items
         lineComboBox = new JComboBox<>(lineList.toArray(new String[0]));
         dateComboBox = new JComboBox<>(dateList.toArray(new String[0]));
-        timeComboBox = new JComboBox<>(timeList.toArray(new String[0]));
+        timeComboBox = new JComboBox<>();
+
+        // Add ActionListener to Line ComboBox to update Time ComboBox
+        lineComboBox.addActionListener(e -> updateTimeComboBox());
 
         JFrame frame = new JFrame("Dispatcher Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -169,6 +166,17 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
         frame.setVisible(true);
     }
 
+    private void updateTimeComboBox() {
+        String selectedLine = (String) lineComboBox.getSelectedItem();
+        if (selectedLine != null) {
+            timeList = Acontroller.getTimesForLine(selectedLine); // Fetch times dynamically
+            timeComboBox.removeAllItems(); // Clear existing items
+            for (String time : timeList) {
+                timeComboBox.addItem(time); // Add new items
+            }
+        }
+    }
+
     private void populateDateComboBox() {
         // Formatter for the dates
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -178,7 +186,7 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground{
 
         // Iterate through the next 21 days
         for (int i = 0; i < 21; i++) {
-            LocalDate date = today.minusDays(i);
+            LocalDate date = today.plusDays(i);
             // Check if the day is not Sunday
             if (!date.getDayOfWeek().name().equals("SUNDAY")) {
                 dateList.add(date.format(formatter));

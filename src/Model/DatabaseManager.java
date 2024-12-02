@@ -432,7 +432,7 @@ public boolean checkIfUserExists(int userId) throws SQLException {
 
     public ArrayList<Student> getRegistration() throws SQLException {
         String sql = """
-            SELECT S.StudentID, S.Trimester, S.EAF, D.DayName, S.isVerified
+            SELECT S.StudentID, S.TrimesterID, S.EAF, D.DayName, S.isVerified
             FROM User U, Student S, ClassDays C, Days D
             WHERE U.UserID = S.StudentID 
               AND C.StudentID = S.StudentID 
@@ -446,7 +446,7 @@ public boolean checkIfUserExists(int userId) throws SQLException {
             while (rs.next()) {
                 Student student = new Student();
                 student.setUserID(rs.getInt("StudentID"));
-                student.setTrimesterID(rs.getInt("Trimester"));
+                student.setTrimesterID(rs.getInt("TrimesterID"));
                 student.setEAF(rs.getString("EAF"));
                 student.setClassDay(rs.getString("DayName"));
                 student.setIsVerified(rs.getBoolean("isVerified"));

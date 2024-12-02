@@ -1,6 +1,8 @@
 package src.Controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import src.Model.*;
 import src.View.*;
 
@@ -19,7 +21,9 @@ public class DLSU_SRSAdmin_controller {
         }
         
     }
-
+    public ArrayList<String> getTimesForLine(String LineName) {
+        return dbManager.getTimesForLine(LineName);
+    }
     public void updateIrregAttendance(int shuttleBookingID) throws SQLException {
         dbManager.updateIrregAttendance(shuttleBookingID);
     }
@@ -40,13 +44,7 @@ public class DLSU_SRSAdmin_controller {
         view.ViewAdminSRSFRAME3_VIEWRESERVATIONS(this);
     }
 
-    public void VerifyRegistrationFrame() {
-        try {
-            view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this, dbManager.getRegistration());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    
 
     public void adminUpdateUserData(int userID, String username, String email) {
         try {
@@ -89,7 +87,7 @@ public class DLSU_SRSAdmin_controller {
     public void AdminSRSFRAME4_VIEWSHUTTLEROUTES_adminController(){ 
         view.ViewAdminSRSFRAME4_VIEWSHUTTLEROUTES(this);   
     }
-
+    
     public void AdminSRSFRAME5_VERIFYRESERVATION_adminController() throws SQLException{
         view.ViewAdminSRSFRAME5_VERIFYRESERVATIONS(this, dbManager.getIrregularReservations());
     }
