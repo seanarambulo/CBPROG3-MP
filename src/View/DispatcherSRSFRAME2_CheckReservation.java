@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import src.Controller.DLSU_SRSDispatcher_controller;
 import src.Model.ShuttleBookingView;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
     
