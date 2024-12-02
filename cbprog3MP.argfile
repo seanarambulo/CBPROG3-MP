@@ -1,0 +1,8 @@
+# Set the Classpath 
+
+-classpath
+"C:\Users\SEANMA~1\Downloads\seanarambulo-CBPROG3-MP-e79e9f1\seanarambulo-CBPROG3-MP-e79e9f1\\bin;c:\\Users\\SEANMA~1\\Downloads\\seanarambulo-CBPROG3-MP-e79e9f1\\seanarambulo-CBPROG3-MP-e79e9f1\\lib\\mysql-connector-j-9.1.0.jar;c:\\Users\\SEANMA~1\\Downloads\\seanarambulo-CBPROG3-MP-e79e9f1\\seanarambulo-CBPROG3-MP-e79e9f1\\src"
+
+# Set JVM options
+-Xmx1024m
+-XX:+ShowCodeDetailsInExceptionMessages
