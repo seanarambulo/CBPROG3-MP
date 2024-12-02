@@ -48,16 +48,29 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
         try {
             System.out.println("Fetching shuttle bookings");
             shuttleBookings = controller.getShuttleBookings();
-            Map<String, ArrayList<Object[]>> separatedData = separateDataByDestination(shuttleBookings);
+            System.out.println(shuttleBookings);
 
-            ArrayList<Object[]> mnlData = separatedData.get(DESTINATION_MNL);
-            ArrayList<Object[]> lagData = separatedData.get(DESTINATION_LAG);
+            Map<String, ArrayList<ShuttleBookingView>> separatedData = separateDataByDestination(shuttleBookings);
+
+            ArrayList<ShuttleBookingView> mnlData = new ArrayList<>();
+            ArrayList<ShuttleBookingView> lagData = new ArrayList<>();
+
+            for (ShuttleBookingView booking : separatedData.get(DESTINATION_MNL)) {
+                mnlData.add(new ShuttleBookingView(booking.getArrowsExpressLine(), booking.getTime(), booking.getOrigin(), booking.getDestination()));
+            }
+
+            for (ShuttleBookingView booking : separatedData.get(DESTINATION_LAG)) {
+                lagData.add(new ShuttleBookingView(booking.getArrowsExpressLine(), booking.getTime(), booking.getOrigin(), booking.getDestination()));
+            }
+
+            System.out.println("MNL DATA: " + mnlData);
+            System.out.println("LAG DATA: " + lagData);
 
             mnlTableModel = createTableModel(COLUMN_NAMES);
             lagTableModel = createTableModel(COLUMN_NAMES);
     
-            loadObjects(mnlTableModel, new ArrayList<>(mnlData));
-            loadObjects(lagTableModel, new ArrayList<>(lagData));
+            loadObjects(mnlTableModel, mnlData);
+            loadObjects(lagTableModel, lagData);
 
             mnlReservationTable = createReservationTable(mnlTableModel);
             lagReservationTable = createReservationTable(lagTableModel);
@@ -94,23 +107,22 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
         innerPanel.repaint();
     }
 
-    private Map<String, ArrayList<Object[]>> separateDataByDestination(ArrayList<ShuttleBookingView> shuttleBookings) {
-        System.out.println("Separating data by destination");
-        Map<String, ArrayList<Object[]>> dataMap = new HashMap<>();
-        dataMap.put(DESTINATION_MNL, new ArrayList<>());
-        dataMap.put(DESTINATION_LAG, new ArrayList<>());
+    private Map<String, ArrayList<ShuttleBookingView>> separateDataByDestination(ArrayList<ShuttleBookingView> shuttleBookings) {
 
-        for (ShuttleBookingView booking : shuttleBookings) {
-            Object[] row = createRowFromBooking(booking);
-            if (DESTINATION_MNL.equals(booking.getDestination())) {
-                dataMap.get(DESTINATION_MNL).add(row);
-            } else if (DESTINATION_LAG.equals(booking.getDestination())) {
-                dataMap.get(DESTINATION_LAG).add(row);
+            System.out.println("Separating data by destination");
+            Map<String, ArrayList<ShuttleBookingView>> dataMap = new HashMap<>();
+            dataMap.put(DESTINATION_MNL, new ArrayList<>());
+            dataMap.put(DESTINATION_LAG, new ArrayList<>());
+
+            for (ShuttleBookingView booking : shuttleBookings) {
+                if (DESTINATION_MNL.equals(booking.getDestination())) {
+                    dataMap.get(DESTINATION_MNL).add(booking);
+                } else if (DESTINATION_LAG.equals(booking.getDestination())) {
+                    dataMap.get(DESTINATION_LAG).add(booking);
+                }
             }
+            return dataMap;
         }
-
-        return dataMap;
-    }
 
     private Object[] createRowFromBooking(ShuttleBookingView booking) {
         System.out.println("Creating row from booking");
