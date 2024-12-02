@@ -11,8 +11,8 @@ import src.Model.*;
 public class UserSRSFRAME10_PRESET extends TableFrame {
 
 
-    private static final String DESTINATION_MNL = "MNL";
-    private static final String DESTINATION_LAG = "LAG";
+    private static final String DESTINATION_MNL = "MANILA";
+    private static final String DESTINATION_LAG = "LAGUNA";
     private static final String[] COLUMN_NAMES = {"Select", "Shuttle Line", "Time", "Origin", "Destination"};
 
     private JTable mnlReservationTable;
@@ -33,21 +33,21 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     public UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
-        setDesignationTitle("Preset Booking", 20, 0, 0, 0);
+        System.out.println("Initializing UserSRSFRAME10_PRESET");
+        setDesignationTitle("Preset Booking", 18, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
 
     @Override
     public void initComponets(){
-
+        System.out.println("Initializing components");
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         presets = new ArrayList<>();
 
         try {
-
+            System.out.println("Fetching shuttle bookings");
             shuttleBookings = controller.getShuttleBookings();
-
             Map<String, ArrayList<Object[]>> separatedData = separateDataByDestination(shuttleBookings);
 
             ArrayList<Object[]> mnlData = separatedData.get(DESTINATION_MNL);
@@ -75,9 +75,9 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
         
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.add(createLabel("MNL<->LAG", 50, 50, new Dimension(400, 30), new Font("Helvetica Neue", Font.BOLD, 16), Color.BLACK));
+        centerPanel.add(createLabel("MANILA<-->LAGUNA", 50, 50, new Dimension(400, 30), new Font("Helvetica Neue", Font.BOLD, 16), Color.BLACK));
         centerPanel.add(mnlScrollPane);
-        centerPanel.add(createLabel("LAG<->MNL", 50, 100, new Dimension(400, 30), new Font("Helvetica Neue", Font.BOLD, 16), Color.BLACK));
+        centerPanel.add(createLabel("LAGUNA<-->MANILA", 50, 100, new Dimension(400, 30), new Font("Helvetica Neue", Font.BOLD, 16), Color.BLACK));
         centerPanel.add(lagScrollPane);
 
         JPanel addPresetPanel = new JPanel(new BorderLayout());
@@ -95,6 +95,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private Map<String, ArrayList<Object[]>> separateDataByDestination(ArrayList<ShuttleBookingView> shuttleBookings) {
+        System.out.println("Separating data by destination");
         Map<String, ArrayList<Object[]>> dataMap = new HashMap<>();
         dataMap.put(DESTINATION_MNL, new ArrayList<>());
         dataMap.put(DESTINATION_LAG, new ArrayList<>());
@@ -112,6 +113,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private Object[] createRowFromBooking(ShuttleBookingView booking) {
+        System.out.println("Creating row from booking");
         return new Object[]{
             false,
             booking.getArrowsExpressLine(),
@@ -122,6 +124,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private JPanel createButtonPanel() {
+        System.out.println("Creating button panel");
         JPanel buttonPanel = new JPanel();
         JButton savePresetButton = configureButton("Save as Preset", new Font("Helvetica Neue", Font.PLAIN, 20), Color.BLACK, 0, 0, new Dimension(150, 30), e -> saveSelectedReservationsAsPreset());
         JButton viewPresetsButton = configureButton("View Presets", new Font("Helvetica Neue", Font.PLAIN, 20), Color.BLACK, 0, 0, new Dimension(150, 30), e -> cardLayout.show(mainPanel, "viewPresetsPanel"));
@@ -131,6 +134,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private JPanel createViewPresetsPanel() {
+        System.out.println("Creating view presets panel");
         viewPresetTableModel = createTableModel(new String[]{"Shuttle Line", "Time", "Origin", "Destination"});
         viewPresetTable = createReservationTable(viewPresetTableModel);
 
@@ -160,6 +164,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private void updateViewPresetTable() {
+        System.out.println("Updating view preset table");
         viewPresetTableModel.setRowCount(0); // Clear the table
         for (ShuttleBookingView reservation : shuttleBookings) {
             viewPresetTableModel.addRow(new Object[]{
@@ -172,7 +177,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private void saveSelectedReservationsAsPreset() {
-
+        System.out.println("Saving selected reservations as preset");
         saveSelectedReservationsFromTable(mnlTableModel);
         saveSelectedReservationsFromTable(lagTableModel);
 
@@ -181,6 +186,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private void saveSelectedReservationsFromTable(DefaultTableModel tableModel) {
+        System.out.println("Saving selected reservations from table");
         int presetID = presets.size() + 1;
         for (int row = 0; row < tableModel.getRowCount(); row++) {
             Boolean isSelected = (Boolean) tableModel.getValueAt(row, 0);
@@ -198,11 +204,13 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     }
 
     private void resetCheckboxes() {
+        System.out.println("Resetting checkboxes");
         resetCheckboxesInTable(mnlTableModel);
         resetCheckboxesInTable(lagTableModel);
     }
 
     private void resetCheckboxesInTable(DefaultTableModel tableModel) {
+        System.out.println("Resetting checkboxes in table");
         for (int row = 0; row < tableModel.getRowCount(); row++) {
             tableModel.setValueAt(false, row, 0);
         }
@@ -210,6 +218,7 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
 
     @Override
     protected DefaultTableModel createTableModel(String[] columns) {
+        System.out.println("Creating table model");
         return new DefaultTableModel(columns, 0) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -223,14 +232,17 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
 
     @Override
     protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> objectlist) {
+        System.out.println("Loading objects into table model");
         for (Object obj : objectlist) {
-            if (obj instanceof ShuttleBookingPreset) {
-                tableModel.addRow((Object[]) obj);
+            if (obj instanceof ShuttleBookingPreset preset) {
+                tableModel.addRow(new Object[] {
+                    false,
+                    preset.getArrowsExpressLine(),
+                    preset.getTime(),
+                    preset.getOrigin(),
+                    preset.getDestination()
+                });
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new UserSRSFRAME10_PRESET(new DLSU_SRSUser_controller()));
     }
 }

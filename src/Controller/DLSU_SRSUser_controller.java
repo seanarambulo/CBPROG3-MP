@@ -345,7 +345,6 @@ public class DLSU_SRSUser_controller {
     public ArrayList<String> getDayNamesByStudentID(int userID) {
         return dbm.getDayNamesByStudentID(userID);
     }
-    
     public void updateUserData(String username, String email, String password) {
         try {
             dbm.updateUserData(userModel.getUserID(),username,email,password);
@@ -355,5 +354,5 @@ public class DLSU_SRSUser_controller {
         }
     }
 
-
+    
 }

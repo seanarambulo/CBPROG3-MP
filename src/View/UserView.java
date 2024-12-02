@@ -14,7 +14,7 @@ public class UserView {
         new UserSRSFRAME1_REGISTRATION(controller);
     }
 
-    public void UserSRSFRAME2_VERIFY ( int studentID){
+    public void UserSRSFRAME2_VERIFY (int studentID){
         new UserSRSFRAME2_VERIFY(studentID);
     }
 
@@ -26,7 +26,7 @@ public class UserView {
         new UserSRSFRAME4_ADDSHUTTLEBOOKING(controller);
     }
 
-    public void UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller,ArrayList<ShuttleBookingView> shuttleBookings){
+    public void UserSRSFRAME5_VIEWSHUTTLEBOOKING(DLSU_SRSUser_controller controller, ArrayList<ShuttleBookingView> shuttleBookings){
         new UserSRSFRAME5_VIEWSHUTTLEBOOKING(controller,shuttleBookings);
     }
     

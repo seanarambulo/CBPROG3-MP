@@ -1,5 +1,6 @@
 package test;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import javax.swing.SwingUtilities;
 import src.Controller.*;
@@ -29,7 +30,7 @@ public class UserSRSFRAME_test {
                 new UserSRSFRAME1_REGISTRATION(controller);
             });
             case 2 -> SwingUtilities.invokeLater(() -> {
-                new UserSRSFRAME2_VERIFY(controller);
+                new UserSRSFRAME2_VERIFY(controller.getUserID_userController());
             });
             case 3 -> SwingUtilities.invokeLater(() -> {
                 new UserSRSFRAME3_USERINTERFACE(controller);
@@ -38,7 +39,11 @@ public class UserSRSFRAME_test {
                 new UserSRSFRAME4_ADDSHUTTLEBOOKING(controller);
             });
             case 5 -> SwingUtilities.invokeLater(() -> {
-                new UserSRSFRAME5_VIEWSHUTTLEBOOKING(controller);
+                try {
+                    new UserSRSFRAME5_VIEWSHUTTLEBOOKING(controller, controller.getShuttleBookings());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             });
             case 6 -> SwingUtilities.invokeLater(() -> {
                 new UserSRSFRAME6_EDITSHUTTLEBOOKING(controller);
@@ -47,7 +52,7 @@ public class UserSRSFRAME_test {
                 new UserSRSFRAME7_REGULAR(controller);
             });
             case 8 -> SwingUtilities.invokeLater(() -> {
-                new UserSRSFRAME8_PRESET(controller);
+                //new UserSRSFRAME8_PRESET(controller);
             });
             case 9 -> SwingUtilities.invokeLater(() -> {
                 // new UserSRSFRAME9_IRREGULAR(controller);
