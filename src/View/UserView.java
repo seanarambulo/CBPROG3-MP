@@ -1,7 +1,6 @@
 package src.View;
 
 import java.util.ArrayList;
-
 import src.Controller.DLSU_SRSUser_controller;
 import src.Model.ShuttleBookingView;
 
@@ -38,22 +37,19 @@ public class UserView {
     public void UserSRSFRAME7_REGULAR(DLSU_SRSUser_controller controller){
         new UserSRSFRAME7_REGULAR(controller);
     }
+    
     public void UserSRSFRAME8_REGULAR(DLSU_SRSUser_controller controller, ShuttleBookingView booking){
         new UserSRSFRAME8_REGULAR(controller,booking);
-    }
-    
-    public void UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller){
-        new UserSRSFRAME10_PRESET(controller);
     }
 
     public void UserSRSFRAME9_IRREGULAR(DLSU_SRSUser_controller controller){
         new UserSRSFRAME9_IRREGULAR(controller);
-    }
+    } 
 
-    public void UserSRSFRAME10_EDITUSERDATA(DLSU_SRSUser_controller controller){
-        new UserSRSFRAME10_EditUserData(controller);
+    public void UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller){
+        new UserSRSFRAME10_PRESET(controller);
     }
-
+    
     public void UserSRSFRAME11_EDITUSERDATA(DLSU_SRSUser_controller controller){
         new EditUserData(controller);
     }

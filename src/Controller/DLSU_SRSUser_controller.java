@@ -217,6 +217,16 @@ public class DLSU_SRSUser_controller {
         }
     }
     
+    public ArrayList<ShuttleBookingView> getShuttleBookings() throws SQLException {
+        try {
+            return dbm.getReservations(this.getUserID_userController());
+        } catch (SQLException e) {
+            Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+            return new ArrayList<ShuttleBookingView>();
+        }
+    }
+
     public int getUserID_userController() {
         return userModel.getUserID();
     }

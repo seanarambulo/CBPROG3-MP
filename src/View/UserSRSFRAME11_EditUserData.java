@@ -2,6 +2,7 @@ package src.View;
 
 import java.awt.*;
 import javax.swing.*;
+import src.Controller.DLSU_SRSUser_controller;
 
 public class UserSRSFRAME11_EditUserData extends FrameBackground {
 
@@ -13,9 +14,11 @@ public class UserSRSFRAME11_EditUserData extends FrameBackground {
     private JLabel PasswordLabel;
     private JButton SubmitButton;
     private JButton BackButton;
+    private DLSU_SRSUser_controller controller;
 
-    public UserSRSFRAME11_EditUserData() {
+    public UserSRSFRAME11_EditUserData(DLSU_SRSUser_controller controller) {
         super();
+        this.controller = controller;
         setDesignationTitle("Edit User Data", 20, 0, 0, 0);
         SwingUtilities.invokeLater(() -> initComponets());
     }
