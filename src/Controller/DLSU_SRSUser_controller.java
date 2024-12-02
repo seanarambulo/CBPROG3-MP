@@ -304,9 +304,6 @@ public class DLSU_SRSUser_controller {
         userView.UserSRSFRAME9_IRREGULAR(this);
     }
 
-    public void SRSFRAME10_PRESET_userController() {
-        userView.UserSRSFRAME10_PRESET(this);
-    }
     public void SRSFRAME11_EDITUSERDATA_userController() {
         userView.UserSRSFRAME11_EDITUSERDATA(this);
     }

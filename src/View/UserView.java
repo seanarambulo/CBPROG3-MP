@@ -45,10 +45,7 @@ public class UserView {
     public void UserSRSFRAME8_IRREGULAR(DLSU_SRSUser_controller controller, IrregReservation booking){
         new UserSRSFRAME8_IRREGULAR(controller,booking);
     }
-    
-    public void UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller){
-        new UserSRSFRAME10_PRESET(controller);
-    }
+  
 
     public void UserSRSFRAME9_IRREGULAR(DLSU_SRSUser_controller controller){
         new UserSRSFRAME9_IRREGULAR(controller);
