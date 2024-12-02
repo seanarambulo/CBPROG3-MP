@@ -20,6 +20,11 @@ public class ShuttleBooking {
         this.date = date;
     }
 
+    public ShuttleBooking(String Origin, String Destination){
+        this.Origin = Origin;
+        this.Destination = Destination;
+    }
+
     public void setUserID(int userID){
         this.userID = userID;
     }

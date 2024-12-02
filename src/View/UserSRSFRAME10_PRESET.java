@@ -1,15 +1,15 @@
 package src.View;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
-import java.sql.SQLException;
-import java.util.List;
 import src.Controller.DLSU_SRSUser_controller;
 import src.Model.*;
 
 public class UserSRSFRAME10_PRESET extends TableFrame {
+
 
     private static final String DESTINATION_MNL = "MNL";
     private static final String DESTINATION_LAG = "LAG";
@@ -21,13 +21,14 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
     private DefaultTableModel lagTableModel;
     private JTable viewPresetTable;
     private DefaultTableModel viewPresetTableModel;
-    private List<ShuttleBookingPreset> presets;
+    private ArrayList<ShuttleBookingPreset> presets;
     private JPanel mainPanel;
     private CardLayout cardLayout;
     private JComboBox<String> presetDropdown;
     private DLSU_SRSUser_controller controller;
     private JScrollPane mnlScrollPane;
     private JScrollPane lagScrollPane;
+    private ArrayList<ShuttleBookingView> shuttleBookings;
 
     public UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller) {
         super();
@@ -43,16 +44,14 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
         mainPanel = new JPanel(cardLayout);
         presets = new ArrayList<>();
 
-        List<ShuttleBookingView> shuttleBookings;
-
         try {
 
             shuttleBookings = controller.getShuttleBookings();
 
-            Map<String, List<Object[]>> separatedData = separateDataByDestination(shuttleBookings);
+            Map<String, ArrayList<Object[]>> separatedData = separateDataByDestination(shuttleBookings);
 
-            List<Object[]> mnlData = separatedData.get(DESTINATION_MNL);
-            List<Object[]> lagData = separatedData.get(DESTINATION_LAG);
+            ArrayList<Object[]> mnlData = separatedData.get(DESTINATION_MNL);
+            ArrayList<Object[]> lagData = separatedData.get(DESTINATION_LAG);
 
             mnlTableModel = createTableModel(COLUMN_NAMES);
             lagTableModel = createTableModel(COLUMN_NAMES);
@@ -63,8 +62,8 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
             mnlReservationTable = createReservationTable(mnlTableModel);
             lagReservationTable = createReservationTable(lagTableModel);
 
-            JScrollPane mnlScrollPane = createScrollPane(mnlReservationTable);
-            JScrollPane lagScrollPane = createScrollPane(lagReservationTable);
+            mnlScrollPane = createScrollPane(mnlReservationTable);
+            lagScrollPane = createScrollPane(lagReservationTable);
     
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,8 +94,8 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
         innerPanel.repaint();
     }
 
-    private Map<String, List<Object[]>> separateDataByDestination(List<ShuttleBookingView> shuttleBookings) {
-        Map<String, List<Object[]>> dataMap = new HashMap<>();
+    private Map<String, ArrayList<Object[]>> separateDataByDestination(ArrayList<ShuttleBookingView> shuttleBookings) {
+        Map<String, ArrayList<Object[]>> dataMap = new HashMap<>();
         dataMap.put(DESTINATION_MNL, new ArrayList<>());
         dataMap.put(DESTINATION_LAG, new ArrayList<>());
 
@@ -139,9 +138,9 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
 
         presetDropdown = new JComboBox<>();
         presetDropdown.addActionListener(e -> {
-            String selectedPresetName = (String) presetDropdown.getSelectedItem();
-            if (selectedPresetName != null) {
-                updateViewPresetTable(Integer.parseInt(selectedPresetName));
+            String selectedPreset = (String) presetDropdown.getSelectedItem();
+            if (selectedPreset != null) {
+                updateViewPresetTable();
             }
         });
 
@@ -160,41 +159,29 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
         return viewPresetsPanel;
     }
 
-    private void updateViewPresetTable(int presetID) {
+    private void updateViewPresetTable() {
         viewPresetTableModel.setRowCount(0); // Clear the table
-        for (ShuttleBookingPreset preset : presets) {
-            if (preset.getPresetID() == presetID) {
-                for (ShuttleBookingView reservation : preset.get()) {
-                    viewPresetTableModel.addRow(new Object[]{
-                        reservation.getArrowsExpressLine(),
-                        reservation.getTime(),
-                        reservation.getOrigin(),
-                        reservation.getDestination()
-                    });
-                }
-                break;
-            }
+        for (ShuttleBookingView reservation : shuttleBookings) {
+            viewPresetTableModel.addRow(new Object[]{
+                reservation.getArrowsExpressLine(),
+                reservation.getTime(),
+                reservation.getOrigin(),
+                reservation.getDestination()
+            }); 
         }
     }
 
     private void saveSelectedReservationsAsPreset() {
-        int presetID = presets.size() + 1; // Generate a new preset ID
-        ShuttleBookingPreset newPreset = new ShuttleBookingPreset(presetID);
 
-        saveSelectedReservationsFromTable(mnlTableModel, newPreset);
-        saveSelectedReservationsFromTable(lagTableModel, newPreset);
+        saveSelectedReservationsFromTable(mnlTableModel);
+        saveSelectedReservationsFromTable(lagTableModel);
 
-        if (newPreset.getReservations().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No reservations selected!", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            presets.add(newPreset);
-            presetDropdown.addItem(newPreset.getPresetName()); // Add the new preset to the dropdown
-            JOptionPane.showMessageDialog(this, "Reservation preset saved successfully!");
-            resetCheckboxes();
-        }
+        JOptionPane.showMessageDialog(this, "Reservation preset saved successfully!");
+        resetCheckboxes();
     }
 
-    private void saveSelectedReservationsFromTable(DefaultTableModel tableModel, ShuttleBookingPreset newPreset) {
+    private void saveSelectedReservationsFromTable(DefaultTableModel tableModel) {
+        int presetID = presets.size() + 1;
         for (int row = 0; row < tableModel.getRowCount(); row++) {
             Boolean isSelected = (Boolean) tableModel.getValueAt(row, 0);
             if (isSelected != null && isSelected) {
@@ -203,8 +190,9 @@ public class UserSRSFRAME10_PRESET extends TableFrame {
                 String origin = (String) tableModel.getValueAt(row, 3);
                 String destination = (String) tableModel.getValueAt(row, 4);
 
-                ShuttleBookingView reservation = new ShuttleBookingView(0, origin, destination, date, shuttleLine, time);
-                newPreset.addReservation(reservation);
+                ShuttleBookingPreset newPreset = new ShuttleBookingPreset(presetID, origin, destination, shuttleLine, time);
+                presets.add(newPreset);
+                presetDropdown.addItem(String.valueOf(newPreset.getPresetID())); // Add the new preset to the dropdown
             }
         }
     }

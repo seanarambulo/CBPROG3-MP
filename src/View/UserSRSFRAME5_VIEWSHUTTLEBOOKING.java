@@ -1,6 +1,5 @@
 package src.View;
 
-import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -109,8 +108,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
     @Override
     protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> objs) {
         for (Object obj : objs) {
-            if (obj instanceof ShuttleBookingView) {
-                ShuttleBookingView reservation = (ShuttleBookingView) obj; // Proper casting
+            if (obj instanceof ShuttleBookingView reservation) {
                 tableModel.addRow(new Object[] {
                     false, // Checkbox initially unchecked
                     reservation.getShuttleBookingID(),

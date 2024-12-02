@@ -327,17 +327,21 @@ public class DLSU_SRSUser_controller {
     public ArrayList<String> getTimesForLine(String LineName) {
         return dbm.getTimesForLine(LineName);
     }
+
     public int getLineIDByLineName(String LineName) {
         return dbm.getLineIDByLineName(LineName);
     }
+
     public void insertBooking(boolean attendance, String origin, String destination, 
-    String date, int lineID, long userID, int timeID) {
-        dbm.insertBooking( attendance,  origin,  destination, 
-         date,  lineID,  userID,  timeID);
+        String date, int lineID, long userID, int timeID) {
+            dbm.insertBooking( attendance,  origin,  destination, 
+            date,  lineID,  userID,  timeID);
     }
+
     public Integer getTimeIDByTime(String time) {
         return dbm.getTimeIDByTime(time);
     }
+
     public ArrayList<String> getDayNamesByStudentID(int userID) {
         return dbm.getDayNamesByStudentID(userID);
     }
@@ -350,4 +354,6 @@ public class DLSU_SRSUser_controller {
             e.printStackTrace();
         }
     }
+
+
 }
