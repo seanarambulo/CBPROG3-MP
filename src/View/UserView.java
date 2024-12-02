@@ -15,7 +15,7 @@ public class UserView {
     }
 
     public void UserSRSFRAME2_VERIFY ( int studentID){
-        new UserSRSFRAME2_VERIFY( studentID);
+        new UserSRSFRAME2_VERIFY(studentID);
     }
 
     public void UserSRSFRAME3_USERINTERFACE(DLSU_SRSUser_controller controller){
