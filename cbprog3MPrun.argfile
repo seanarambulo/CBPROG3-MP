@@ -1,0 +1,12 @@
+# Set the Classpath Put your path name here for bin,lib,src.
+-classpath
+"C:\\Users\\SEANMA~1\\Documents\\CBPROG3_MP\\bin;c:\\Users\\SEANMA~1\\Documents\\CBPROG3_MP\\lib\\mysql-connector-j-9.1.0.jar;c:\\Users\\SEANMA~1\Documents\\CBPROG3_MP\\src"
+
+
+
+# Set JVM options
+-Xmx1024m
+-XX:+ShowCodeDetailsInExceptionMessages
+
+# Main class to run
+src.DLSU_SRS
