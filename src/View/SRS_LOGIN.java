@@ -64,17 +64,17 @@ public class SRS_LOGIN extends FrameBackground {
                     // Check if tempID is valid and proceed
                     if (tempID != -1) {
                         switch (tempID) {
-                            case 1 -> {
+                            case 1 -> { // user is admin
                                 DLSU_SRSAdmin_controller Acontroller = new DLSU_SRSAdmin_controller(username, password);
                                 this.dispose();
                                 Acontroller.AdminSRSFRAME1_Menu_AdminController();
                             }
-                            case 2 -> {
+                            case 2 -> { // user is dispatcher
                                 DLSU_SRSDispatcher_controller Dcontroller = new DLSU_SRSDispatcher_controller(username, password);
                                 this.dispose();
                                 Dcontroller.DispatcherMenu1Frame_Menu_DispatcherController();                                
                             }
-                            case 3 -> {
+                            case 3 -> { // user is user
                                 Ucontroller = new DLSU_SRSUser_controller(username, password);  
                                 this.dispose();
                                 Ucontroller.SRSFRAME3_USERINTERFACE_userController(); 
