@@ -70,7 +70,14 @@ public class AdminSRSFRAME4_VIEWSHUTTLEROUTES extends TableFrame {
         String[][] exampleData = {
             {"08:00 AM", "Route A"},
             {"09:00 AM", "Route B"},
-            {"10:00 AM", "Route C"}
+            {"10:00 AM", "Route C"},
+            {"11:00 AM", "Route D"},
+            {"12:00 PM", "Route E"},
+            {"01:00 PM", "Route F"},
+            {"02:00 PM", "Route G"},
+            {"03:00 PM", "Route H"},
+            {"04:00 PM", "Route I"},
+            {"05:00 PM", "Route J"}
         };
 
         for (String[] row : exampleData) {

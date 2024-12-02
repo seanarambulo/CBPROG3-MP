@@ -10,8 +10,8 @@ public class AdminView {
         new AdminSRSFRAME1_ADMINMENU(Acontroller);
     }
 
-    public void ViewAdminSRSFRAME5_VERIFYRESERVATIONS(DLSU_SRSAdmin_controller Acontroller, ArrayList<IrregReservation> students) {
-        new AdminSRSFRAME5_VERIFYRESERVATION(Acontroller, students);
+    public void ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(DLSU_SRSAdmin_controller Acontroller, ArrayList<Student> students) {
+        new AdminSRSFRAME2_VERIFYREGISTRATIONS(Acontroller, students);
     }   
 
     public void ViewAdminSRSFRAME3_VIEWRESERVATIONS(DLSU_SRSAdmin_controller Acontroller) {
@@ -22,10 +22,10 @@ public class AdminView {
         new AdminSRSFRAME4_VIEWSHUTTLEROUTES(Acontroller);
     }    
 
-    public void ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(DLSU_SRSAdmin_controller Acontroller, ArrayList<Student> students) {
-        new AdminSRSFRAME2_VERIFYREGISTRATIONS(Acontroller, students);
+    public void ViewAdminSRSFRAME5_VERIFYRESERVATIONS(DLSU_SRSAdmin_controller Acontroller, ArrayList<IrregReservation> reservations) {
+        new AdminSRSFRAME5_VERIFYRESERVATION(Acontroller, reservations);
     }
-    
+
     public void ViewAdminSRSFRAME6_EDITUSERDATA(DLSU_SRSAdmin_controller Acontroller, int userId) {
         new AdminSRSFRAME6_EDITUSERDATA(Acontroller, userId);
     }

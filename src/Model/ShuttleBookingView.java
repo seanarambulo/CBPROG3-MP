@@ -15,6 +15,12 @@ public class ShuttleBookingView extends ShuttleBooking {
         this.time = time;
     }
 
+    public ShuttleBookingView(String Origin, String Destination, String arrowsExpressLine, String time){
+        super(Origin, Destination);
+        this.arrowsExpressLine = arrowsExpressLine;
+        this.time = time;
+    }
+
     public void setArrowsExpressLine(String arrowsExpressLine) {
         this.arrowsExpressLine = arrowsExpressLine;
     }

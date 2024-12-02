@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import src.DLSU_SRS;
 import src.Model.*;
 import src.View.*;
 
@@ -208,8 +207,6 @@ public class DLSU_SRSUser_controller {
         }
     }
     
-
-    
     // Method to close the connection
     public void close() throws SQLException {
         try {
@@ -220,6 +217,16 @@ public class DLSU_SRSUser_controller {
         }
     }
     
+    public ArrayList<ShuttleBookingView> getShuttleBookings() throws SQLException {
+        try {
+            return dbm.getReservations(this.getUserID_userController());
+        } catch (SQLException e) {
+            Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+            return new ArrayList<ShuttleBookingView>();
+        }
+    }
+
     public int getUserID_userController() {
         return userModel.getUserID();
     }
@@ -320,17 +327,21 @@ public class DLSU_SRSUser_controller {
     public ArrayList<String> getTimesForLine(String LineName) {
         return dbm.getTimesForLine(LineName);
     }
+
     public int getLineIDByLineName(String LineName) {
         return dbm.getLineIDByLineName(LineName);
     }
+
     public void insertBooking(boolean attendance, String origin, String destination, 
-    String date, int lineID, long userID, int timeID) {
-        dbm.insertBooking( attendance,  origin,  destination, 
-         date,  lineID,  userID,  timeID);
+        String date, int lineID, long userID, int timeID) {
+            dbm.insertBooking( attendance,  origin,  destination, 
+            date,  lineID,  userID,  timeID);
     }
+
     public Integer getTimeIDByTime(String time) {
         return dbm.getTimeIDByTime(time);
     }
+
     public ArrayList<String> getDayNamesByStudentID(int userID) {
         return dbm.getDayNamesByStudentID(userID);
     }
@@ -343,4 +354,6 @@ public class DLSU_SRSUser_controller {
             e.printStackTrace();
         }
     }
+
+
 }

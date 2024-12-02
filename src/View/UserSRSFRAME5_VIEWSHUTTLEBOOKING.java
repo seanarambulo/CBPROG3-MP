@@ -1,13 +1,12 @@
 package src.View;
 
-import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import src.Controller.DLSU_SRSUser_controller;
 import src.Model.*;
 
-public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame2 {
+public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame {
     
     private final DLSU_SRSUser_controller controller;
     private ArrayList<ShuttleBookingView> shuttleBookings;
@@ -21,7 +20,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame2 {
         this.shuttleBookings = shuttleBookings;
         setDesignationTitle("View Bookings", 20, 0, 0, 0);
         this.controller = controller;
-        initComponets();
+        SwingUtilities.invokeLater(() -> initComponets());
     }
 
     @Override
@@ -109,8 +108,7 @@ public class UserSRSFRAME5_VIEWSHUTTLEBOOKING extends TableFrame2 {
     @Override
     protected void loadObjects(DefaultTableModel tableModel, ArrayList<?> objs) {
         for (Object obj : objs) {
-            if (obj instanceof ShuttleBookingView) {
-                ShuttleBookingView reservation = (ShuttleBookingView) obj; // Proper casting
+            if (obj instanceof ShuttleBookingView reservation) {
                 tableModel.addRow(new Object[] {
                     false, // Checkbox initially unchecked
                     reservation.getShuttleBookingID(),

@@ -1,40 +1,41 @@
 package src.View;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
-
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.table.*;
+public abstract class TableFrame extends FrameBackground {
 
-public abstract class TableFrame {
-    protected JFrame frame;
     protected JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    public TableFrame(String title) {
-        frame = new JFrame(title);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-        frame.setLayout(new BorderLayout());
+    protected DefaultTableModel tableModel;
+    protected JTable reservationTable;
+    protected JScrollPane scrollPane;
 
-        // Add a title panel
-        JPanel titlePanel = new JPanel();
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        titlePanel.add(titleLabel);
-        frame.add(titlePanel, BorderLayout.NORTH);
+    protected abstract DefaultTableModel createTableModel(String[] columns);
+
+    protected JTable createReservationTable(DefaultTableModel tableModel) {
+        JTable TreservationTable = new JTable(tableModel);
+        TreservationTable.setBackground(new Color(255, 255, 255)); // White background
+        TreservationTable.setForeground(new Color(0, 0, 0)); // Black text
+        TreservationTable.setSelectionBackground(new Color(108, 194, 168)); // Light green selection background
+        TreservationTable.setSelectionForeground(new Color(255, 255, 255)); // White selection text
+
+        // Customize table header colors
+        JTableHeader tableHeader = TreservationTable.getTableHeader();
+        tableHeader.setBackground(new Color(31, 95, 79)); // Dark green header background
+        tableHeader.setForeground(new Color(255, 255, 255)); // White header text
+
+        return TreservationTable;
     }
 
-    // Abstract method to define custom table model
-    protected abstract DefaultTableModel createTableModel();
-
-    
-    
-
-    
-    protected abstract void addButton(String buttonName, DefaultTableModel tableModel);
-    public void display() {
-        frame.setVisible(true);
+    protected JScrollPane createScrollPane(JTable reservationTable) {
+        JScrollPane createScrollPane = new JScrollPane(reservationTable);
+        createScrollPane.setBounds(50, 100, 600, 300);
+        createScrollPane.setLayout(new ScrollPaneLayout());
+        return createScrollPane;
     }
+
+    protected abstract void loadObjects(DefaultTableModel tableModel, ArrayList<?> objectlist);
+    
 }

@@ -3,6 +3,7 @@
     "configurations": [
         {
             "type": "java",
+<<<<<<< Updated upstream
             "name": "UserSRSFRAME10_VIEWSHUTTLEROUTES",
             "request": "launch",
             "mainClass": "src.View.UserSRSFRAME10_VIEWSHUTTLEROUTES",
@@ -14,6 +15,12 @@
             "request": "launch",
             "mainClass": "src.DLSU_SRS",
             "projectName": "CBPROG3-MP_af8df2e6"
+=======
+            "name": "UserSRSFRAME10_EditUserData",
+            "request": "launch",
+            "mainClass": "src.View.UserSRSFRAME10_EditUserData",
+            "projectName": "CBPROG3_MP_77a0f4c5"
+>>>>>>> Stashed changes
         },
         {
             "type": "java",
