@@ -37,8 +37,7 @@ public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
         });
         yPosition+=yOffset;
         configureButton("Preset Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {
-            this.dispose();
-            controller.SRSFRAME10_PRESET_userController();
+           
         });
         yPosition+=yOffset;
         configureButton("Irregular Reservation", buttonFont, buttonColor, xPosition, yPosition, buttonSize, e -> {

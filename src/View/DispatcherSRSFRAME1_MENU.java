@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.*;
 import src.Controller.DLSU_SRSDispatcher_controller;
 
@@ -16,7 +18,7 @@ public class DispatcherSRSFRAME1_MENU extends FrameBackground {
     private JComboBox<String> dateComboBox;
     private JComboBox<String> timeComboBox;
     private DLSU_SRSDispatcher_controller Dcontroller;
-
+private final HashMap<String, String[]> lineLocations = new HashMap<>();
     private ArrayList<String> lineList;
     private ArrayList<String> dateList;
     private ArrayList<String> timeList;
@@ -42,14 +44,15 @@ public class DispatcherSRSFRAME1_MENU extends FrameBackground {
         int yOffset = 70; // Vertical space between buttons
 
         // Initialize ArrayLists for ComboBox items
-        lineList = new ArrayList<>();
+       
         dateList = new ArrayList<>();
         timeList = new ArrayList<>();
 
-        // Populate Line and Time lists
-        lineList.add("Line 1");
-        lineList.add("PASEO<-->LAGUNA");
-        lineList.add("Line 3");
+        lineLocations.put("MANILA<-->LAGUNA", new String[]{"MANILA", "LAGUNA"});
+        lineLocations.put("PASEO<-->LAGUNA", new String[]{"PASEO", "LAGUNA"});
+        lineLocations.put("CARMONA<-->LAGUNA", new String[]{"CARMONA", "LAGUNA"});
+        lineLocations.put("PAVILION<-->LAGUNA", new String[]{"PAVILION", "LAGUNA"});
+        lineLocations.put("WALTER<-->LAGUNA", new String[]{"WALTER", "LAGUNA"});
 
         timeList.add("10:00:00");
         timeList.add("13:00:00");
@@ -60,7 +63,7 @@ public class DispatcherSRSFRAME1_MENU extends FrameBackground {
         populateDateComboBox();
 
         // Convert ArrayLists to ComboBox items
-        lineComboBox = new JComboBox<>(lineList.toArray(new String[0]));
+        lineComboBox = new JComboBox<>(lineLocations.keySet().toArray(new String[0]));
         dateComboBox = new JComboBox<>(dateList.toArray(new String[0]));
         timeComboBox = new JComboBox<>(timeList.toArray(new String[0]));
 

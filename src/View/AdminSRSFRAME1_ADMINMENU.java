@@ -54,10 +54,47 @@ public class AdminSRSFRAME1_ADMINMENU extends FrameBackground {
         innerPanel.add(jButton2);
 
         // Button 3
-        jButton3 = configureButton("View Shuttle Routes", new Font("Helvetica Neue", Font.BOLD, 14), new Color(108, 194, 162), buttonX, buttonY + 120, new Dimension(buttonWidth, buttonHeight), e -> {
+        jButton3 = new JButton("View Shuttle Routes");
+jButton3.setFont(new Font("Helvetica Neue", Font.BOLD, 14));
+jButton3.setForeground(new Color(108, 194, 162));
+jButton3.setBounds(buttonX, buttonY + 120, buttonWidth, buttonHeight); // Adjusted Y position
+innerPanel.add(jButton3);
+
+jButton3.addActionListener(e -> {
+    // Options for the JComboBox
+    String[] shuttleLines = {
+        "MANILA<-->LAGUNA",
+        "PASEO<-->LAGUNA",
+        "CARMONA<-->LAGUNA",
+        "PAVILION<-->LAGUNA",
+        "WALTER<-->LAGUNA"
+    };
+
+    // Create a JComboBox with the options
+    JComboBox<String> comboBox = new JComboBox<>(shuttleLines);
+
+    // Show the JOptionPane with the JComboBox
+    int result = JOptionPane.showConfirmDialog(
+        this,
+        comboBox,
+        "Select Shuttle Line",
+        JOptionPane.OK_CANCEL_OPTION,
+        JOptionPane.QUESTION_MESSAGE
+    );
+
+    if (result == JOptionPane.OK_OPTION) {
+        // Get the selected shuttle line
+        String selectedShuttleLine = (String) comboBox.getSelectedItem();
+        if (selectedShuttleLine != null && !selectedShuttleLine.isEmpty()) {
+            // Call the method with the selected shuttle line
             this.dispose();
-            Acontroller.AdminSRSFRAME4_VIEWSHUTTLEROUTES_adminController();
-        });
+            Acontroller.ADMINSRSFRAME_VIEWSHUTTLEROUTES(selectedShuttleLine);
+        } else {
+            // Handle case where no option is selected
+            JOptionPane.showMessageDialog(this, "No shuttle line selected.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+});
         innerPanel.add(jButton3);
 
         // Button 4

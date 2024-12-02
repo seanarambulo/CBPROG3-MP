@@ -1,5 +1,6 @@
 package src.View;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import src.Controller.DLSU_SRSAdmin_controller;
 import src.Model.*;
@@ -18,9 +19,12 @@ public class AdminView {
         new AdminSRSFRAME3_VIEWRESERVATIONS(Acontroller);
     }
 
-    public void ViewAdminSRSFRAME4_VIEWSHUTTLEROUTES(DLSU_SRSAdmin_controller Acontroller) {
-        new AdminSRSFRAME4_VIEWSHUTTLEROUTES(Acontroller);
-    }    
+
+    public void ADMINSRSFRAME_VIEWSHUTTLEROUTES(DLSU_SRSAdmin_controller Acontroller,ArrayList<String> lineName){
+        
+           new ADMINSRSFRAME_VIEWSHUTTLEROUTES( Acontroller ,lineName );
+        
+    }
 
     public void ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(DLSU_SRSAdmin_controller Acontroller, ArrayList<Student> students) {
         new AdminSRSFRAME2_VERIFYREGISTRATIONS(Acontroller, students);

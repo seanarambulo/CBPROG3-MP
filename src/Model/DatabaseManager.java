@@ -170,6 +170,79 @@ public class DatabaseManager {
         return dayNames; // Return the list of capitalized DayNames
     }
     // Method to insert into the Booking table
+    public boolean insertBooking(boolean attendance, String origin, String destination,
+                             String date, int lineID, long userID, int timeID,
+                             String reason, boolean isApproved) {
+    String bookingQuery = "INSERT INTO Booking (Attendance, Origin, Destination, Date, LineID, UserID, TimeID) " +
+                          "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String irregBookingQuery = "INSERT INTO IrregShuttleBooking (IrregShuttleBookingID, Reason, isApproved) " +
+                               "VALUES (?, ?, ?)";
+    try {
+        // Start a transaction
+        connection.setAutoCommit(false);
+
+        // Insert into Booking
+        try (PreparedStatement bookingStmt = connection.prepareStatement(bookingQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            bookingStmt.setBoolean(1, attendance);
+            bookingStmt.setString(2, origin);
+            bookingStmt.setString(3, destination);
+            bookingStmt.setDate(4, java.sql.Date.valueOf(date)); // Convert to java.sql.Date
+            bookingStmt.setInt(5, lineID);
+            bookingStmt.setLong(6, userID); // BIGINT maps to long in Java
+            bookingStmt.setInt(7, timeID);
+
+            int rowsAffected = bookingStmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Inserting Booking failed, no rows affected.");
+            }
+
+            // Retrieve the generated Booking ID
+            try (ResultSet generatedKeys = bookingStmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int bookingID = generatedKeys.getInt(1);
+
+                    // If a reason is provided, insert into IrregShuttleBooking
+                    if (reason != null && !reason.isEmpty()) {
+                        try (PreparedStatement irregStmt = connection.prepareStatement(irregBookingQuery)) {
+                            irregStmt.setInt(1, bookingID); // Use the generated Booking ID
+                            irregStmt.setString(2, reason);
+                            irregStmt.setBoolean(3, isApproved);
+
+                            int irregRowsAffected = irregStmt.executeUpdate();
+                            if (irregRowsAffected == 0) {
+                                throw new SQLException("Inserting IrregShuttleBooking failed, no rows affected.");
+                            }
+                        }
+                    }
+                } else {
+                    throw new SQLException("Inserting Booking failed, no ID obtained.");
+                }
+            }
+        }
+
+        // Commit the transaction
+        connection.commit();
+        return true; // Success
+
+    } catch (SQLException e) {
+        e.printStackTrace(); // Log the exception
+        try {
+            connection.rollback(); // Rollback the transaction on failure
+        } catch (SQLException rollbackEx) {
+            rollbackEx.printStackTrace(); // Log rollback failure
+        }
+        return false; // Failure
+    } finally {
+        try {
+            connection.setAutoCommit(true); // Restore default auto-commit behavior
+        } catch (SQLException autoCommitEx) {
+            autoCommitEx.printStackTrace(); // Log auto-commit restoration failure
+        }
+    }
+}
+
+
+
     public boolean insertBooking(boolean attendance, String origin, String destination, 
                                   String date, int lineID, long userID, int timeID) {
         String query = "INSERT INTO Booking (Attendance, Origin, Destination, Date, LineID, UserID, TimeID) " +
@@ -192,7 +265,6 @@ public class DatabaseManager {
             return false; // Return false if insertion fails
         }
     }
-
 
     // Add more methods for other tables as needed...
     public User getUserByCredentials(String username, String password) throws SQLException {
@@ -306,7 +378,7 @@ public void adminUpdateUserData(int userID, String newUsername, String newEmail)
 
 
 public boolean checkIfUserExists(int userId) throws SQLException {
-    String query = "SELECT COUNT(*) FROM users WHERE user_id = ?";
+    String query = "SELECT COUNT(*) FROM user WHERE UserID = ?";
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         preparedStatement.setInt(1, userId);
         
@@ -496,7 +568,25 @@ public boolean checkIfUserExists(int userId) throws SQLException {
         }
     }
 
+    public void insertIrregShuttleBooking(int irregShuttleBookingID, String reason, boolean isApproved) {
+        String query = "INSERT INTO IrregShuttleBooking (IrregShuttleBookingID, Reason, isApproved) VALUES (?, ?, ?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Set the parameters
+            preparedStatement.setInt(1, irregShuttleBookingID);
+            preparedStatement.setString(2, reason);
+            preparedStatement.setBoolean(3, isApproved);
+            preparedStatement.executeUpdate();
 
+            // Return true if one row was inserted
+            
+
+        } catch (SQLException e) {
+            // Log or print the exception
+            e.printStackTrace();
+            
+        }
+    }
     public ArrayList<String> getTimesForLine(String lineName) {
         ArrayList<String> times = new ArrayList<>();
         String query = """

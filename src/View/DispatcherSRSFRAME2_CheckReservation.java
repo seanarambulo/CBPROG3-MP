@@ -8,6 +8,8 @@ import src.Model.ShuttleBookingView;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -88,6 +90,28 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
                 reservation.getDestination()
             });
         }
+        WriteFile(reservations);
         return tableModel;
+    }
+
+    protected void WriteFile(ArrayList<?> reservations) {
+		ShuttleBookingView booking;
+		
+        // Write to a text file
+        try (FileWriter writer = new FileWriter("reservations.txt")) {
+            // Write header
+            writer.write(String.format("%-20s %-20s %-20s %-20s%n", "Shuttle Booking ID", "Date", "Time", "Destination"));
+            writer.write("-------------------- -------------------- -------------------- --------------------\n");
+			// Write contents
+			for (Object reservation : reservations) {
+				booking = (ShuttleBookingView) reservation;
+                writer.write(String.format("%-20s %-20s %-20s %-20s%n", booking.getShuttleBookingID(), booking.getDate(), booking.getTime(), booking.getDestination()));
+            }
+
+            System.out.println("Table has been successfully written to 'reservations.txt'!");
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
+        }
     }
 }

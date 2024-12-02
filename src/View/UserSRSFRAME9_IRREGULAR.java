@@ -2,71 +2,151 @@ package src.View;
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.HashMap;
 import src.Controller.DLSU_SRSUser_controller;
+import src.Model.IrregReservation;
 
 public class UserSRSFRAME9_IRREGULAR extends FrameBackground {
-    private JLabel designationTitle;
-    private JLabel lineLabel;
+    // UI components
     private JComboBox<String> lineComboBox;
-    private JLabel dateLabel;
-    private JComboBox<String> dateComboBox;
-    private JLabel timeLabel;
-    private JComboBox<String> timeComboBox;
-    private JLabel reasonLabel;
-    private JTextArea reasonTextArea;
-    private JButton submitButton;
-    private JButton backButton;
+    private JComboBox<String> originComboBox;
+    private JComboBox<String> destinationComboBox;
     private DLSU_SRSUser_controller controller;
+
+    // Map to store valid locations for each line
+    private final HashMap<String, String[]> lineLocations = new HashMap<>();
 
     public UserSRSFRAME9_IRREGULAR(DLSU_SRSUser_controller controller) {
         super();
         this.controller = controller;
-        setDesignationTitle("Irregular Booking Shuttle", 20, 0, 0, 0);
-        SwingUtilities.invokeLater(() -> initComponets());
+
+        // Initialize valid locations for each line
+        lineLocations.put("MANILA<-->LAGUNA", new String[]{"MANILA", "LAGUNA"});
+        lineLocations.put("PASEO<-->LAGUNA", new String[]{"PASEO", "LAGUNA"});
+        lineLocations.put("CARMONA<-->LAGUNA", new String[]{"CARMONA", "LAGUNA"});
+        lineLocations.put("PAVILION<-->LAGUNA", new String[]{"PAVILION", "LAGUNA"});
+        lineLocations.put("WALTER<-->LAGUNA", new String[]{"WALTER", "LAGUNA"});
+
+        setDesignationTitle("Add Reservation", 30, 0, 0, 0);
+        SwingUtilities.invokeLater(() -> {
+            initComponets();
+        });
+    }
+// Reason Label and TextField
+private JLabel reasonLabel;
+private JTextField reasonTextField;
+
+@Override
+public void initComponets() {
+    innerPanel.setLayout(null);
+
+    int panelWidth = innerPanel.getWidth();
+
+    // Line Label and ComboBox
+    createLabel("Line:", (panelWidth - 80) / 2 - 200, 100, new Dimension(80, 40), new Font("Segoe UI", Font.PLAIN, 24), Color.BLACK);
+    lineComboBox = new JComboBox<>(lineLocations.keySet().toArray(new String[0]));
+    lineComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+    lineComboBox.setBounds((panelWidth - 400) / 2 + 80, 100, 300, 50);
+    lineComboBox.addActionListener(e -> updateOriginAndDestinationOptions());
+    innerPanel.add(lineComboBox);
+
+    // Origin Label and ComboBox
+    createLabel("Origin:", (panelWidth - 80) / 2 - 200, 170, new Dimension(80, 40), new Font("Segoe UI", Font.PLAIN, 24), Color.BLACK);
+    originComboBox = new JComboBox<>();
+    originComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+    originComboBox.setBounds((panelWidth - 400) / 2 + 80, 170, 300, 50);
+    originComboBox.addActionListener(e -> validateOriginAndDestination());
+    innerPanel.add(originComboBox);
+
+    // Destination Label and ComboBox
+    createLabel("Destination:", (panelWidth - 80) / 2 - 200, 240, new Dimension(80, 40), new Font("Segoe UI", Font.PLAIN, 24), Color.BLACK);
+    destinationComboBox = new JComboBox<>();
+    destinationComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+    destinationComboBox.setBounds((panelWidth - 400) / 2 + 80, 240, 300, 50);
+    destinationComboBox.addActionListener(e -> validateOriginAndDestination());
+    innerPanel.add(destinationComboBox);
+
+    // Reason Label and TextField
+    reasonLabel = createLabel("Reason:", (panelWidth - 80) / 2 - 200, 310, new Dimension(80, 40), new Font("Segoe UI", Font.PLAIN, 24), Color.BLACK);
+    innerPanel.add(reasonLabel);
+
+    reasonTextField = new JTextField();
+    reasonTextField.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+    reasonTextField.setBounds((panelWidth - 400) / 2 + 80, 310, 300, 50);
+    innerPanel.add(reasonTextField);
+
+    // Submit Button
+    createButton("SUBMIT", (panelWidth - 150) / 2 - 80, 380, 150, 30, e -> handleSubmitAction());
+
+    // Back Button
+    createButton("BACK", (panelWidth - 150) / 2 + 80, 380, 150, 30, e -> handleBackAction());
+
+    innerPanel.revalidate();
+    innerPanel.repaint();
+}
+
+private void handleSubmitAction() {
+    IrregReservation booking = new IrregReservation();
+
+    String line = (String) lineComboBox.getSelectedItem();
+    String origin = (String) originComboBox.getSelectedItem();
+    String destination = (String) destinationComboBox.getSelectedItem();
+    String reason = reasonTextField.getText();
+
+    booking.setArrowsExpressLine(line);
+    booking.setOrigin(origin);
+    booking.setDestination(destination);
+    booking.setReason(reason);
+    // Validate selections and reason
+    if (line == null || origin == null || destination == null || reason.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Please fill in all fields before submitting.",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        return;
     }
 
-    @Override
-    public void initComponets() {
+    JOptionPane.showMessageDialog(this,
+            "Reservation added:\nLine: " + line + "\nOrigin: " + origin + "\nDestination: " + destination + "\nReason: " + reason,
+            "Reservation Confirmation",
+            JOptionPane.INFORMATION_MESSAGE);
 
-        createLabel("Line:", 150, 100, new Dimension(100, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
-        lineComboBox = new JComboBox<>(new String[]{"Line 1", "Line 2", "Line 3"});
-        lineComboBox.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        lineComboBox.setBounds(300, 100, 200, 30);
-        innerPanel.add(lineComboBox);
+    booking.setReason(reason); // Add reason to the booking
+    controller.SRSFRAME8_IRREGULAR_userController(booking);
+}
 
-        createLabel("Date:", 150, 150, new Dimension(100, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
-        dateComboBox = new JComboBox<>(new String[]{"2024-11-16", "2024-11-17", "2024-11-18"});
-        dateComboBox.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        dateComboBox.setBounds(300, 150, 200, 30);
-        innerPanel.add(dateComboBox);
+private void updateOriginAndDestinationOptions() {
+    // Get selected line
+    String selectedLine = (String) lineComboBox.getSelectedItem();
+    if (selectedLine == null) return;
 
-        createLabel("Time:", 150, 200, new Dimension(100, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
-        timeComboBox = new JComboBox<>(new String[]{"8:00 AM", "12:00 PM", "6:00 PM"});
-        timeComboBox.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        timeComboBox.setBounds(300, 200, 200, 30);
-        innerPanel.add(timeComboBox);
+    // Get valid locations for the selected line
+    String[] validLocations = lineLocations.get(selectedLine);
 
-        createLabel("Reason:", 150, 250, new Dimension(100, 30), new Font("Helvetica Neue", Font.PLAIN, 20), Color.WHITE);
-        reasonTextArea = new JTextArea(5, 20);
-        reasonTextArea.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        reasonTextArea.setLineWrap(true);
-        reasonTextArea.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(reasonTextArea);
-        scrollPane.setBounds(300, 250, 200, 100);
-        innerPanel.add(scrollPane);
+    // Update origin and destination combo boxes
+    originComboBox.setModel(new DefaultComboBoxModel<>(validLocations));
+    destinationComboBox.setModel(new DefaultComboBoxModel<>(validLocations));
 
-        createButton("Back", 150, 400, 100, 30, e -> handleBackAction());
-        createButton("Submit", 300, 400, 100, 30, e -> handleSubmitAction());
+    // Clear validation on update
+    originComboBox.setSelectedIndex(-1);
+    destinationComboBox.setSelectedIndex(-1);
+}
 
-        innerPanel.revalidate();
-        innerPanel.repaint();
+private void validateOriginAndDestination() {
+    // Ensure origin and destination are not the same
+    String origin = (String) originComboBox.getSelectedItem();
+    String destination = (String) destinationComboBox.getSelectedItem();
+
+    if (origin != null && destination != null && origin.equals(destination)) {
+        JOptionPane.showMessageDialog(this,
+                "Origin and destination cannot be the same.",
+                "Validation Error",
+                JOptionPane.WARNING_MESSAGE);
+        destinationComboBox.setSelectedIndex(-1); // Reset destination
     }
-
+}
     private void handleBackAction() {
-        // Handle back action
-    }
-
-    private void handleSubmitAction() {
-        // Handle submit action
+        this.dispose();
+        controller.SRSFRAME4_ADDSHUTTLEBOOKING_userController();
     }
 }

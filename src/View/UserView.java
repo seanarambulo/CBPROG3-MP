@@ -3,6 +3,7 @@ package src.View;
 import java.util.ArrayList;
 
 import src.Controller.DLSU_SRSUser_controller;
+import src.Model.IrregReservation;
 import src.Model.ShuttleBookingView;
 
 public class UserView {
@@ -40,6 +41,9 @@ public class UserView {
     }
     public void UserSRSFRAME8_REGULAR(DLSU_SRSUser_controller controller, ShuttleBookingView booking){
         new UserSRSFRAME8_REGULAR(controller,booking);
+    }
+    public void UserSRSFRAME8_IRREGULAR(DLSU_SRSUser_controller controller, IrregReservation booking){
+        new UserSRSFRAME8_IRREGULAR(controller,booking);
     }
     
     public void UserSRSFRAME10_PRESET(DLSU_SRSUser_controller controller){

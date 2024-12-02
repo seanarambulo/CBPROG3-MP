@@ -4,6 +4,8 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.*;
 import src.Controller.DLSU_SRSAdmin_controller;
 
@@ -20,7 +22,7 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground {
     private JComboBox<String> timeComboBox;
     private JLabel timeLabel;
     private DLSU_SRSAdmin_controller Acontroller;
-
+    private final HashMap<String, String[]> lineLocations = new HashMap<>();
     private ArrayList<String> lineList;
     private ArrayList<String> dateList;
     private ArrayList<String> timeList;
@@ -38,16 +40,17 @@ public class AdminSRSFRAME3_VIEWRESERVATIONS extends FrameBackground {
         dateList = new ArrayList<>();
         timeList = new ArrayList<>();
 
-        // Populate Line list
-        lineList.add("DLSU-MNL<-->DLSU-LC");
-        lineList.add("PASEO<-->LAGUNA");
-        lineList.add("Line 3");
+        lineLocations.put("MANILA<-->LAGUNA", new String[]{"MANILA", "LAGUNA"});
+        lineLocations.put("PASEO<-->LAGUNA", new String[]{"PASEO", "LAGUNA"});
+        lineLocations.put("CARMONA<-->LAGUNA", new String[]{"CARMONA", "LAGUNA"});
+        lineLocations.put("PAVILION<-->LAGUNA", new String[]{"PAVILION", "LAGUNA"});
+        lineLocations.put("WALTER<-->LAGUNA", new String[]{"WALTER", "LAGUNA"});
 
         // Populate Date list (3 weeks ahead, excluding Sundays)
         populateDateComboBox();
 
         // Convert ArrayLists to ComboBox items
-        lineComboBox = new JComboBox<>(lineList.toArray(new String[0]));
+        lineComboBox = new JComboBox<>(lineLocations.keySet().toArray(new String[0]));
         dateComboBox = new JComboBox<>(dateList.toArray(new String[0]));
         timeComboBox = new JComboBox<>();
 

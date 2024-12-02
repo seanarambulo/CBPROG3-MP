@@ -278,7 +278,7 @@ public class DLSU_SRSUser_controller {
         try {
             userView.UserSRSFRAME5_VIEWSHUTTLEBOOKING(this,dbm.getReservations(this.getUserID_userController()));
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
     }
@@ -290,8 +290,14 @@ public class DLSU_SRSUser_controller {
     public void SRSFRAME7_REGULAR_userController() {
         userView.UserSRSFRAME7_REGULAR(this);
     }
+
     public void SRSFRAME8_REGULAR_userController(ShuttleBookingView booking) {
         userView.UserSRSFRAME8_REGULAR(this, booking);
+    }
+
+
+    public void SRSFRAME8_IRREGULAR_userController(IrregReservation booking) {
+        userView.UserSRSFRAME8_IRREGULAR(this, booking);
     }
     
     public void SRSFRAME9_IRREGULAR_userController() {
@@ -328,6 +334,13 @@ public class DLSU_SRSUser_controller {
         dbm.insertBooking( attendance,  origin,  destination, 
          date,  lineID,  userID,  timeID);
     }
+    public void insertBooking(boolean attendance, String origin, String destination,
+    String date, int lineID, long userID, int timeID,
+    String reason, boolean isApproved) {
+        dbm.insertBooking( attendance,  origin,  destination, 
+         date,  lineID,  userID,  timeID, reason,isApproved);
+    }
+
     public Integer getTimeIDByTime(String time) {
         return dbm.getTimeIDByTime(time);
     }

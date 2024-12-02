@@ -79,15 +79,16 @@ public class DLSU_SRSAdmin_controller {
     public void AdminSRSFRAME2_VERIFYREGISTRATIONS_adminController() throws SQLException {
         view.ViewAdminSRSFRAME2_VERIFYREGISTRATIONS(this, dbManager.getRegistration());
     }
-
+    public void ADMINSRSFRAME_VIEWSHUTTLEROUTES(String lineName){
+       
+            view.ADMINSRSFRAME_VIEWSHUTTLEROUTES(this, dbManager.getTimesForLine(lineName));
+        
+    }
     public void AdminSRSFRAME3_VIEWRESERVATIONS_adminController(){
         view.ViewAdminSRSFRAME3_VIEWRESERVATIONS(this);
     }
 
-    public void AdminSRSFRAME4_VIEWSHUTTLEROUTES_adminController(){ 
-        view.ViewAdminSRSFRAME4_VIEWSHUTTLEROUTES(this);   
-    }
-    
+
     public void AdminSRSFRAME5_VERIFYRESERVATION_adminController() throws SQLException{
         view.ViewAdminSRSFRAME5_VERIFYRESERVATIONS(this, dbManager.getIrregularReservations());
     }
