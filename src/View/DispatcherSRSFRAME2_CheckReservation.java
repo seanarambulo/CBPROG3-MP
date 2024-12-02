@@ -29,6 +29,7 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
         this.scrollPane = createScrollPane(this.reservationTable);
         innerPanel.add(this.scrollPane, BorderLayout.CENTER);
         loadObjects(this.tableModel, this.shuttleBookings);
+        WriteFile(this.shuttleBookings);
         
         JButton submitButton = configureButton("SUBMIT", new Font("Arial", Font.PLAIN, 14), Color.BLACK, 0, 0, new Dimension(100, 20), e -> {
             try {
@@ -92,6 +93,27 @@ public class DispatcherSRSFRAME2_CheckReservation extends TableFrame {
                 booking.getOrigin(), 
                 booking.getDestination()});
             }
+        }
+    }
+
+    protected void WriteFile(ArrayList<?> reservations) {
+		ShuttleBookingView booking;
+		
+        // Write to a text file
+        try (FileWriter writer = new FileWriter("reservations.txt")) {
+            // Write header
+            writer.write(String.format("%-20s %-20s %-20s %-20s %-20s %-20s%n", "Shuttle Booking ID", "Arrows Express Line", "Date", "Time", "Origin", "Destination"));
+            writer.write("-------------------- -------------------- -------------------- -------------------- -------------------- --------------------\n");
+			// Write contents
+			for (Object reservation : reservations) {
+				booking = (ShuttleBookingView) reservation;
+                writer.write(String.format("%-20s %-20s %-20s %-20s %-20s %-20s%n", booking.getShuttleBookingID(), booking.getArrowsExpressLine(), booking.getDate(), booking.getTime(), booking.getOrigin(), booking.getDestination()));
+            }
+
+            System.out.println("Table has been successfully written to 'reservations.txt'!");
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file: " + e.getMessage());
         }
     }
 
