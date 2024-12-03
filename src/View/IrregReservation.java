@@ -1,4 +1,3 @@
-package src.Model;
 
 public class IrregReservation extends ShuttleBookingView {
     private String reason;

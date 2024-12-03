@@ -1,10 +1,8 @@
-package src.View;
 
 import java.awt.*;
 import java.sql.SQLException;
 import javax.swing.*;
-import src.Controller.*;
-import src.Model.*;
+
 
 public class SRS_LOGIN extends FrameBackground {
     // Class level variable declarations

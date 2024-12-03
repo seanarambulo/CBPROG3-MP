@@ -1,4 +1,3 @@
-package src.View;
 
 import java.awt.Color;
 import java.awt.FlowLayout;

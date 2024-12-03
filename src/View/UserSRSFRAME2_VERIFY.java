@@ -1,11 +1,10 @@
-package src.View;
 
 import java.awt.*;
 import java.sql.SQLException;
 
 import javax.swing.*;
 
-import src.Model.DatabaseManager;
+
 
 public class UserSRSFRAME2_VERIFY extends FrameBackground {
 

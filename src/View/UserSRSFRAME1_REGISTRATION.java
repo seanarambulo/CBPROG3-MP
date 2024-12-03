@@ -1,10 +1,9 @@
-package src.View;
 
 import java.awt.*;
 import java.sql.SQLException;
 
 import javax.swing.*;
-import src.Controller.DLSU_SRSUser_controller;
+
 
 public class UserSRSFRAME1_REGISTRATION extends FrameBackground {
 

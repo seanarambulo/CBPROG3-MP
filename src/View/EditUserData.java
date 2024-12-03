@@ -1,10 +1,10 @@
-package src.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import src.Controller.DLSU_SRSUser_controller;
+
 public class EditUserData {
 
     private JTextField EmailTF;

@@ -1,4 +1,3 @@
-package src.Model;
 
 public class ShuttleBookingPreset extends ShuttleBookingView {
     

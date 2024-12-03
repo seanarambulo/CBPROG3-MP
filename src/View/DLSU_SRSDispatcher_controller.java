@@ -1,7 +1,5 @@
-package src.Controller;
 
-import src.Model.*;
-import src.View.*;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -37,7 +35,7 @@ public class DLSU_SRSDispatcher_controller {
     public ArrayList<String> getTimesForLine(String LineName) {
         return dbManager.getTimesForLine(LineName);
     }
-    
+
     public void updateAttendance(int shuttleBookingID) throws SQLException {
         dbManager.updateAttendance(shuttleBookingID);
     }
