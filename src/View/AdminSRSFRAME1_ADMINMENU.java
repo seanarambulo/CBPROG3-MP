@@ -61,39 +61,11 @@ jButton3.setBounds(buttonX, buttonY + 120, buttonWidth, buttonHeight); // Adjust
 innerPanel.add(jButton3);
 
 jButton3.addActionListener(e -> {
-    // Options for the JComboBox
-    String[] shuttleLines = {
-        "MANILA<-->LAGUNA",
-        "PASEO<-->LAGUNA",
-        "CARMONA<-->LAGUNA",
-        "PAVILION<-->LAGUNA",
-        "WALTER<-->LAGUNA"
-    };
-
-    // Create a JComboBox with the options
-    JComboBox<String> comboBox = new JComboBox<>(shuttleLines);
-
-    // Show the JOptionPane with the JComboBox
-    int result = JOptionPane.showConfirmDialog(
-        this,
-        comboBox,
-        "Select Shuttle Line",
-        JOptionPane.OK_CANCEL_OPTION,
-        JOptionPane.QUESTION_MESSAGE
-    );
-
-    if (result == JOptionPane.OK_OPTION) {
-        // Get the selected shuttle line
-        String selectedShuttleLine = (String) comboBox.getSelectedItem();
-        if (selectedShuttleLine != null && !selectedShuttleLine.isEmpty()) {
+    
             // Call the method with the selected shuttle line
             this.dispose();
-            Acontroller.ADMINSRSFRAME_VIEWSHUTTLEROUTES(selectedShuttleLine);
-        } else {
-            // Handle case where no option is selected
-            JOptionPane.showMessageDialog(this, "No shuttle line selected.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+            Acontroller.ADMINSRSFRAME_VIEWSHUTTLEROUTES("MANILA<-->LAGUNA");
+       
 });
         innerPanel.add(jButton3);
 
@@ -109,7 +81,7 @@ jButton3.addActionListener(e -> {
             }
         });
         innerPanel.add(jButton4);
-
+        createButton("LOG OUT", buttonX + 160 - 75, buttonY + 300, 150, 20, e -> handleBackAction());
         // Button 6 (New "Edit User Data" button)
         jButton6 = configureButton("Edit User Data", new Font("Helvetica Neue", Font.BOLD, 14), new Color(108, 194, 162), buttonX, buttonY + 240, new Dimension(buttonWidth, buttonHeight), e -> {
             String userId = JOptionPane.showInputDialog(this, "Enter User ID:", "Edit User Data", JOptionPane.PLAIN_MESSAGE);
@@ -136,5 +108,9 @@ jButton3.addActionListener(e -> {
             }
         });
         innerPanel.add(jButton6);
+    }
+    private void handleBackAction() {
+        this.dispose();
+        new SRS_LOGIN();
     }
 }

@@ -149,9 +149,9 @@ public class DLSU_SRSUser_controller {
     }
     
     // Method to insert into the Time table
-    public void insertIntoTime(int id, String time) throws SQLException {
+    public void insertIntoTime(String time) throws SQLException {
         try {
-            dbm.insertIntoTime(id, time);
+            dbm.insertIntoTime(time);
         } catch (SQLException e) {
             Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
             throw e; // Rethrow the exception after logging it
@@ -169,9 +169,9 @@ public class DLSU_SRSUser_controller {
     }
     
     // Method to insert into the Student table
-    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified) throws SQLException {
+    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified, String enrolledAs) throws SQLException {
         try {
-            dbm.insertIntoStudent(id, trimester, eaf, isVerified);
+            dbm.insertIntoStudent(id, trimester, eaf, isVerified,enrolledAs);
         } catch (SQLException e) {
             Logger.getLogger(DLSU_SRSUser_controller.class.getName()).log(Level.SEVERE, null, e);
             throw e; // Rethrow the exception after logging it

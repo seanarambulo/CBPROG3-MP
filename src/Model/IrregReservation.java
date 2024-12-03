@@ -3,7 +3,7 @@ package src.Model;
 public class IrregReservation extends ShuttleBookingView {
     private String reason;
     private boolean isApproved;
-
+    
     public IrregReservation() {
         super();
     }

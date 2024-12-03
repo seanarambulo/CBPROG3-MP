@@ -59,13 +59,14 @@ public class UserSRSFRAME2_VERIFY extends FrameBackground {
 
             try {
                 // Insert the student record
-                dbm.insertIntoStudent(studentID, 1, eaf, false);
+                String enrolledAs = (String) DesignationCB.getSelectedItem();
+                dbm.insertIntoStudent(studentID, 1, eaf, false, enrolledAs);
 
                 // Loop through checkboxes and insert selected days into the database
                 for (int i = 0; i < checkBoxes.length; i++) {
                     if (checkBoxes[i].isSelected()) {
                         System.out.println("Inserting: studentID=" + studentID + ", day=" + i+1);
-                        dbm.insertIntoClassDays(studentID,i + 1 ); // Assuming days are indexed 1-6 (Monday = 1, Saturday = 6)
+                        dbm.insertIntoClassDays(i + 1 ,studentID); // Assuming days are indexed 1-6 (Monday = 1, Saturday = 6)
                     }
                 }
 

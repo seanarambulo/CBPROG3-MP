@@ -8,7 +8,7 @@ public class ShuttleBooking {
     protected String Origin;
     protected String Destination;
     protected String date;
-    
+    protected int LineID;
     public ShuttleBooking(){
         
     }
@@ -22,6 +22,12 @@ public class ShuttleBooking {
 
     public void setUserID(int userID){
         this.userID = userID;
+    }
+    public void setLineID(int LineID){
+        this.LineID = LineID;
+    }
+    public int getLineID(){
+        return LineID;
     }
     
     public void setShuttleBookingID(int shuttleBookingID){

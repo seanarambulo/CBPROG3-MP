@@ -54,9 +54,7 @@ private final HashMap<String, String[]> lineLocations = new HashMap<>();
         lineLocations.put("PAVILION<-->LAGUNA", new String[]{"PAVILION", "LAGUNA"});
         lineLocations.put("WALTER<-->LAGUNA", new String[]{"WALTER", "LAGUNA"});
 
-        timeList.add("10:00:00");
-        timeList.add("13:00:00");
-        timeList.add("6:00 PM");
+        
 
         
         // Populate Date list (3 weeks ahead, excluding Sundays)
@@ -65,7 +63,10 @@ private final HashMap<String, String[]> lineLocations = new HashMap<>();
         // Convert ArrayLists to ComboBox items
         lineComboBox = new JComboBox<>(lineLocations.keySet().toArray(new String[0]));
         dateComboBox = new JComboBox<>(dateList.toArray(new String[0]));
-        timeComboBox = new JComboBox<>(timeList.toArray(new String[0]));
+        timeComboBox = new JComboBox<>();
+
+        // Add ActionListener to Line ComboBox to update Time ComboBox
+        lineComboBox.addActionListener(e -> updateTimeComboBox());
 
         titleLabel = new JLabel("Dispatcher Menu", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 24));
@@ -100,12 +101,22 @@ private final HashMap<String, String[]> lineLocations = new HashMap<>();
 
         configureButton("Back", buttonFont, Color.BLACK, xPosition-100, yPosition, buttonSize, e -> {
             this.dispose(); // Close the current frame
-            System.out.println("Back button clicked. Returning to the previous menu.");
+            new SRS_LOGIN();
         });
 
 
     }
 
+    private void updateTimeComboBox() {
+        String selectedLine = (String) lineComboBox.getSelectedItem();
+        if (selectedLine != null) {
+            timeList = Dcontroller.getTimesForLine(selectedLine); // Fetch times dynamically
+            timeComboBox.removeAllItems(); // Clear existing items
+            for (String time : timeList) {
+                timeComboBox.addItem(time); // Add new items
+            }
+        }
+    }
     private void populateDateComboBox() {
         // Formatter for the dates
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

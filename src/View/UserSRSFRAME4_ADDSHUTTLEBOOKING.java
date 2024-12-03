@@ -44,9 +44,16 @@ public class UserSRSFRAME4_ADDSHUTTLEBOOKING extends FrameBackground{
             this.dispose();
             controller.SRSFRAME9_IRREGULAR_userController();
         });
+        
+
+        createButton("BACK", (panelWidth - 150) / 2 , 380, 150, 30, e -> handleBackAction());
 
         // Ensure the layout is set properly
         setVisible(true);
     }
 
+    private void handleBackAction() {
+        this.dispose();
+        controller.SRSFRAME3_USERINTERFACE_userController();
+    }
 }

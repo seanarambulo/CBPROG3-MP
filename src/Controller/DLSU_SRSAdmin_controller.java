@@ -87,8 +87,35 @@ public class DLSU_SRSAdmin_controller {
     public void AdminSRSFRAME3_VIEWRESERVATIONS_adminController(){
         view.ViewAdminSRSFRAME3_VIEWRESERVATIONS(this);
     }
+    public void deleteLineTime(String lineName, String time){
+        try {
+            dbManager.deleteLineTime(lineName, time);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
+    public boolean checkTimeExists(String time){
 
+            return dbManager.checkTimeExists(time);
+       
+    }
+    public void insertIntoTime(String time){
+        
+            try {
+                dbManager.insertIntoTime(time);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        
+    }
+    public void insertLineTime(String lineName, String time){
+        
+            dbManager.insertLineTime(lineName, time);
+        
+    }
     public void AdminSRSFRAME5_VERIFYRESERVATION_adminController() throws SQLException{
         view.ViewAdminSRSFRAME5_VERIFYRESERVATIONS(this, dbManager.getIrregularReservations());
     }

@@ -80,9 +80,16 @@ public class SRS_LOGIN extends FrameBackground {
                                 Ucontroller.SRSFRAME3_USERINTERFACE_userController(); 
                             }
                             case 4 -> {
-                                Ucontroller = new DLSU_SRSUser_controller(username, password);        
+                                if(dbManager.isVerified(username, password)){
+                                    Ucontroller = new DLSU_SRSUser_controller(username, password);        
                                 this.dispose();
                                 Ucontroller.SRSFRAME3_USERINTERFACE_userController();
+                                }else{
+                                    JOptionPane.showMessageDialog(outerPanel, "Account not yet verified.");
+                                    this.dispose();
+                                    new SRS_LOGIN();
+                                }
+                                
                             }
                             default -> JOptionPane.showMessageDialog(outerPanel, "Invalid designation ID.");
                         }

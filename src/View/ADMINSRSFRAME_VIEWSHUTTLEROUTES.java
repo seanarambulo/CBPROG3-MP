@@ -1,5 +1,5 @@
-
 package src.View;
+
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -12,7 +12,8 @@ public class ADMINSRSFRAME_VIEWSHUTTLEROUTES extends JFrame {
     private JTable reservationTable;
     private DefaultTableModel tableModel;
     private JComboBox<String> lineComboBox;
-    private JButton backButton, editButton;
+    private JTextField timeTextField;
+    private JButton backButton, deleteButton, addButton;
 
     protected DLSU_SRSAdmin_controller Acontroller;
     protected ArrayList<String> times;
@@ -26,18 +27,24 @@ public class ADMINSRSFRAME_VIEWSHUTTLEROUTES extends JFrame {
     private void initComponents() {
         setLayout(new BorderLayout());
 
-        // Panel for line label and combo box
+        // Panel for line label, combo box, and time input
         JPanel linePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel lineLabel = new JLabel("Line:");
-        lineComboBox = new JComboBox<>(new String[] {
+        lineComboBox = new JComboBox<>(new String[]{
             "MANILA<-->LAGUNA",
             "PASEO<-->LAGUNA",
             "CARMONA<-->LAGUNA",
             "PAVILION<-->LAGUNA",
             "WALTER<-->LAGUNA"
         });
+
+        JLabel timeLabel = new JLabel("Insert Time:");
+        timeTextField = new JTextField(10);
+
         linePanel.add(lineLabel);
         linePanel.add(lineComboBox);
+        linePanel.add(timeLabel);
+        linePanel.add(timeTextField);
 
         // Add an ActionListener to the combo box for refreshing the table
         lineComboBox.addActionListener(e -> {
@@ -48,7 +55,7 @@ public class ADMINSRSFRAME_VIEWSHUTTLEROUTES extends JFrame {
         });
 
         // Initialize table
-        tableModel = new DefaultTableModel(new String[] {"Time"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Time"}, 0);
         reservationTable = new JTable(tableModel);
         reservationTable.setFillsViewportHeight(true);
         JScrollPane tableScrollPane = new JScrollPane(reservationTable);
@@ -56,9 +63,12 @@ public class ADMINSRSFRAME_VIEWSHUTTLEROUTES extends JFrame {
         // Panel for buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         backButton = new JButton("Back");
-        editButton = new JButton("Edit");
+        deleteButton = new JButton("Delete");
+        addButton = new JButton("Add"); // New Add button
+
         buttonPanel.add(backButton);
-        buttonPanel.add(editButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(addButton);
 
         // Add components to the frame
         add(linePanel, BorderLayout.NORTH);
@@ -74,21 +84,58 @@ public class ADMINSRSFRAME_VIEWSHUTTLEROUTES extends JFrame {
 
         // Action listeners for buttons
         backButton.addActionListener(e -> {
-            this.dispose(); 
+            this.dispose();
             Acontroller.AdminSRSFRAME1_Menu_AdminController();
         });
-/*
-        editButton.addActionListener(e -> {
-            // Create and show the UserSRSFRAME11_VIEWSHUTTLEROUTES frame when the Edit button is clicked
-            // new ADMINSRSFRAME_EDITSHUTTLEROUTES();
-            // this.dispose(); // Close the current frame (optional)
+
+        addButton.addActionListener(e -> {
+           
+            
+                // Get the selected time and line
+                String enteredTime = timeTextField.getText();
+                String selectedLine = (String) lineComboBox.getSelectedItem();
+                if(!Acontroller.checkTimeExists(enteredTime)){
+                    Acontroller.insertIntoTime(enteredTime);
+                } else {
+                    // Call the method to handle insertion
+                    
+                    Acontroller.insertLineTime(selectedLine, enteredTime);
+
+                    times.add(enteredTime);
+                    populateTable();
+
+                // Clear the input field
+                timeTextField.setText("");
+
+            JOptionPane.showMessageDialog(this, "Time successfully added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
+                // Call the method to handle deletion
+                
+            
         });
-
-        */
-
+        deleteButton.addActionListener(e -> {
+            int selectedRow = reservationTable.getSelectedRow();
+            if (selectedRow >= 0) {
+                // Get the selected time and line
+                String selectedTime = (String) tableModel.getValueAt(selectedRow, 0);
+                String selectedLine = (String) lineComboBox.getSelectedItem();
+        
+                // Call the method to handle deletion
+                Acontroller.deleteLineTime(selectedLine, selectedTime);
+        
+                // Remove the selected row from the table
+                tableModel.removeRow(selectedRow);
+                times.remove(selectedTime); // Update the ArrayList
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a time to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            }
+        });
         // Populate table initially
         populateTable();
     }
+
+
+    
 
     private void populateTable() {
         // Clear any existing rows
@@ -96,7 +143,7 @@ public class ADMINSRSFRAME_VIEWSHUTTLEROUTES extends JFrame {
 
         // Add rows from the times ArrayList
         for (String time : times) {
-            tableModel.addRow(new Object[] {time});
+            tableModel.addRow(new Object[]{time});
         }
     }
 
@@ -109,6 +156,13 @@ public class ADMINSRSFRAME_VIEWSHUTTLEROUTES extends JFrame {
             JOptionPane.showMessageDialog(this, "Failed to refresh table: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+    }
+
+    private void addTime(String newTime) {
+        // Add the new time to the table and the times ArrayList
+        times.add(newTime);
+        tableModel.addRow(new Object[]{newTime});
+        timeTextField.setText(""); // Clear the input field
     }
 
     // This method is called by the controller after it updates the times

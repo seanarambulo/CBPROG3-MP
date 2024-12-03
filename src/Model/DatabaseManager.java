@@ -59,11 +59,11 @@ public class DatabaseManager {
     }
 
     // Method to insert into the ClassDays table
-    public void insertIntoClassDays(int id, int dayName) throws SQLException {
-        String sql = "INSERT INTO ClassDays (ClassDaysID, DayName) VALUES (?, ?)";
+    public void insertIntoClassDays(int id, int StudentID) throws SQLException {
+        String sql = "INSERT INTO ClassDays (DaysID, StudentID) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            pstmt.setInt(2, dayName);
+            pstmt.setInt(2, StudentID);
             pstmt.executeUpdate();
         }
     }
@@ -99,14 +99,56 @@ public class DatabaseManager {
     }
 
     // Method to insert into the Time table
-    public void insertIntoTime(int id, String time) throws SQLException {
-        String sql = "INSERT INTO Time (TimeID, Time) VALUES (?, ?)";
+    public void insertIntoTime(String time) throws SQLException {
+        String sql = "INSERT INTO Time (Time) VALUES (?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            pstmt.setString(2, time);
+            pstmt.setString(1, time);
             pstmt.executeUpdate();
         }
     }
+
+    public boolean checkTimeExists(String time) {
+        String sql = "SELECT COUNT(*) FROM Time WHERE Time = ?";
+        
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+    
+            // Set the parameter for the query
+            pstmt.setString(1, time);
+    
+            // Execute the query
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Return true if count > 0
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking if time exists: " + e.getMessage());
+        }
+    
+        return false; // Return false if an error occurs or the time doesn't exist
+    }
+
+    public boolean insertLineTime(String lineName, String time) {
+        String sql = "INSERT INTO LineTime (LineID, TimeID) " +
+                     "VALUES ((SELECT LineID FROM ArrowsExpressLine WHERE LineName = ?), " +
+                     "(SELECT TimeID FROM Time WHERE Time = ?))";
+    
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+    
+            // Set the parameters for the query
+            pstmt.setString(1, lineName);
+            pstmt.setString(2, time);
+    
+            // Execute the insertion
+            int rowsInserted = pstmt.executeUpdate();
+    
+            return rowsInserted > 0; // Return true if the insertion was successful
+        } catch (SQLException e) {
+            System.err.println("Error inserting LineTime into database: " + e.getMessage());
+            return false;
+        }
+    }
+    
 
     // Method to insert into the User table
     public void insertIntoUser(int id, String username, String password, String email, int designationId) throws SQLException {
@@ -122,16 +164,48 @@ public class DatabaseManager {
     }
 
     // Method to insert into the Student table
-    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified) throws SQLException {
-        String sql = "INSERT INTO Student (StudentID, Trimester, EAF, isVerified, ClassDaysID) VALUES (?, ?, ?, ?, ?)";
+    public void insertIntoStudent(int id, int trimester, String eaf, boolean isVerified, String enrolledAs) throws SQLException {
+        String sql = "INSERT INTO Student (StudentID, TrimesterID, EAF, isVerified, enrolledAs) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.setInt(2, trimester);
             pstmt.setString(3, eaf);
             pstmt.setBoolean(4, isVerified);
+            pstmt.setString(5, enrolledAs);
             pstmt.executeUpdate();
         }
     }
+
+    public void deleteLineTime(String lineName, String time) throws SQLException {
+        String query = "DELETE FROM LineTime " +
+                       "WHERE LineID = (SELECT LineID FROM ArrowsExpressLine WHERE LineName = ?) " +
+                       "AND TimeID = (SELECT TimeID FROM Time WHERE Time = ?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, lineName);
+            preparedStatement.setString(2, time);
+            
+            preparedStatement.executeUpdate();
+            
+        }
+    }
+
+
+    public boolean doesTimeExist(String time) {
+        String query = "SELECT COUNT(*) AS count FROM Time WHERE Time = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, time);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                return count > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public Integer getTimeIDByTime(String time) {
         String query = "SELECT TimeID FROM Time WHERE Time = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -614,10 +688,24 @@ public boolean checkIfUserExists(int userId) throws SQLException {
 
         return times;
     }
-    
+    public boolean isVerified(int userID, String password){
+        String query = "SELECT isVerified FROM Student, user WHERE StudentID = ? AND Password = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setString(2, password);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean("isVerified");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public ArrayList<IrregReservation> getIrregularReservations() throws SQLException {
         String sql = """
-            SELECT IR.IrregShuttleBookingID, B.Destination, B.Date, T.Time, IR.Reason, B.UserID, IR.isApproved
+            SELECT IR.IrregShuttleBookingID,B.LineID, B.Destination, B.Date, T.Time, IR.Reason, B.UserID, IR.isApproved
             FROM irregshuttlebooking IR
             JOIN booking B ON IR.IrregShuttleBookingID = B.ShuttleBookingID
             JOIN time T ON T.TimeID = B.TimeID
@@ -632,6 +720,7 @@ public boolean checkIfUserExists(int userId) throws SQLException {
                 IrregReservation irregReservation = new IrregReservation();
                 irregReservation.setShuttleBookingID(rs.getInt("IrregShuttleBookingID"));
                 irregReservation.setDestination(rs.getString("Destination"));
+                irregReservation.setLineID(rs.getInt("LineID"));
                 irregReservation.setDate(rs.getString("Date"));
                 irregReservation.setTime(rs.getString("Time"));
                 irregReservation.setReason(rs.getString("Reason"));
